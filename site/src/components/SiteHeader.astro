@@ -102,16 +102,19 @@ const current = Astro.url.pathname;
     width: 26px;
     height: 26px;
     border-radius: 50%;
-    /* Darkening the pill rather than lightening it keeps the white glyph
-       above 4.5:1 against the teal bar. */
-    background: rgba(0, 0, 0, 0.24);
+    /* Brand-blue pills as published. Facebook's #1877f2 gives white text only
+       4.23:1, so each is nudged to the nearest darker shade that clears AA. */
+    background: #1462c4;
     color: #fff;
     font-size: 0.72rem;
     font-weight: 700;
     text-decoration: none;
   }
+  .top-social a:last-child {
+    background: #0a66c2;
+  }
   .top-social a:hover {
-    background: rgba(0, 0, 0, 0.4);
+    filter: brightness(1.15);
     color: #fff;
   }
 
