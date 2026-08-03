@@ -1,0 +1,99 @@
+---
+import { IS_PREVIEW, SITE, absoluteUrl } from '../lib/site';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article' | 'product';
+  noindex?: boolean;
+  schema?: unknown[];
+}
+
+const {
+  title,
+  description,
+  path,
+  ogImage,
+  ogType = 'website',
+  noindex = false,
+  schema = [],
+} = Astro.props;
+
+// Canonicals always point at the production origin, never a preview host.
+const canonical = absoluteUrl(path);
+const image = ogImage ? absoluteUrl(ogImage) : undefined;
+
+// Preview deployments are never indexable.
+const robots = IS_PREVIEW || noindex ? 'noindex,nofollow' : 'index,follow,max-image-preview:large';
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<meta name="robots" content={robots} />
+
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content={ogType} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:site_name" content={SITE.name} />
+{image && <meta property="og:image" content={image} />}
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+{image && <meta name="twitter:image" content={image} />}
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=ADLaM+Display&display=swap"
+/>
+
+{
+  schema.map((s) => (
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(s).replace(/</g, '\\u003c')}
+    />
+  ))
+}
+
+{/*
+  Kill switch for the malicious service worker that the compromised WordPress
+  homepage registered at scope "/". A cleaned site is not enough on its own:
+  the worker persists in the browsers of every past visitor and can keep
+  intercepting navigations. This unregisters any worker still bound to this
+  origin and clears the caches it created.
+  See reports/MALWARE_AUDIT_REPORT.md.
+*/}
+<script is:inline>
+  (function () {
+    if (!('serviceWorker' in navigator)) return;
+    navigator.serviceWorker
+      .getRegistrations()
+      .then(function (rs) {
+        rs.forEach(function (r) {
+          r.unregister();
+        });
+      })
+      .catch(function () {});
+    if (window.caches && caches.keys) {
+      caches
+        .keys()
+        .then(function (keys) {
+          keys.forEach(function (k) {
+            caches.delete(k);
+          });
+        })
+        .catch(function () {});
+    }
+  })();
+</script>

@@ -1,0 +1,37 @@
+[
+ {
+  "id": 186,
+  "slug": "by-material",
+  "name": "By Material",
+  "description": "The Die Cut Stickers \"By Material\" category offers a variety of options to suit your specific needs. Choose from durable materials that ensure long-lasting quality, including vinyl, paper, and waterproof options. Each material is designed to provide a unique finish, tailored to different uses and environments. We offer coating options like Gloss, Matte, and Spot UV, along with free design services and shipping.",
+  "order": 0
+ },
+ {
+  "id": 188,
+  "slug": "features",
+  "name": "Features",
+  "description": "The Die Cut Stickers are designed to meet your unique needs with precision-cut shapes that make your brand stand out. We offer a range of coating options, including Gloss, Matte, and Spot UV, to give your stickers a polished look. Enjoy the flexibility of custom sizes and styles, along with free design support and shipping. Our stickers are made from high-quality materials with vibrant printing options, ensuring durability and a professional finish. Take advantage of our fast turnaround times and elevate your branding today!",
+  "order": 1
+ },
+ {
+  "id": 189,
+  "slug": "shape-size",
+  "name": "Shape & Size",
+  "description": "The Die Cut Stickers offer a great way to add personality and style to your branding with a variety of shapes and sizes to choose from. Made from high-quality materials and printed with precision, these stickers ensure durability and vibrant colors. We provide coating options like Gloss, Matte, and Spot UV, along with free design support and shipping. Custom sizes and styles are available, and you can count on fast turnaround times. Get started today and make your brand stand out!",
+  "order": 2
+ },
+ {
+  "id": 190,
+  "slug": "sticker-types",
+  "name": "Sticker Types",
+  "description": "The Sticker Types category offers a wide range of options, including shapes and sizes that suit any branding or personal need. Whether you need custom shapes or standard designs, we ensure each sticker is made with high-quality materials and vivid printing. We offer coating options like Gloss, Matte, and Spot UV, along with free design assistance and shipping. Choose from custom sizes and styles with fast turnaround times to get your stickers just the way you want them.",
+  "order": 3
+ },
+ {
+  "id": 187,
+  "slug": "usage",
+  "name": "Usage",
+  "description": "The Die Cut Stickers are versatile promotional tools with various applications. They are ideal for product packaging, promotional campaigns, and personal use. These stickers are available in various shapes, sizes, and materials to suit your specific needs. We offer a wide range of customization options, including different coatings, custom sizes, and styles. Our fast turnaround times ensure you receive your stickers quickly. We use high-quality materials and printing techniques to deliver exceptional results. Contact us today to discuss your sticker needs and explore our customization options.",
+  "order": 4
+ }
+]

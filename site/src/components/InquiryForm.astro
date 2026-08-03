@@ -1,0 +1,318 @@
+---
+import { products } from '../lib/catalogue';
+
+interface Props {
+  /** compact = product sidebar, full = contact / quote page */
+  variant?: 'compact' | 'full';
+  /** Preselects the product the visitor is looking at. */
+  selectedProduct?: string;
+  id?: string;
+  heading?: string;
+}
+const {
+  variant = 'compact',
+  selectedProduct = '',
+  id = 'inquiry-form',
+  heading,
+} = Astro.props;
+
+const full = variant === 'full';
+const sourcePath = Astro.url.pathname;
+const names = products.map((p) => p.name).sort((a, b) => a.localeCompare(b));
+---
+
+<form class:list={['inquiry', full && 'is-full']} id={id} method="post" action="/api/inquiry/" enctype="multipart/form-data" novalidate>
+  {heading && <h2 class="form-heading">{heading}</h2>}
+
+  {/* Bot trap: a real person never fills this in. Hidden from AT and sighted users. */}
+  <div class="hp" aria-hidden="true">
+    <label for={`${id}-website`}>Leave this field empty</label>
+    <input type="text" id={`${id}-website`} name="website" tabindex="-1" autocomplete="off" />
+  </div>
+  <input type="hidden" name="sourcePage" value={sourcePath} />
+
+  <div class="fields">
+    <div class="field">
+      <label for={`${id}-name`}>Name <span aria-hidden="true">*</span></label>
+      <input id={`${id}-name`} name="name" type="text" required autocomplete="name" maxlength="120" />
+    </div>
+    <div class="field">
+      <label for={`${id}-email`}>Email <span aria-hidden="true">*</span></label>
+      <input id={`${id}-email`} name="email" type="email" required autocomplete="email" maxlength="180" />
+    </div>
+    <div class="field">
+      <label for={`${id}-phone`}>Phone <span aria-hidden="true">*</span></label>
+      <input id={`${id}-phone`} name="phone" type="tel" required autocomplete="tel" maxlength="40" />
+    </div>
+    {
+      full && (
+        <div class="field">
+          <label for={`${id}-company`}>Company</label>
+          <input id={`${id}-company`} name="company" type="text" autocomplete="organization" maxlength="140" />
+        </div>
+      )
+    }
+
+    <div class="field">
+      <label for={`${id}-product`}>Product</label>
+      <select id={`${id}-product`} name="product">
+        <option value="">Select a product</option>
+        {
+          names.map((n) => (
+            <option value={n} selected={n === selectedProduct}>
+              {n}
+            </option>
+          ))
+        }
+      </select>
+    </div>
+
+    {
+      full && (
+        <>
+          <div class="field">
+            <label for={`${id}-quantity`}>Quantity</label>
+            <input id={`${id}-quantity`} name="quantity" type="text" inputmode="numeric" maxlength="40" />
+          </div>
+          <div class="field">
+            <label for={`${id}-size`}>Size</label>
+            <input id={`${id}-size`} name="size" type="text" maxlength="80" placeholder='e.g. 3" x 3"' />
+          </div>
+          <div class="field">
+            <label for={`${id}-shape`}>Shape</label>
+            <input id={`${id}-shape`} name="shape" type="text" maxlength="80" placeholder="e.g. die cut, circle" />
+          </div>
+          <div class="field">
+            <label for={`${id}-material`}>Material</label>
+            <select id={`${id}-material`} name="material">
+              <option value="">No preference</option>
+              <option>Vinyl</option>
+              <option>Clear vinyl</option>
+              <option>Paper</option>
+              <option>Polyester / PET</option>
+              <option>Holographic</option>
+              <option>Metallic</option>
+              <option>Reflective</option>
+              <option>Eco-friendly / recyclable</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for={`${id}-finish`}>Finish</label>
+            <select id={`${id}-finish`} name="finish">
+              <option value="">No preference</option>
+              <option>Gloss</option>
+              <option>Matte</option>
+              <option>Spot UV</option>
+              <option>Lamination</option>
+              <option>Foil stamping</option>
+              <option>Embossing</option>
+            </select>
+          </div>
+          <div class="field field-wide">
+            <label for={`${id}-printing`}>Printing requirements</label>
+            <input id={`${id}-printing`} name="printing" type="text" maxlength="200" placeholder="e.g. full colour CMYK, PMS match" />
+          </div>
+        </>
+      )
+    }
+
+    <div class="field field-wide">
+      <label for={`${id}-message`}>Message</label>
+      <textarea id={`${id}-message`} name="message" rows={full ? 5 : 4} maxlength="4000"></textarea>
+    </div>
+
+    <div class="field field-wide">
+      <label for={`${id}-artwork`}>Artwork (optional)</label>
+      <input
+        id={`${id}-artwork`}
+        name="artwork"
+        type="file"
+        accept=".pdf,.png,.jpg,.jpeg,.webp,.ai,.eps,.svg,.zip"
+        />
+      <span class="hint">PDF, PNG, JPG, WEBP, AI, EPS, SVG or ZIP. Maximum 10 MB.</span>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-teal submit">Submit</button>
+
+  <p class="form-status" id={`${id}-status`} role="status" aria-live="polite"></p>
+</form>
+
+<style>
+  .inquiry {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: 20px 18px;
+  }
+  .form-heading {
+    margin-top: 0;
+    font-size: 1.15rem;
+  }
+  .hp {
+    position: absolute !important;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .fields {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .is-full .fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .field {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+  }
+  .field-wide {
+    grid-column: 1 / -1;
+  }
+  label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  input,
+  select,
+  textarea {
+    font: inherit;
+    font-size: 0.92rem;
+    color: var(--ink);
+    width: 100%;
+    max-width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--teal);
+    border-radius: 8px;
+    background: #fff;
+    min-height: 44px;
+  }
+  textarea {
+    resize: vertical;
+  }
+  input[type='file'] {
+    padding: 8px;
+    border-style: dashed;
+  }
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 3px solid var(--purple);
+    outline-offset: 1px;
+  }
+  input[aria-invalid='true'],
+  textarea[aria-invalid='true'] {
+    border-color: #c0392b;
+  }
+  .hint {
+    font-size: 0.74rem;
+    color: var(--muted);
+  }
+  .submit {
+    margin-top: 16px;
+    width: 100%;
+  }
+  .is-full .submit {
+    width: auto;
+    min-width: 200px;
+  }
+  .form-status {
+    margin: 12px 0 0;
+    font-size: 0.88rem;
+    min-height: 1.2em;
+  }
+  .form-status[data-state='error'] {
+    color: #c0392b;
+  }
+  .form-status[data-state='ok'] {
+    color: #1d7a52;
+    font-weight: 600;
+  }
+
+  @media (max-width: 620px) {
+    .is-full .fields {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  const MAX_BYTES = 10 * 1024 * 1024;
+  const ALLOWED = ['pdf', 'png', 'jpg', 'jpeg', 'webp', 'ai', 'eps', 'svg', 'zip'];
+
+  document.querySelectorAll<HTMLFormElement>('form.inquiry').forEach((form) => {
+    const status = form.querySelector<HTMLElement>('.form-status');
+    const button = form.querySelector<HTMLButtonElement>('button[type=submit]');
+    if (!status || !button) return;
+
+    const say = (msg: string, state: 'ok' | 'error' | '') => {
+      status.textContent = msg;
+      if (state) status.dataset.state = state;
+      else delete status.dataset.state;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      say('', '');
+
+      // Mirror the server's rules so obvious problems are caught before upload.
+      const invalid = Array.from(
+        form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[required]'),
+      ).filter((el) => !el.value.trim());
+      form
+        .querySelectorAll('[aria-invalid]')
+        .forEach((el) => el.removeAttribute('aria-invalid'));
+      if (invalid.length) {
+        invalid.forEach((el) => el.setAttribute('aria-invalid', 'true'));
+        invalid[0].focus();
+        say('Please complete the required fields.', 'error');
+        return;
+      }
+
+      const file = form.querySelector<HTMLInputElement>('input[type=file]')?.files?.[0];
+      if (file) {
+        const ext = file.name.split('.').pop()?.toLowerCase() ?? '';
+        // Reject double extensions such as artwork.php.jpg outright.
+        const parts = file.name.toLowerCase().split('.');
+        const doubled = parts.length > 2 && parts.slice(1, -1).some((p) =>
+          ['php', 'phtml', 'phar', 'exe', 'sh', 'js', 'html', 'htm'].includes(p),
+        );
+        if (!ALLOWED.includes(ext) || doubled) {
+          say('That file type is not accepted. Please upload artwork as PDF, PNG, JPG, WEBP, AI, EPS, SVG or ZIP.', 'error');
+          return;
+        }
+        if (file.size > MAX_BYTES) {
+          say('That file is larger than 10 MB. Please send a smaller file.', 'error');
+          return;
+        }
+      }
+
+      button.disabled = true;
+      const original = button.textContent;
+      button.textContent = 'Sending…';
+
+      try {
+        const res = await fetch(form.action, { method: 'POST', body: new FormData(form) });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.ok) {
+          // Success is only ever shown once the server confirms delivery.
+          form.reset();
+          say(data.message || 'Thank you. Your enquiry has been sent and we will be in touch shortly.', 'ok');
+        } else {
+          say(data.message || 'Sorry, your enquiry could not be sent. Please email info@thediecutstickers.com or call +1-929-2141-874.', 'error');
+        }
+      } catch {
+        say('Sorry, your enquiry could not be sent. Please email info@thediecutstickers.com or call +1-929-2141-874.', 'error');
+      } finally {
+        button.disabled = false;
+        button.textContent = original;
+      }
+    });
+  });
+</script>

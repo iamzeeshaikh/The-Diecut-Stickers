@@ -1,0 +1,273 @@
+/*
+ * The Die Cut Stickers - design system
+ *
+ * Rebuilt from scratch to match the published site's palette, typography and
+ * layout. No CSS is carried over from the compromised WordPress theme.
+ */
+
+:root {
+  /*
+   * The published palette was #35a887 teal and #b068f8 purple, both carrying
+   * white text at 2.96:1 and 3.40:1 — below the 4.5:1 WCAG AA minimum. Each is
+   * darkened to the nearest shade of the same hue that passes (4.53:1 and
+   * 4.55:1), so the brand look is preserved and the text is legible. The
+   * original lighter purple is kept for decorative accents that carry no text.
+   */
+  --teal: #24856a;
+  --teal-dark: #1f7458;
+  --purple: #9a4cec;
+  --purple-dark: #8637d8;
+  --purple-accent: #b068f8;
+  --blue: #216bdb;
+  --ink: #292929;
+  --ink-soft: rgba(41, 41, 41, 0.9);
+  --muted: #5c6470;
+  --white: #ffffff;
+  --tint: #edf2fe;
+  --tint-2: #e9f1fa;
+  --page: #f9fbfe;
+  --line: #e3e8f0;
+  --footer: #262626;
+
+  --container: 1200px;
+  --radius: 10px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 3px rgba(16, 24, 40, 0.06), 0 1px 2px rgba(16, 24, 40, 0.04);
+  --shadow: 0 4px 16px rgba(16, 24, 40, 0.08);
+
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+  --font-display: 'ADLaM Display', var(--font);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  background: var(--page);
+  /* Nothing may push the viewport sideways at any breakpoint. */
+  overflow-x: hidden;
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: var(--blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+a:hover {
+  color: var(--purple-dark);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  color: var(--ink);
+  line-height: 1.25;
+  margin: 0 0 0.6em;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: clamp(1.75rem, 1.3rem + 2vw, 2.6rem);
+}
+h2 {
+  font-size: clamp(1.4rem, 1.15rem + 1.1vw, 1.9rem);
+}
+h3 {
+  font-size: clamp(1.15rem, 1.05rem + 0.5vw, 1.35rem);
+}
+h4 {
+  font-size: 1.05rem;
+}
+
+p,
+ul,
+ol,
+table {
+  margin: 0 0 1.1em;
+}
+
+/* Visible keyboard focus everywhere. */
+:focus-visible {
+  outline: 3px solid var(--purple);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 999;
+  background: var(--purple);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 0 0 8px 0;
+  text-decoration: none;
+}
+.skip-link:focus {
+  left: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: 16px;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------------------------------------------------------------- buttons */
+.btn {
+  display: inline-block;
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 28px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.btn-primary {
+  background: var(--purple);
+  color: #fff;
+}
+.btn-primary:hover {
+  background: var(--purple-dark);
+  color: #fff;
+}
+.btn-teal {
+  background: var(--teal);
+  color: #fff;
+}
+.btn-teal:hover {
+  background: var(--teal-dark);
+  color: #fff;
+}
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ---------------------------------------------------------------- sections */
+.section {
+  padding: clamp(2.5rem, 1.5rem + 3vw, 4.5rem) 0;
+}
+.section-tight {
+  padding: clamp(1.75rem, 1rem + 2vw, 3rem) 0;
+}
+.section-white {
+  background: var(--white);
+}
+
+/* --------------------------------------------------------- rich text areas */
+.rich-text {
+  max-width: 100%;
+}
+.rich-text h2 {
+  margin-top: 1.6em;
+}
+.rich-text h3,
+.rich-text h4 {
+  margin-top: 1.3em;
+}
+.rich-text > *:first-child {
+  margin-top: 0;
+}
+.rich-text ul,
+.rich-text ol {
+  padding-left: 1.3em;
+}
+.rich-text li {
+  margin-bottom: 0.4em;
+}
+.rich-text hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 2em 0;
+}
+.rich-text img {
+  border-radius: var(--radius);
+}
+
+/* Wide tables scroll inside their own container, never the page. */
+.table-scroll {
+  overflow-x: auto;
+  margin-bottom: 1.2em;
+  -webkit-overflow-scrolling: touch;
+}
+.rich-text table,
+.table-scroll table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  background: var(--white);
+  margin-bottom: 0;
+}
+.rich-text th,
+.rich-text td,
+.table-scroll th,
+.table-scroll td {
+  border: 1px solid var(--line);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+.rich-text thead th,
+.table-scroll thead th {
+  background: var(--tint);
+  color: var(--ink);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

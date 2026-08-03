@@ -1,0 +1,115 @@
+---
+import { Image } from 'astro:assets';
+import { resolveImage, productAlt } from '../lib/images';
+
+interface Props {
+  name: string;
+  images: string[];
+}
+const { name, images } = Astro.props;
+
+const resolved = images
+  .map((ref, i) => ({ img: resolveImage(ref), alt: productAlt(name, i, images.length) }))
+  .filter((r): r is { img: NonNullable<ReturnType<typeof resolveImage>>; alt: string } =>
+    r.img !== undefined,
+  );
+const main = resolved[0];
+---
+
+{
+  main && (
+    <div class="gallery">
+      <div class="main-image">
+        <Image
+          id="gallery-main"
+          src={main.img}
+          alt={main.alt}
+          widths={[400, 600, 800]}
+          sizes="(max-width: 760px) 92vw, 420px"
+          loading="eager"
+          fetchpriority="high"
+          decoding="sync"
+        />
+      </div>
+
+      {resolved.length > 1 && (
+        <ul class="thumbs" role="list">
+          {resolved.map((r, i) => (
+            <li>
+              <button
+                type="button"
+                class="thumb"
+                data-index={i}
+                aria-label={`Show image ${i + 1} of ${resolved.length}`}
+                aria-pressed={i === 0 ? 'true' : 'false'}
+              >
+                <Image src={r.img} alt="" widths={[80, 160]} sizes="72px" loading="lazy" />
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+<script>
+  const root = document.querySelector('.gallery');
+  const main = document.getElementById('gallery-main') as HTMLImageElement | null;
+  if (root && main) {
+    const buttons = Array.from(root.querySelectorAll<HTMLButtonElement>('.thumb'));
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const thumb = btn.querySelector('img');
+        if (!thumb) return;
+        // Swap in the thumbnail's own responsive sources.
+        main.src = thumb.src;
+        main.srcset = thumb.srcset;
+        main.alt = btn.getAttribute('aria-label') ?? main.alt;
+        buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      });
+    });
+  }
+</script>
+
+<style>
+  .main-image {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    aspect-ratio: 1 / 1;
+  }
+  .main-image :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .thumbs {
+    display: flex;
+    gap: 10px;
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+    flex-wrap: wrap;
+  }
+  .thumb {
+    padding: 0;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--white);
+    cursor: pointer;
+    width: 72px;
+    height: 72px;
+    line-height: 0;
+  }
+  .thumb :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .thumb[aria-pressed='true'] {
+    border-color: var(--purple-accent);
+  }
+</style>

@@ -1,0 +1,31 @@
+---
+import ProductGrid from './ProductGrid.astro';
+import type { Product } from '../lib/catalogue';
+
+interface Props {
+  products: Product[];
+  heading?: string;
+}
+const { products, heading = 'Related stickers' } = Astro.props;
+---
+
+{
+  products.length > 0 && (
+    <section class="related section-tight" aria-labelledby="related-heading">
+      <div class="container">
+        <h2 id="related-heading">{heading}</h2>
+        <ProductGrid products={products} eagerCount={0} />
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .related {
+    background: var(--white);
+    border-top: 1px solid var(--line);
+  }
+  h2 {
+    margin-bottom: 24px;
+  }
+</style>

@@ -1,0 +1,164 @@
+---
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProductGrid from '../components/ProductGrid.astro';
+import CTASection from '../components/CTASection.astro';
+import { products } from '../lib/catalogue';
+import pages from '../data/pages.json';
+import { absoluteUrl } from '../lib/site';
+
+const page = pages.home;
+
+/*
+ * The published homepage led with four animated value propositions. The source
+ * GIFs totalled 3.2 MB, so they were converted to animated WebP (860 kB) which
+ * keeps the motion without wrecking LCP. They are served straight from /public
+ * because Astro's image pipeline flattens animation to a single frame.
+ */
+const USPS = [
+  {
+    src: '/img/Customize-Your-Design-Size-Style.webp',
+    title: 'Customize Your Design, Size & Style',
+    w: 320,
+    h: 180,
+  },
+  {
+    src: '/img/High-Quality-Offset-Printing.webp',
+    title: 'Design Your Perfect Sticker Today',
+    w: 320,
+    h: 268,
+  },
+  { src: '/img/Offset-Press.webp', title: 'High Quality Offset Printing', w: 320, h: 303 },
+  {
+    src: '/img/Order-Now-for-Fast-8-10-Day-Ships-1.webp',
+    title: 'Order Now for Fast 8-10 Day Shipping',
+    w: 320,
+    h: 240,
+  },
+];
+
+const content = page.content
+  .replace(/<table/gi, '<div class="table-scroll"><table')
+  .replace(/<\/table>/gi, '</table></div>');
+---
+
+<BaseLayout
+  title={page.seoTitle}
+  description={page.seoDescription}
+  path="/"
+  schema={[
+    {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: 'Custom die cut stickers',
+      numberOfItems: products.length,
+      itemListElement: products.map((p, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: p.name,
+        url: absoluteUrl(`/product/${p.slug}/`),
+      })),
+    },
+  ]}
+>
+  <h1 class="visually-hidden">Custom die cut stickers printed to your artwork</h1>
+
+  <section class="usps" aria-label="Why order from The Die Cut Stickers">
+    <div class="container usp-grid">
+      {
+        USPS.map((u, i) => (
+          <div class:list={['usp', i < 2 && 'usp-tint']}>
+            <img
+              src={u.src}
+              alt=""
+              aria-hidden="true"
+              width={u.w}
+              height={u.h}
+              loading="lazy"
+              decoding="async"
+              fetchpriority="low"
+            />
+            <p class="usp-title">{u.title}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <div class="container products-cta">
+    <a class="btn btn-primary" href="/products/">Our Products</a>
+  </div>
+
+  <section class="section-tight" aria-labelledby="catalogue-heading">
+    <div class="container">
+      <h2 id="catalogue-heading" class="visually-hidden">Our sticker range</h2>
+      <ProductGrid products={products} eagerCount={3} />
+    </div>
+  </section>
+
+  <section class="section section-white home-copy">
+    <div class="container narrow">
+      <div class="rich-text" set:html={content} />
+    </div>
+  </section>
+
+  <CTASection id="quote" />
+</BaseLayout>
+
+<style>
+  .usps {
+    padding: 34px 0 6px;
+  }
+  .usp-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+  }
+  .usp {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 20px 16px 22px;
+    text-align: center;
+  }
+  .usp-tint {
+    background: #f6ecd9;
+  }
+  .usp :global(img) {
+    width: 100%;
+    max-width: 130px;
+    height: auto;
+    margin-inline: auto;
+  }
+  .usp-title {
+    margin: 12px 0 0;
+    font-weight: 700;
+    color: var(--ink);
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  .products-cta {
+    display: flex;
+    justify-content: center;
+    padding: 26px 16px 4px;
+  }
+
+  .home-copy .narrow {
+    max-width: 860px;
+  }
+
+  @media (max-width: 900px) {
+    .usp-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 420px) {
+    .usp-grid {
+      gap: 12px;
+    }
+    .usp {
+      padding: 14px 10px 16px;
+    }
+  }
+</style>

@@ -1,0 +1,51 @@
+---
+import ProductCard from './ProductCard.astro';
+import type { Product } from '../lib/catalogue';
+
+interface Props {
+  products: Product[];
+  /** How many leading cards are treated as above the fold. */
+  eagerCount?: number;
+}
+const { products, eagerCount = 3 } = Astro.props;
+---
+
+<ul class="grid" role="list">
+  {
+    products.map((p, i) => (
+      <li>
+        <ProductCard product={p} eager={i < eagerCount} />
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .grid {
+    display: grid;
+    /* minmax(0,1fr) keeps wide children from forcing horizontal overflow. */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .grid > li {
+    display: flex;
+  }
+  .grid > li > :global(*) {
+    width: 100%;
+  }
+
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+  }
+  @media (max-width: 420px) {
+    .grid {
+      gap: 14px;
+    }
+  }
+</style>

@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import InquiryForm from '../components/InquiryForm.astro';
+import pages from '../data/pages.json';
+import { absoluteUrl, SITE } from '../lib/site';
+
+const page = pages['contact-us'];
+const path = '/contact-us/';
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Contact Us' }];
+---
+
+<BaseLayout
+  title="Contact Us | The Die Cut Stickers"
+  description="Talk to The Die Cut Stickers about a custom sticker order. Email info@thediecutstickers.com, call +1-929-2141-874, or send your artwork for a quote."
+  path={path}
+  schema={[
+    {
+      '@context': 'https://schema.org',
+      '@type': 'ContactPage',
+      url: absoluteUrl(path),
+      name: 'Contact Us',
+      mainEntity: { '@id': absoluteUrl('/#organization') },
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: crumbs.map((c, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: c.label,
+        ...(c.href ? { item: absoluteUrl(c.href) } : {}),
+      })),
+    },
+  ]}
+>
+  <Breadcrumbs items={crumbs} />
+
+  <section class="section-tight">
+    <div class="container">
+      <h1>Contact Us</h1>
+      <div class="contact-grid">
+        <div>
+          <div class="rich-text" set:html={page.content} />
+          <address class="card">
+            <p><strong>Email</strong><br /><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+            <p><strong>Phone</strong><br /><a href={`tel:${SITE.phoneHref}`}>{SITE.phone}</a></p>
+            <p><strong>Address</strong><br />{SITE.addressLine}</p>
+          </address>
+        </div>
+        <div>
+          <InquiryForm variant="full" id="contact-form" heading="Request a quote" />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: 34px;
+    align-items: start;
+  }
+  .card {
+    font-style: normal;
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 18px 20px;
+    margin-top: 20px;
+  }
+  .card p {
+    margin: 0 0 14px;
+  }
+  .card p:last-child {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 860px) {
+    .contact-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

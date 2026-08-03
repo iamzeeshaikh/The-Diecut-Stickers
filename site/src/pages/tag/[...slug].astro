@@ -1,0 +1,8 @@
+---
+// Every /tag/* archive on the compromised site was an injected spam term.
+// No legitimate post ever existed, so the whole namespace returns 410.
+import GonePage from '../../components/GonePage.astro';
+export const prerender = false;
+---
+
+<GonePage />

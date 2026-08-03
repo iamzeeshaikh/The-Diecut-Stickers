@@ -1,0 +1,26 @@
+---
+interface Props {
+  /** Migrated body copy. Sanitised at extraction time in tools/extract.py. */
+  html: string;
+  narrow?: boolean;
+  white?: boolean;
+}
+const { html, narrow = false, white = false } = Astro.props;
+
+// Wide migrated tables get their own scroll container.
+const wrapped = html
+  .replace(/<table/gi, '<div class="table-scroll"><table')
+  .replace(/<\/table>/gi, '</table></div>');
+---
+
+<section class:list={['content-section', 'section', white && 'section-white']}>
+  <div class:list={['container', narrow && 'narrow']}>
+    <div class="rich-text" set:html={wrapped} />
+  </div>
+</section>
+
+<style>
+  .narrow {
+    max-width: 860px;
+  }
+</style>

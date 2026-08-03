@@ -1,0 +1,195 @@
+---
+import { Image } from 'astro:assets';
+import { SITE } from '../lib/site';
+import { categories } from '../lib/catalogue';
+import logo from '../assets/img/The-Diecut-500-x-300.png';
+import MobileNavigation from './MobileNavigation.astro';
+
+// The published main menu carried Home, Products and three category links.
+const NAV = [
+  { label: 'Home', href: '/' },
+  { label: 'Products', href: '/products/' },
+  ...['by-material', 'shape-size', 'sticker-types']
+    .map((s) => categories.find((c) => c.slug === s))
+    .filter((c) => c !== undefined)
+    .map((c) => ({ label: c!.name, href: `/product-category/${c!.slug}/` })),
+];
+
+const current = Astro.url.pathname;
+---
+
+<header class="site-header">
+  <div class="top-row">
+    <div class="container top-inner">
+      <a class="top-link" href={`mailto:${SITE.email}`}>
+        <span aria-hidden="true">✉</span> {SITE.email}
+      </a>
+      <a class="top-link" href={`tel:${SITE.phoneHref}`}>
+        <span aria-hidden="true">✆</span> {SITE.phone}
+      </a>
+      <div class="top-social">
+        <a href={SITE.social.facebook} aria-label="Facebook" rel="noopener noreferrer" target="_blank">f</a>
+        <a href={SITE.social.linkedin} aria-label="LinkedIn" rel="noopener noreferrer" target="_blank">in</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-row">
+    <div class="container main-inner">
+      <a href="/" class="brand" aria-label={`${SITE.name} home`}>
+        <Image src={logo} alt={`${SITE.name} logo`} width={150} height={90} loading="eager" />
+      </a>
+
+      <nav class="primary-nav" aria-label="Primary">
+        <ul>
+          {
+            NAV.map((item) => (
+              <li>
+                <a href={item.href} aria-current={current === item.href ? 'page' : undefined}>
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <a class="phone-pill" href={`tel:${SITE.phoneHref}`}>{SITE.phoneDisplay}</a>
+
+      <MobileNavigation items={NAV} />
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    background: var(--white);
+  }
+
+  .top-row {
+    background: var(--teal);
+    color: #fff;
+    font-size: 0.9rem;
+  }
+  .top-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding-block: 12px;
+  }
+  .top-link {
+    color: #fff;
+    text-decoration: none;
+    white-space: nowrap;
+    /* Standalone links, so they carry a full-size tap target. */
+    display: inline-block;
+    padding: 3px 2px;
+    min-height: 24px;
+  }
+  .top-link:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+  .top-social {
+    display: flex;
+    gap: 8px;
+  }
+  .top-social a {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    /* Darkening the pill rather than lightening it keeps the white glyph
+       above 4.5:1 against the teal bar. */
+    background: rgba(0, 0, 0, 0.24);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .top-social a:hover {
+    background: rgba(0, 0, 0, 0.4);
+    color: #fff;
+  }
+
+  .main-inner {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-block: 12px;
+  }
+  .brand {
+    flex: 0 0 auto;
+    line-height: 0;
+  }
+  .brand img {
+    width: 110px;
+    height: auto;
+  }
+
+  .primary-nav {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+  }
+  .primary-nav ul {
+    display: flex;
+    gap: 26px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .primary-nav a {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.98rem;
+    padding: 6px 0;
+    border-bottom: 2px solid transparent;
+  }
+  .primary-nav a:hover,
+  .primary-nav a[aria-current='page'] {
+    color: var(--purple-dark);
+    border-bottom-color: var(--purple);
+  }
+
+  .phone-pill {
+    flex: 0 0 auto;
+    background: var(--purple);
+    color: #fff;
+    font-weight: 700;
+    font-style: italic;
+    padding: 12px 24px;
+    border-radius: 999px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .phone-pill:hover {
+    background: var(--purple-dark);
+    color: #fff;
+  }
+
+  @media (max-width: 960px) {
+    .primary-nav,
+    .phone-pill {
+      display: none;
+    }
+    .main-inner {
+      justify-content: space-between;
+    }
+    .brand img {
+      width: 88px;
+    }
+  }
+  @media (max-width: 420px) {
+    .top-inner {
+      gap: 10px 16px;
+      font-size: 0.82rem;
+    }
+  }
+</style>

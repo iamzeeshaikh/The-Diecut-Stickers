@@ -1,0 +1,98 @@
+---
+import { Image } from 'astro:assets';
+import type { Product } from '../lib/catalogue';
+import { resolveImage, productAlt } from '../lib/images';
+
+interface Props {
+  product: Product;
+  /** Above-the-fold cards load eagerly; everything else is lazy. */
+  eager?: boolean;
+}
+const { product, eager = false } = Astro.props;
+const img = resolveImage(product.images[0] ?? '');
+---
+
+<article class="card">
+  <a class="card-link" href={`/product/${product.slug}/`}>
+    <div class="thumb">
+      {
+        img ? (
+          <Image
+            src={img}
+            alt={productAlt(product.name, 0, product.images.length)}
+            widths={[240, 360, 480]}
+            sizes="(max-width: 560px) 45vw, (max-width: 960px) 30vw, 300px"
+            loading={eager ? 'eager' : 'lazy'}
+            decoding={eager ? 'sync' : 'async'}
+          />
+        ) : (
+          <span class="placeholder" aria-hidden="true">The Die Cut Stickers</span>
+        )
+      }
+    </div>
+    <div class="meta">
+      {product.price && <p class="price">${Number(product.price).toFixed(2)}</p>}
+      <h3 class="name">{product.name}</h3>
+    </div>
+  </a>
+</article>
+
+<style>
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    height: 100%;
+  }
+  .card:hover {
+    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+  }
+  .card-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+  }
+  .thumb {
+    aspect-ratio: 1 / 1;
+    background: #f4f6fa;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+  .thumb :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .placeholder {
+    font-size: 0.78rem;
+    color: var(--muted);
+    text-align: center;
+    padding: 12px;
+  }
+  .meta {
+    padding: 14px 12px 18px;
+    text-align: center;
+  }
+  .price {
+    margin: 0 0 4px;
+    font-weight: 700;
+    color: var(--ink);
+    font-size: 0.95rem;
+  }
+  .name {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+  .card-link:hover .name {
+    color: var(--purple-dark);
+  }
+</style>

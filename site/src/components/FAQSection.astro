@@ -1,0 +1,73 @@
+---
+import type { Faq } from '../lib/catalogue';
+
+interface Props {
+  faqs: Faq[];
+  heading?: string;
+  headingLevel?: 'h2' | 'h3';
+}
+const { faqs, heading, headingLevel = 'h2' } = Astro.props;
+const Heading = headingLevel;
+---
+
+{
+  faqs.length > 0 && (
+    <div class="faqs">
+      {heading && <Heading>{heading}</Heading>}
+      {/* <details> gives a keyboard-accessible accordion with no JavaScript. */}
+      {faqs.map((f) => (
+        <details class="faq">
+          <summary>
+            <span>{f.q}</span>
+            <span class="chev" aria-hidden="true" />
+          </summary>
+          <div class="answer">
+            <p>{f.a}</p>
+          </div>
+        </details>
+      ))}
+    </div>
+  )
+}
+
+<style>
+  .faq {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    margin-bottom: 10px;
+  }
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 14px 16px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--ink);
+    list-style: none;
+    min-height: 44px;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  .chev {
+    flex: 0 0 auto;
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid var(--muted);
+    border-bottom: 2px solid var(--muted);
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+  }
+  .faq[open] .chev {
+    transform: rotate(-135deg);
+  }
+  .answer {
+    padding: 0 16px 14px;
+  }
+  .answer p {
+    margin: 0;
+  }
+</style>

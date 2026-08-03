@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import ContentSection from '../components/ContentSection.astro';
+import pages from '../data/pages.json';
+import { absoluteUrl } from '../lib/site';
+
+const page = pages['refund_returns'];
+const path = '/refund_returns/';
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Refund and Returns Policy' }];
+---
+
+<BaseLayout
+  title="Refund and Returns Policy "
+  description=" The Die Cut Stickers|Our refund and returns policy for custom printed stickers, including how to report a print or delivery issue."
+  path={path}
+  schema={[
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: crumbs.map((c, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: c.label,
+        ...(c.href ? { item: absoluteUrl(c.href) } : {}),
+      })),
+    },
+  ]}
+>
+  <Breadcrumbs items={crumbs} />
+  <section class="section-tight">
+    <div class="container narrow">
+      <h1>{page.h1 || 'Refund and Returns Policy'}</h1>
+    </div>
+  </section>
+  <ContentSection html={page.content} narrow white />
+</BaseLayout>
+
+<style>
+  .narrow {
+    max-width: 860px;
+  }
+</style>

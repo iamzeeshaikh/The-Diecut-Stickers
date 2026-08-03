@@ -1,0 +1,25 @@
+---
+interface Props {
+  /** Specification markup migrated verbatim from the source product record. */
+  html: string;
+}
+const { html } = Astro.props;
+
+// Wrap every migrated table so wide specification grids scroll inside their
+// own container instead of forcing the page to scroll sideways on mobile.
+const wrapped = html.replace(
+  /<table/gi,
+  '<div class="table-scroll"><table',
+).replace(/<\/table>/gi, '</table></div>');
+---
+
+<div class="rich-text specs" set:html={wrapped} />
+
+<style>
+  .specs :global(table) {
+    font-size: 0.9rem;
+  }
+  .specs :global(td strong) {
+    color: var(--ink);
+  }
+</style>

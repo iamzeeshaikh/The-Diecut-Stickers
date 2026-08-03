@@ -1,0 +1,127 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ProductGrid from '../../components/ProductGrid.astro';
+import CTASection from '../../components/CTASection.astro';
+import { categories, productsInCategory } from '../../lib/catalogue';
+import { resolveImage } from '../../lib/images';
+import { absoluteUrl } from '../../lib/site';
+
+export function getStaticPaths() {
+  return categories.map((category) => ({ params: { slug: category.slug }, props: { category } }));
+}
+
+const { category } = Astro.props;
+const items = productsInCategory(category.slug);
+const path = `/product-category/${category.slug}/`;
+
+// Each category gets a distinct title and description so no two pages collide.
+const TITLES: Record<string, { title: string; description: string }> = {
+  'by-material': {
+    title: 'Stickers By Material | The Die Cut Stickers',
+    description:
+      'Compare sticker materials including vinyl, clear film, paper, metallic and eco-friendly stock. Wholesale custom printing with free design support.',
+  },
+  features: {
+    title: 'Sticker Features | Waterproof, Reflective & Reusable | The Die Cut Stickers',
+    description:
+      'Choose stickers by feature: waterproof, reflective, reusable and glow in the dark options with strong adhesive and weather-safe printing.',
+  },
+  'shape-size': {
+    title: 'Sticker Shape & Size Options | The Die Cut Stickers',
+    description:
+      'Custom sticker shapes and sizes, from small product labels to large die cut decals. Any outline, cut to your artwork.',
+  },
+  'sticker-types': {
+    title: 'Sticker Types | Die-Cut Decals & Labels | The Die Cut Stickers',
+    description:
+      'Browse sticker types including die-cut decals, die-cut labels and holographic die cut stickers for branding and packaging.',
+  },
+  usage: {
+    title: 'Stickers By Usage | Car, Window & Packaging | The Die Cut Stickers',
+    description:
+      'Find stickers by where they are used: cars, windows, packaging labels, indoor, outdoor and promotional campaigns.',
+  },
+};
+
+const meta = TITLES[category.slug] ?? {
+  title: `${category.name} | The Die Cut Stickers`,
+  description: `Browse ${category.name.toLowerCase()} custom stickers from The Die Cut Stickers.`,
+};
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Products', href: '/products/' },
+  { label: category.name },
+];
+
+const first = items[0] ? resolveImage(items[0].images[0] ?? '') : undefined;
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: crumbs.map((c, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: c.label,
+      ...(c.href ? { item: absoluteUrl(c.href) } : {}),
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: category.name,
+    url: absoluteUrl(path),
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: items.length,
+      itemListElement: items.map((p, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: p.name,
+        url: absoluteUrl(`/product/${p.slug}/`),
+      })),
+    },
+  },
+];
+---
+
+<BaseLayout
+  title={meta.title}
+  description={meta.description}
+  path={path}
+  ogImage={first?.src}
+  schema={schema}
+>
+  <Breadcrumbs items={crumbs} />
+
+  <section class="section-tight">
+    <div class="container">
+      <h1>{category.name}</h1>
+      {category.description && <div class="rich-text intro" set:html={category.description} />}
+    </div>
+  </section>
+
+  <section class="section-tight section-white" aria-label={`${category.name} products`}>
+    <div class="container">
+      <p class="count">
+        {items.length} {items.length === 1 ? 'product' : 'products'} in {category.name}
+      </p>
+      <ProductGrid products={items} eagerCount={3} />
+    </div>
+  </section>
+
+  <CTASection id="quote" />
+</BaseLayout>
+
+<style>
+  .intro {
+    max-width: 900px;
+  }
+  .count {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+  }
+</style>

@@ -1,0 +1,187 @@
+---
+import { Image } from 'astro:assets';
+import { SITE } from '../lib/site';
+import { categories } from '../lib/catalogue';
+import dmca from '../assets/img/dmca-badge-w250-2x1-01.png';
+import ssl from '../assets/img/SSL-Badge.png';
+import guarantee from '../assets/img/guarantee_image.webp';
+import iso from '../assets/img/ISO.webp';
+
+const COMPANY = [
+  { label: 'About Us', href: '/about-us/' },
+  { label: 'Contact Us', href: '/contact-us/' },
+  { label: 'Privacy Policy', href: '/privacy-policy/' },
+  { label: 'Refund and Returns Policy', href: '/refund_returns/' },
+  { label: 'Terms & Conditions', href: '/terms-conditions/' },
+];
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <h2 class="footer-heading visually-hidden">Contact details</h2>
+      <ul class="contact-list">
+        <li>
+          <span class="lbl">Email:</span>
+          <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+        </li>
+        <li>
+          <span class="lbl">Phone:</span>
+          <a href={`tel:${SITE.phoneHref}`}>{SITE.phone}</a>
+        </li>
+        <li>
+          <span class="lbl">Address:</span>
+          <span>{SITE.addressLine}</span>
+        </li>
+      </ul>
+      <div class="socials">
+        <a href={SITE.social.facebook} aria-label="Facebook" rel="noopener noreferrer" target="_blank">f</a>
+        <a href={SITE.social.linkedin} aria-label="LinkedIn" rel="noopener noreferrer" target="_blank">in</a>
+      </div>
+    </div>
+
+    <nav aria-labelledby="footer-company">
+      <h2 class="footer-heading" id="footer-company">Company</h2>
+      <ul>
+        {COMPANY.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <nav aria-labelledby="footer-categories">
+      <h2 class="footer-heading" id="footer-categories">Sticker Categories</h2>
+      <ul>
+        {
+          categories.map((c) => (
+            <li>
+              <a href={`/product-category/${c.slug}/`}>{c.name}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container bottom-inner">
+      <p class="copyright">{SITE.copyright}</p>
+      <div class="badges">
+        <Image src={dmca} alt="DMCA protected" height={34} loading="lazy" />
+        <Image src={ssl} alt="SSL secured" height={34} loading="lazy" />
+        <Image src={guarantee} alt="100% satisfaction guarantee" height={34} loading="lazy" />
+        <Image src={iso} alt="ISO certified" height={34} loading="lazy" />
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--footer);
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.95rem;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 36px;
+    padding-block: 48px;
+  }
+  .footer-heading {
+    color: #fff;
+    font-size: 0.85rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .site-footer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .site-footer li {
+    margin-bottom: 4px;
+  }
+  .site-footer a {
+    color: rgba(255, 255, 255, 0.82);
+    text-decoration: none;
+    /* Keeps the tap target at least 24px tall without changing the rhythm. */
+    display: inline-block;
+    padding: 5px 0;
+  }
+  .site-footer a:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+  .contact-list .lbl {
+    display: block;
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.8rem;
+  }
+  .socials {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .socials a {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+  .socials a:hover {
+    background: rgba(255, 255, 255, 0.25);
+    text-decoration: none;
+  }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    background: #1f1f1f;
+  }
+  .bottom-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding-block: 18px;
+  }
+  .copyright {
+    margin: 0;
+    font-size: 0.82rem;
+  }
+  .badges {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .badges :global(img) {
+    height: 34px;
+    width: auto;
+    background: #fff;
+    border-radius: 4px;
+    padding: 3px 6px;
+  }
+
+  @media (max-width: 860px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 560px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+      gap: 28px;
+      padding-block: 34px;
+    }
+    .bottom-inner {
+      justify-content: center;
+      text-align: center;
+    }
+  }
+</style>

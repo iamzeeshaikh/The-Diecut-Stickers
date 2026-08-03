@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import ContentSection from '../components/ContentSection.astro';
+import CTASection from '../components/CTASection.astro';
+import pages from '../data/pages.json';
+import { absoluteUrl } from '../lib/site';
+
+const page = pages['about-us'];
+const path = '/about-us/';
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'About Us' }];
+---
+
+<BaseLayout
+  title="About Us | The Die Cut Stickers"
+  description="The Die Cut Stickers prints precision-cut custom stickers for branding, packaging and events, with experienced designers and premium materials."
+  path={path}
+  schema={[
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: crumbs.map((c, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: c.label,
+        ...(c.href ? { item: absoluteUrl(c.href) } : {}),
+      })),
+    },
+  ]}
+>
+  <Breadcrumbs items={crumbs} />
+  <section class="section-tight">
+    <div class="container narrow">
+      <h1>{page.h1 || 'About Us'}</h1>
+    </div>
+  </section>
+  <ContentSection html={page.content} narrow white />
+  <CTASection id="quote" />
+</BaseLayout>
+
+<style>
+  .narrow {
+    max-width: 860px;
+  }
+</style>

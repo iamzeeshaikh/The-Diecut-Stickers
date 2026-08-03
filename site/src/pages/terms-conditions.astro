@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import ContentSection from '../components/ContentSection.astro';
+import pages from '../data/pages.json';
+import { absoluteUrl } from '../lib/site';
+
+const page = pages['terms-conditions'];
+const path = '/terms-conditions/';
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Terms & Conditions' }];
+---
+
+<BaseLayout
+  title="Terms & Conditions "
+  description=" The Die Cut Stickers|The terms that apply when you order custom die cut stickers from The Die Cut Stickers, including artwork, production and delivery."
+  path={path}
+  schema={[
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: crumbs.map((c, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: c.label,
+        ...(c.href ? { item: absoluteUrl(c.href) } : {}),
+      })),
+    },
+  ]}
+>
+  <Breadcrumbs items={crumbs} />
+  <section class="section-tight">
+    <div class="container narrow">
+      <h1>{page.h1 || 'Terms & Conditions'}</h1>
+    </div>
+  </section>
+  <ContentSection html={page.content} narrow white />
+</BaseLayout>
+
+<style>
+  .narrow {
+    max-width: 860px;
+  }
+</style>

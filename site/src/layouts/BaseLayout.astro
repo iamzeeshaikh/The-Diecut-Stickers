@@ -1,0 +1,71 @@
+---
+import SEOHead from '../components/SEOHead.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { SITE, absoluteUrl } from '../lib/site';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article' | 'product';
+  noindex?: boolean;
+  schema?: unknown[];
+}
+
+const { title, description, path, ogImage, ogType, noindex, schema = [] } = Astro.props;
+
+// Organization and WebSite are emitted once per page, from real site data only.
+const baseSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': absoluteUrl('/#organization'),
+    name: SITE.name,
+    url: absoluteUrl('/'),
+    email: SITE.email,
+    telephone: SITE.phone,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: SITE.address.street,
+      addressLocality: SITE.address.locality,
+      addressRegion: SITE.address.region,
+      postalCode: SITE.address.postalCode,
+      addressCountry: SITE.address.country,
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': absoluteUrl('/#website'),
+    name: SITE.name,
+    url: absoluteUrl('/'),
+    publisher: { '@id': absoluteUrl('/#organization') },
+  },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <SEOHead
+      title={title}
+      description={description}
+      path={path}
+      ogImage={ogImage}
+      ogType={ogType}
+      noindex={noindex}
+      schema={[...baseSchema, ...schema]}
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <SiteHeader />
+    <main id="main">
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>

@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import ContentSection from '../components/ContentSection.astro';
+import pages from '../data/pages.json';
+import { absoluteUrl } from '../lib/site';
+
+const page = pages['privacy-policy'];
+const path = '/privacy-policy/';
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Privacy Policy' }];
+---
+
+<BaseLayout
+  title="Privacy Policy "
+  description=" The Die Cut Stickers|How The Die Cut Stickers collects, uses and protects the information you share when you request a quote or place a custom sticker order."
+  path={path}
+  schema={[
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: crumbs.map((c, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: c.label,
+        ...(c.href ? { item: absoluteUrl(c.href) } : {}),
+      })),
+    },
+  ]}
+>
+  <Breadcrumbs items={crumbs} />
+  <section class="section-tight">
+    <div class="container narrow">
+      <h1>{page.h1 || 'Privacy Policy'}</h1>
+    </div>
+  </section>
+  <ContentSection html={page.content} narrow white />
+</BaseLayout>
+
+<style>
+  .narrow {
+    max-width: 860px;
+  }
+</style>
