@@ -52,10 +52,24 @@ That is the correct outcome; they were never real.
 on all 29 products. The WooCommerce export shows 21 products priced at **$0.20** and 8
 (`die-cut-*` and `holographic-die-cut-stickers`) with **no price at all**.
 
-**Resolution.** Offer schema is emitted only for the 21 products with a real price, using
-$0.20. The 8 unpriced products get Product schema with no Offer node — no price is
-invented for them, and none is displayed. Validation asserts this both ways: a priced
-product must have an Offer, an unpriced one must not.
+**Resolution.** Offer schema is emitted only from real price data, never invented. The 21
+products priced in the export use $0.20.
+
+**Update — prices supplied by the owner.** Omitting the Offer node on the 8 unpriced
+products left them failing Google's Product snippet validation with *"Either 'offers',
+'review', or 'aggregateRating' should be specified"*, so they were ineligible for rich
+results. The site owner supplied **$0.30** for that group, and it is now set in
+`tools/extract.py` under `OWNER_PRICES`. All 29 products therefore carry a visible price
+and a matching Offer.
+
+This is the owner pricing their own catalogue, which is theirs to decide. It is a
+different thing from the fabricated `aggregateRating` and `Review` in section 2, which
+stay removed: a price is the merchant's own statement about their product, whereas a
+review impersonates a customer who does not exist. Owner consent cannot make that
+legitimate.
+
+Validation still asserts the two must agree — a priced product must have an Offer whose
+price equals the price rendered on the page.
 
 ---
 

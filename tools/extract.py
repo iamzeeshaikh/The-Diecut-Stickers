@@ -161,6 +161,21 @@ OLD_PHONE_PATTERNS = [
     r"\+?1[\s.\-]?\(?929\)?[\s.\-]?2141[\s.\-]?874",
     r"929[\s.\-]?2141[\s.\-]?874",
 ]
+# Prices set by the site owner after the migration. The WooCommerce export left
+# these eight products with no price, which meant no Offer node and Google
+# rejecting the Product snippet with "Either offers, review, or aggregateRating
+# should be specified". The owner supplied 0.30 for the whole group.
+OWNER_PRICES = {
+    "die-cut-vinyl-stickers": "0.30",
+    "die-cut-car-stickers": "0.30",
+    "die-cut-clear-stickers": "0.30",
+    "die-cut-logo-stickers": "0.30",
+    "holographic-die-cut-stickers": "0.30",
+    "die-cut-water-proof-stickers": "0.30",
+    "large-die-cut-stickers": "0.30",
+    "die-cut-paper-stickers": "0.30",
+}
+
 NEW_PHONE_DISPLAY = "(503) 358-0443"
 NEW_PHONE_HREF = "+15033580443"
 
@@ -317,6 +332,9 @@ def main():
         # Publish date drives the homepage ordering, which the published site
         # showed newest-first. Kept from the XML rather than the CSV.
         p["date"] = xml_date.get(p["id"], "")
+        # Owner-supplied prices for products the export left unpriced.
+        if not p["price"] and p["slug"] in OWNER_PRICES:
+            p["price"] = OWNER_PRICES[p["slug"]]
 
     cats = []
     order = ["by-material", "features", "shape-size", "sticker-types", "usage"]

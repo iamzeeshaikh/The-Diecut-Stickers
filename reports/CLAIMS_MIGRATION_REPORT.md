@@ -41,6 +41,7 @@ WordPress XML export, and the published pages.
 | Item | Where it appeared | Decision | Reason |
 | --- | --- | --- | --- |
 | 5-star `aggregateRating` and one `Review` | JSON-LD on all 29 product pages | Removed | Plugin-generated. The single review was authored by an administrator email address, its body was a copy of the meta description, and WooCommerce has customer reviews disabled on every product. No genuine review data exists in any export. |
+| Owner-supplied price of $0.30 | 8 `die-cut-*` products the export left unpriced | Added on the owner's instruction | Their own pricing decision; without an Offer node these products failed Google Product snippet validation entirely. |
 | `"price": "0"` in Offer schema | JSON-LD on all 29 product pages | Removed | Contradicted the visible price. Offer schema is now emitted only for the 21 products that carry a real $0.20 price in the WooCommerce export. |
 | Burger-box product claims | `/products/` Elementor block | Excluded | 29 burger-box products belonging to an earlier site on the same WordPress install. None exist in the WooCommerce or WordPress exports. |
 
