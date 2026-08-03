@@ -17,12 +17,11 @@ export default defineConfig({
     remotePatterns: [],
   },
   devToolbar: { enabled: false },
-  redirects: {
-    // Retired WooCommerce transactional pages -> the quote path. One hop only.
-    '/cart/': { status: 301, destination: '/contact-us/' },
-    '/checkout/': { status: 301, destination: '/contact-us/' },
-    '/my-account/': { status: 301, destination: '/contact-us/' },
-    // Empty duplicate of the homepage.
-    '/main-page/': { status: 301, destination: '/' },
-  },
+  /*
+   * Redirects are NOT declared here. With trailingSlash: 'always' the Vercel
+   * adapter emits them as `^/cart$` (no trailing slash), but its own
+   * normalisation rule 308s `/cart` to `/cart/` first, so the redirect never
+   * matches and the URL 404s. They are implemented as on-demand routes under
+   * src/pages instead, which return a genuine 301. See src/lib/gone.ts.
+   */
 });
