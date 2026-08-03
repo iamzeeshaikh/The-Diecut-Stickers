@@ -1,0 +1,129 @@
+# Responsive QA and Visual Comparison Report
+
+Tested with headless Chromium at 320, 375, 768, 1024 and 1440 px across eight
+representative pages, then re-checked against the deployed preview.
+
+---
+
+## Horizontal overflow
+
+`document.documentElement.scrollWidth - clientWidth`, measured after network idle.
+Any value above 0 means the page scrolls sideways.
+
+| Page | 320 | 375 | 768 | 1024 | 1440 |
+| --- | --- | --- | --- | --- | --- |
+| Homepage | 0 | 0 | 0 | 0 | 0 |
+| Products index | 0 | 0 | 0 | 0 | 0 |
+| Product (standard) | 0 | 0 | 0 | 0 | 0 |
+| Product (longest — Custom Car Stickers) | 0 | 0 | 0 | 0 | 0 |
+| Category | 0 | 0 | 0 | 0 | 0 |
+| About | 0 | 0 | 0 | 0 | 0 |
+| Contact (full quote form) | 0 | 0 | 0 | 0 | 0 |
+| 404 | 0 | 0 | 0 | 0 | 0 |
+
+**No horizontal overflow at any breakpoint on any page.**
+
+The migrated specification tables are the main risk here — several are six to ten columns
+wide. Each is wrapped in an `overflow-x: auto` container at extraction time, so the table
+scrolls inside its own box and the page body never moves. Grids use
+`repeat(n, minmax(0, 1fr))` rather than `1fr`, which is what stops a wide child forcing
+the track open.
+
+## Layout behaviour by breakpoint
+
+| Component | 320–767 | 768–1023 | 1024+ |
+| --- | --- | --- | --- |
+| Header | Logo + hamburger; nav and phone pill hidden | same | Logo, inline nav, phone pill |
+| Top contact bar | Wraps to two lines, font drops to 0.82 rem below 420 px | Single line | Single line |
+| Mobile menu | Off-canvas drawer, focus-trapped, Esc to close | same | Not rendered |
+| Product grid | 2 columns | 2 columns | 3 columns |
+| USP cards | 2 columns | 2 columns | 4 columns |
+| Product page | Single column: gallery → summary → form | Gallery + summary side by side, form full width below | Three columns |
+| Contact form | Single column | Two columns | Two columns |
+| Spec tables | Scroll inside their container | same | Usually fit |
+| CTA block | Stacked: copy above form | Stacked | Side by side |
+| Footer | Single column | Two columns | Three columns |
+| FAQ accordion | Full width, `<details>` — works without JavaScript | same | same |
+
+## Headings
+
+Exactly one `<h1>` on every page at every breakpoint. Verified by counting in the DOM
+rather than reading source, so anything injected at runtime would be caught.
+
+## Touch targets
+
+Measured against WCAG 2.5.8 (AA), which requires 24 × 24 px.
+
+| Element | Before | After |
+| --- | --- | --- |
+| Mobile menu button | 35 px | 44 px |
+| Breadcrumb links | 23 px | 31 px |
+| Footer links | 18 px | 28 px |
+| Top-bar email/phone | 22 px | 28 px |
+| Form inputs, selects, textareas | 44 px | 44 px |
+| Buttons | 44 px+ | 44 px+ |
+| Mobile menu items | 44 px | 44 px |
+
+Remaining sub-24 px targets are inline links inside sentences (contextual links in product
+descriptions, the email address in the privacy policy text). WCAG 2.5.8 explicitly exempts
+targets whose size is constrained by the line-height of surrounding text, so these are
+compliant as they stand. Enlarging them would break the typography of the migrated copy.
+
+## Other checks
+
+| Check | Result |
+| --- | --- |
+| Broken grids | None |
+| Overlapping elements | None |
+| Cropped or clipped text | None |
+| Unusable buttons | None |
+| Oversized images | None — every image is width/height constrained with `max-width: 100%` |
+| Layout shift | CLS 0 on every page tested; all images carry explicit dimensions |
+| Keyboard navigation | Full site reachable; skip link, visible focus rings, drawer focus trap |
+| Reduced motion | `prefers-reduced-motion` disables transitions and smooth scrolling |
+
+---
+
+## Visual comparison against the source
+
+Compared against `screencapture-thediecutstickers-2026-08-03-15_02_44.pdf` (homepage,
+6 pages), `screencapture-thediecutstickers-product-die-cut-vinyl-stickers-...pdf`
+(product page), the Elementor templates, and the mirrored live HTML.
+
+| Element | Match | Notes |
+| --- | --- | --- |
+| Top contact bar | Match | Teal bar, email + phone left of centre, Facebook and LinkedIn pills right |
+| Header | Match | Circular logo left, centred nav (Home, Products, By Material, Shape & Size, Sticker Types), purple italic phone pill right |
+| Homepage USP row | Match | Four animated cards, first two on the cream tint, same order and copy |
+| "Our Products" button | Match | Centred purple pill |
+| Product grid | Match | 3-up cards, image, price, centred name |
+| Homepage body copy | Match | Same headings and paragraphs, hidden spam link removed |
+| CTA block | Match | Purple panel left with contact details, socials and SSL/DHL/ISO badges; quote form right |
+| Footer | Match | Dark, three columns, contact / Company / categories, badges in the base bar |
+| Breadcrumbs | Match | `Home › Products › By Material › <product>` |
+| Product H1 and gallery | Match | Main image with four thumbnails below |
+| Trust badge block | Match | Six badges in a 3 × 2 grid beside the short description |
+| Product quote form | Match | Teal-bordered inputs, teal Submit, same field order |
+| Description / Specifications / Faqs tabs | Match | Same three labels, centred, underlined on hover |
+| Specification tables | Match | Same columns and content; now scroll on narrow screens |
+| Related products | Added | Present in the Elementor template but not rendering on the live site; implemented as required |
+
+### Intentional differences
+
+1. **"Add To Cart" → "Request a quote"** on product pages. Cart and checkout are retired,
+   so the original button led nowhere. Same position, same styling, a destination that
+   works.
+2. **Footer heading "Box Categories" → "Sticker Categories"**. Leftover from the
+   burger/candle-box era.
+3. **Burger-box block removed from `/products/`**. 29 unrelated products linking to 404s.
+4. **Teal `#35a887` → `#24856a`, purple `#b068f8` → `#9a4cec`.** Both original shades
+   failed WCAG AA contrast against white text (2.96:1 and 3.40:1). Darkened to the nearest
+   passing shades of the same hue. Side by side the difference is slight; the text is now
+   legible. The original purple is retained for the active gallery thumbnail border, which
+   carries no text.
+5. **USP animations converted from GIF to animated WebP** and re-encoded at rendered size.
+   Visually identical, 3.2 MB → 460 kB.
+6. **Hero slider not implemented.** Three slide templates exist in the Elementor exports
+   (`elementor-2722/2730/2736`), but the live homepage does not render them and neither
+   does the supplied homepage PDF — it opens directly on the USP cards. The published
+   layout was followed. The slide content is preserved in the exports if you want it back.
