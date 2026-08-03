@@ -2,7 +2,9 @@
 import { Image } from 'astro:assets';
 import { SITE } from '../lib/site';
 import { categories } from '../lib/catalogue';
-import logo from '../assets/img/The-Diecut-500-x-300.png';
+// Trimmed variant: the source PNG pads a 300x300 badge into a 500x300 canvas,
+// which made the logo render far smaller than its box.
+import logo from '../assets/img/logo-badge.png';
 import MobileNavigation from './MobileNavigation.astro';
 
 // The published main menu carried Home, Products and three category links.
@@ -37,7 +39,7 @@ const current = Astro.url.pathname;
   <div class="main-row">
     <div class="container main-inner">
       <a href="/" class="brand" aria-label={`${SITE.name} home`}>
-        <Image src={logo} alt={`${SITE.name} logo`} width={150} height={90} loading="eager" />
+        <Image src={logo} alt={`${SITE.name} logo`} width={300} height={300} loading="eager" />
       </a>
 
       <nav class="primary-nav" aria-label="Primary">
@@ -129,8 +131,8 @@ const current = Astro.url.pathname;
     line-height: 0;
   }
   .brand img {
-    width: 110px;
-    height: auto;
+    width: auto;
+    height: 88px;
   }
 
   .primary-nav {
@@ -186,7 +188,7 @@ const current = Astro.url.pathname;
       justify-content: space-between;
     }
     .brand img {
-      width: 88px;
+      height: 62px;
     }
   }
   @media (max-width: 420px) {

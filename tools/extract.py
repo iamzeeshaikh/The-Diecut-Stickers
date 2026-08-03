@@ -122,6 +122,7 @@ def clean_html(s: str) -> str:
     s = re.sub(r"<!--.*?-->", "", s, flags=re.S)
     # The page template owns the single H1; demote any H1 inside body copy.
     s = re.sub(r"(?i)<(/?)h1(\s|>)", r"<\1h2\2", s)
+    s = update_phone(s)
     s = re.sub(r"\n{3,}", "\n\n", s)
     return s.strip()
 
@@ -150,6 +151,28 @@ def normalise_links(s: str, slug: str, fixes: list) -> str:
     s = strip_external(s, slug, findings)
     for _slug, kind, detail in findings:
         fixes.append((_slug, detail, "", "removed", kind))
+    return s
+
+
+# The business phone number changed after the migration. The old number is
+# rewritten wherever it appears in migrated copy so no stale contact detail
+# survives anywhere on the site.
+OLD_PHONE_PATTERNS = [
+    r"\+?1[\s.\-]?\(?929\)?[\s.\-]?2141[\s.\-]?874",
+    r"929[\s.\-]?2141[\s.\-]?874",
+]
+NEW_PHONE_DISPLAY = "(503) 358-0443"
+NEW_PHONE_HREF = "+15033580443"
+
+
+def update_phone(s: str) -> str:
+    """Replace the retired phone number in migrated content, links included."""
+    if not s:
+        return s
+    # tel: hrefs first, so the dial string stays machine-readable.
+    s = re.sub(r'href="tel:[^"]*"', f'href="tel:{NEW_PHONE_HREF}"', s, flags=re.I)
+    for pat in OLD_PHONE_PATTERNS:
+        s = re.sub(pat, NEW_PHONE_DISPLAY, s)
     return s
 
 

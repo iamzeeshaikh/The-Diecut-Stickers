@@ -370,6 +370,26 @@ async function main() {
     : pass('noindex pages are absent from the sitemap',
            noindexPages.map(([u]) => u).join(', ') || 'none');
 
+  // ------------------------------------------------- retired contact details
+  // The business phone number changed; the old one must not survive anywhere,
+  // including inside migrated body copy and tel: links.
+  const OLD_PHONE = /\+?1?[\s.\-]?\(?929\)?[\s.\-]?2141[\s.\-]?874/;
+  const stalePhone = [];
+  for (const f of files.filter((x) => /\.(html|xml|txt|js|json)$/.test(x))) {
+    const c = await readFile(f, 'utf8');
+    if (OLD_PHONE.test(c)) stalePhone.push(f.replace(OUT, ''));
+  }
+  stalePhone.length
+    ? fail('retired phone number is absent', stalePhone.slice(0, 8).join(', '))
+    : pass('retired phone number is absent');
+
+  // And the current one must actually be reachable.
+  const NEW_PHONE = 'tel:+15033580443';
+  const missingPhone = [...pages.entries()].filter(([, h]) => !h.includes(NEW_PHONE));
+  missingPhone.length
+    ? fail('current phone number is present sitewide', missingPhone.map(([u]) => u).slice(0, 6).join(', '))
+    : pass('current phone number is present sitewide');
+
   // ------------------------------------------------------------ mixed content
   const mixed = [];
   for (const [u, h] of pages) {

@@ -13,9 +13,9 @@ export const SITE = {
   legalName: 'The Die Cut Stickers',
   tagline: 'Stickers That Stick Out',
   email: 'info@thediecutstickers.com',
-  phone: '+1-929-2141-874',
-  phoneHref: '+19292141874',
-  phoneDisplay: '929-2141-874',
+  phone: '(503) 358-0443',
+  phoneHref: '+15033580443',
+  phoneDisplay: '(503) 358-0443',
   address: {
     street: '3409 N 7th Ave Unit #529',
     locality: 'Phoenix',

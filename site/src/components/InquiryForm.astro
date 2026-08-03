@@ -1,5 +1,6 @@
 ---
 import { products } from '../lib/catalogue';
+import { SITE } from '../lib/site';
 
 interface Props {
   /** compact = product sidebar, full = contact / quote page */
@@ -19,9 +20,18 @@ const {
 const full = variant === 'full';
 const sourcePath = Astro.url.pathname;
 const names = products.map((p) => p.name).sort((a, b) => a.localeCompare(b));
+const fallbackContact = `Please email ${SITE.email} or call ${SITE.phone}.`;
 ---
 
-<form class:list={['inquiry', full && 'is-full']} id={id} method="post" action="/api/inquiry/" enctype="multipart/form-data" novalidate>
+<form
+  class:list={['inquiry', full && 'is-full']}
+  id={id}
+  method="post"
+  action="/api/inquiry/"
+  enctype="multipart/form-data"
+  data-fallback-contact={fallbackContact}
+  novalidate
+>
   {heading && <h2 class="form-heading">{heading}</h2>}
 
   {/* Bot trap: a real person never fills this in. Hidden from AT and sighted users. */}
@@ -251,6 +261,9 @@ const names = products.map((p) => p.name).sort((a, b) => a.localeCompare(b));
     const button = form.querySelector<HTMLButtonElement>('button[type=submit]');
     if (!status || !button) return;
 
+    const fallbackContact =
+      form.dataset.fallbackContact ?? 'Please contact us instead.';
+
     const say = (msg: string, state: 'ok' | 'error' | '') => {
       status.textContent = msg;
       if (state) status.dataset.state = state;
@@ -312,10 +325,10 @@ const names = products.map((p) => p.name).sort((a, b) => a.localeCompare(b));
           window.location.assign(data.redirect || '/thank-you/');
           return;
         } else {
-          say(data.message || 'Sorry, your enquiry could not be sent. Please email info@thediecutstickers.com or call +1-929-2141-874.', 'error');
+          say(data.message || `Sorry, your enquiry could not be sent. ${fallbackContact}`, 'error');
         }
       } catch {
-        say('Sorry, your enquiry could not be sent. Please email info@thediecutstickers.com or call +1-929-2141-874.', 'error');
+        say(`Sorry, your enquiry could not be sent. ${fallbackContact}`, 'error');
       } finally {
         button.disabled = false;
         button.textContent = original;
