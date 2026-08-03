@@ -7,7 +7,9 @@
 | Vercel project | `thediecutstickers` (dedicated, created for this migration) |
 | Project ID | `prj_NkNKw5OjPv99SMOP9cjTxXcdgjll` |
 | Team | `iamzeeshaikhs-projects` |
-| Preview URL | https://thediecutstickers-botbzs0zw-iamzeeshaikhs-projects.vercel.app |
+| Latest deployment | https://thediecutstickers-nh66d9080-iamzeeshaikhs-projects.vercel.app |
+| Git repository | https://github.com/iamzeeshaikh/The-Diecut-Stickers (auto-deploys `main`) |
+| **Root Directory** | `site` — required, see note below |
 | Production URL (not yet domain-mapped) | https://thediecutstickers.vercel.app |
 | Framework preset | Astro (auto-detected) |
 | Node runtime | 24.x |
@@ -18,6 +20,15 @@ A dedicated project was created rather than reusing an existing one. Note that t
 directory is named `site`, and an unrelated Vercel project called `site` already exists in
 this team — the project name was set explicitly at link time so that project was not
 overwritten.
+
+## Root Directory (important)
+
+The project is linked to GitHub and rebuilds on every push to `main`. The Astro app lives
+in `site/`, not the repository root, so the project's **Root Directory must stay set to
+`site`**. It was briefly unset after the repo was connected, and `vercel build` ran at the
+repository root where there is no `package.json` — the build "succeeded" in 189 ms
+producing an empty output, and every URL 404'd. If you ever see a whole-site 404 after a
+deploy, check this setting first.
 
 ## Preview access
 
