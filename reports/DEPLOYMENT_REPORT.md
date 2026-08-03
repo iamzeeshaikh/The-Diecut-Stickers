@@ -27,10 +27,13 @@ The project has SSO Deployment Protection set to `all_except_custom_domains`: ev
 
 You can open the preview URL directly while logged in to Vercel.
 
-An automation bypass secret was generated for testing:
-`[REVOKED - never commit secrets]`. Send it as the `x-vercel-protection-bypass` header.
-**Revoke it** in Project Settings → Deployment Protection once you have finished
-reviewing, since it grants unauthenticated access to protected deployments.
+An automation bypass secret was generated to test the deployment from the command line,
+and **has since been revoked** — it is not recorded here because this repository is
+public, and the secret granted unauthenticated access to protected deployments.
+
+If you need one again for CI or scripted checks, generate a fresh one under
+Project Settings → Deployment Protection → Protection Bypass for Automation, keep it in
+an environment variable, and never commit it.
 
 ## What was verified on the deployed preview
 

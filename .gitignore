@@ -8,3 +8,9 @@ dist/
 .DS_Store
 ._*
 reports/_*.json
+
+# Raw WordPress exports are kept locally only.
+# They embed the WordPress admin login (wp:author_login) 367 times and the
+# injected malware markup, and this repository is public. The derived, sanitised
+# data the site builds from is committed at site/src/data/.
+*.WordPress.*.xml
