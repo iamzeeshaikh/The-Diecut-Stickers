@@ -38,7 +38,15 @@ const robots = IS_PREVIEW || noindex ? 'noindex,nofollow' : 'index,follow,max-im
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>{title}</title>
 <meta name="description" content={description} />
+{/*
+  /favicon.ico first and unqualified: Google's favicon fetcher, Search Console
+  and many feed readers request that exact path by convention and ignore the
+  PNG declarations. It is a real multi-size ICO (16/32/48). Google wants a
+  square icon that is a multiple of 48px, hence favicon-48.
+*/}
+<link rel="icon" href="/favicon.ico" sizes="any" />
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="icon" href="/favicon-48.png" sizes="48x48" type="image/png" />
 <link rel="icon" href="/favicon-512.png" sizes="512x512" type="image/png" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="canonical" href={canonical} />
