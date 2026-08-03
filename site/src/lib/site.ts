@@ -32,12 +32,17 @@ export const SITE = {
 } as const;
 
 /**
- * A preview deployment is anything not served from the production domain.
- * Preview builds emit noindex,nofollow so they can never be indexed.
+ * Indexability is an explicit, auditable opt-in: a build is only treated as
+ * production when PUBLIC_SITE_ENV is set to "production".
+ *
+ * Deliberately NOT keyed off Vercel's own VERCEL_ENV. A first deploy of a new
+ * project, or any deploy promoted to the production target, sets
+ * VERCEL_ENV=production while still being served from a *.vercel.app hostname —
+ * which would make a staging copy indexable and create duplicate content
+ * against the real domain. Requiring the flag means a build can only become
+ * indexable when someone intends it.
  */
-export const IS_PREVIEW =
-  process.env.PUBLIC_SITE_ENV !== 'production' &&
-  process.env.VERCEL_ENV !== 'production';
+export const IS_PREVIEW = process.env.PUBLIC_SITE_ENV !== 'production';
 
 export function absoluteUrl(path: string): string {
   const p = path.startsWith('/') ? path : `/${path}`;
