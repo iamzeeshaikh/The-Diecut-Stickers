@@ -13,9 +13,9 @@ compromised site before any content was edited, and unchanged since) with
 | Old links removed (destination did not survive) | 60 |
 | Old links updated (destination corrected) | 5 |
 | Old links unlinked (unrelated external destination) | 1 |
-| Links in the migrated site | 1365 |
+| Links in the migrated site | 1367 |
 | — contextual (inside body copy) | 78 |
-| — navigation, breadcrumbs, footer, related products | 1287 |
+| — navigation, breadcrumbs, footer, related products | 1289 |
 | Broken internal links | 0 |
 | Contextual self-links | 0 |
 | Links to malware or excluded pages | 0 |

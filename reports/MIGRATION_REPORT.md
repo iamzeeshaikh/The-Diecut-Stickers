@@ -59,6 +59,9 @@ constrained to its measured width, and the homepage grid is sorted newest-first 
 published. `/products/` is a paginated alphabetical archive again, preserving
 `/products/page/2/`.
 
+**Hero slider** rebuilt from the three supplied Elementor slide templates, using CSS
+scroll-snap rather than a carousel library.
+
 **Design** rebuilt from the supplied PDFs, the Elementor templates and the live markup:
 teal contact bar, circular logo with centred nav and purple phone pill, animated USP
 cards, product grid, product page with gallery + trust badges + quote form + tabbed
@@ -163,9 +166,18 @@ deployed preview. Caught by testing the deployment, not localhost.
 5. **Build-time advisory**: `npm audit` flags a ReDoS in `path-to-regexp` via
    `@vercel/routing-utils`. Build-time only, not in any client bundle or the runtime. The
    available fix downgrades the adapter below what Astro 7 needs, so it was not applied.
-6. **The Elementor hero slider was not built.** Three slide templates exist in the exports
-   but neither the live site nor the supplied homepage PDF renders them. The published
-   layout was followed; the content is preserved in the exports if you want it added.
+6. **The Elementor hero slider is now built.** Three slide templates exist in the exports
+   but neither the live site nor the supplied homepage PDF rendered them, so it was left
+   out of the first build. It has since been added above the USP row, with the copy,
+   button labels and images migrated verbatim from `elementor-2722/2730/2736`. Slide one
+   carries the page `<h1>`, replacing the visually-hidden heading used before.
+
+   **Worth a decision:** slide one's image is a full-frame **Deliveroo** logo and slide two
+   includes a **UPS** logo within a sticker collage. Both are real third-party trademarks
+   and came from your own slide templates, but because the slider never rendered on the
+   live site they were not previously on display. As the homepage hero, slide one now reads
+   as a client or endorsement claim. Slide three uses fictitious brand mockups and is
+   clean. Say the word and I will swap slide one for a first-party or mockup image.
 
 ---
 

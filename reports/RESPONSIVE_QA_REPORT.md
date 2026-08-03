@@ -20,6 +20,7 @@ Any value above 0 means the page scrolls sideways.
 | About | 0 | 0 | 0 | 0 | 0 |
 | Contact (full quote form) | 0 | 0 | 0 | 0 | 0 |
 | Products page 2 | 0 | 0 | 0 | 0 | 0 |
+| Homepage with hero slider | 0 | 0 | 0 | 0 | 0 |
 
 **No horizontal overflow at any breakpoint on any page.**
 
@@ -118,6 +119,7 @@ layout was measured pixel by pixel, then matched:
 | Homepage product card | 283 px wide, first card at x=227 | 283 px, x=227 |
 | Homepage product grid | 895 px wide, 23 px gap | 895 px, 23 px gap |
 | Homepage USP card | 234 px wide, first at x=163 | 234 px, x=163 |
+| Hero slider | not rendered on the published site | added on request, above the USP row |
 | Homepage USP row | 1023 px wide, 29 px gap | 1023 px, 29 px gap |
 | Product gallery column | 424 px | 424 px |
 | Product summary column | 483 px | 483 px |
@@ -160,7 +162,16 @@ Two structural mismatches were found on re-check against the PDFs and corrected:
    carries no text.
 5. **USP animations converted from GIF to animated WebP** and re-encoded at rendered size.
    Visually identical, 3.2 MB → 460 kB.
-6. **Hero slider not implemented.** Three slide templates exist in the Elementor exports
-   (`elementor-2722/2730/2736`), but the live homepage does not render them and neither
-   does the supplied homepage PDF — it opens directly on the USP cards. The published
-   layout was followed. The slide content is preserved in the exports if you want it back.
+6. **Hero slider added on request.** Three slide templates exist in the Elementor exports
+   (`elementor-2722/2730/2736`) but neither the live homepage nor the supplied PDF rendered
+   them, so the first build followed the published layout and opened on the USP cards. The
+   slider has since been built from those templates and now sits above the USP row. Copy,
+   button labels and images are migrated verbatim; slide one's button had no link in the
+   export and points at the on-page quote form.
+
+   It is a CSS scroll-snap carousel, not a library: no third-party JavaScript, all three
+   slides present and the track still scrollable with JavaScript disabled, arrow-key and
+   tab operable, dots exposed as tabs, autoplay paused on hover/focus and off-screen,
+   disabled entirely under `prefers-reduced-motion`, and a visible Pause/Play control for
+   WCAG 2.2.2. Homepage mobile scores after adding it: Performance 93, Accessibility 100,
+   Best Practices 100, SEO 100, CLS 0.

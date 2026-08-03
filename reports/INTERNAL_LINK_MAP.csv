@@ -12,7 +12,9 @@ source_url,destination_url,anchor_text,section_heading,link_type,destination_sta
 /,/product-category/sticker-types/,Sticker Types,,navigation/chrome,200,no
 /,/product-category/features/,Features,,navigation/chrome,200,no
 /,/product-category/usage/,Usage,,navigation/chrome,200,no
-/,/products/,Our Products,,navigation/chrome,200,no
+/,/products/,Shop Now,"Fast Shipping, High-Quality Stickers",navigation/chrome,200,no
+/,/products/,Explore Our Collection,Stickers for Every Occasion,navigation/chrome,200,no
+/,/products/,Our Products,Stickers for Every Occasion,navigation/chrome,200,no
 /,/product/die-cut-paper-stickers/,Die Cut Paper Stickers,Our sticker range,navigation/chrome,200,no
 /,/product/large-die-cut-stickers/,Large Die Cut Stickers,Die Cut Paper Stickers,navigation/chrome,200,no
 /,/product/die-cut-water-proof-stickers/,Die Cut Water Proof Stickers,Large Die Cut Stickers,navigation/chrome,200,no
