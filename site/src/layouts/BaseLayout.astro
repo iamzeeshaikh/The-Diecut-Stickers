@@ -13,9 +13,12 @@ interface Props {
   ogType?: 'website' | 'article' | 'product';
   noindex?: boolean;
   schema?: unknown[];
+  prev?: string;
+  next?: string;
 }
 
-const { title, description, path, ogImage, ogType, noindex, schema = [] } = Astro.props;
+const { title, description, path, ogImage, ogType, noindex, schema = [], prev, next } =
+  Astro.props;
 
 // Organization and WebSite are emitted once per page, from real site data only.
 const baseSchema = [
@@ -57,6 +60,8 @@ const baseSchema = [
       ogImage={ogImage}
       ogType={ogType}
       noindex={noindex}
+      prev={prev}
+      next={next}
       schema={[...baseSchema, ...schema]}
     />
   </head>

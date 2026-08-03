@@ -13,13 +13,13 @@ Any value above 0 means the page scrolls sideways.
 | Page | 320 | 375 | 768 | 1024 | 1440 |
 | --- | --- | --- | --- | --- | --- |
 | Homepage | 0 | 0 | 0 | 0 | 0 |
-| Products index | 0 | 0 | 0 | 0 | 0 |
+| Products index (paginated) | 0 | 0 | 0 | 0 | 0 |
 | Product (standard) | 0 | 0 | 0 | 0 | 0 |
 | Product (longest — Custom Car Stickers) | 0 | 0 | 0 | 0 | 0 |
 | Category | 0 | 0 | 0 | 0 | 0 |
 | About | 0 | 0 | 0 | 0 | 0 |
 | Contact (full quote form) | 0 | 0 | 0 | 0 | 0 |
-| 404 | 0 | 0 | 0 | 0 | 0 |
+| Products page 2 | 0 | 0 | 0 | 0 | 0 |
 
 **No horizontal overflow at any breakpoint on any page.**
 
@@ -107,6 +107,43 @@ Compared against `screencapture-thediecutstickers-2026-08-03-15_02_44.pdf` (home
 | Description / Specifications / Faqs tabs | Match | Same three labels, centred, underlined on hover |
 | Specification tables | Match | Same columns and content; now scroll on narrow screens |
 | Related products | Added | Present in the Elementor template but not rendering on the live site; implemented as required |
+
+### Pixel measurements taken from the captures
+
+The two supplied PDFs were rendered at the original 1348–1349 px capture width and the
+layout was measured pixel by pixel, then matched:
+
+| Element | Original | Rebuilt |
+| --- | --- | --- |
+| Homepage product card | 283 px wide, first card at x=227 | 283 px, x=227 |
+| Homepage product grid | 895 px wide, 23 px gap | 895 px, 23 px gap |
+| Homepage USP card | 234 px wide, first at x=163 | 234 px, x=163 |
+| Homepage USP row | 1023 px wide, 29 px gap | 1023 px, 29 px gap |
+| Product gallery column | 424 px | 424 px |
+| Product summary column | 483 px | 483 px |
+| Product quote form column | 279 px | 279 px |
+| Product page content width | 1296 px | 1296 px |
+
+Both rows on the homepage and the whole product template sat narrower or wider than the
+1200 px theme container, so each is constrained to its measured width. Before this the
+product cards rendered ~32% larger than the original.
+
+### Order and pagination
+
+Two structural mismatches were found on re-check against the PDFs and corrected:
+
+- **Homepage product order.** The published gallery ran newest-first
+  (`post_date` descending), opening with Die Cut Paper Stickers. The rebuild had been
+  showing the CSV order, which is the exact reverse. Now sorted by publish date
+  descending, which reproduces the captured order exactly — including the one place it
+  departs from strict ID order (Die Cut Logo Stickers publishes 12 minutes after
+  Holographic Die Cut Stickers).
+- **`/products/` structure.** The published archive was a flat alphabetical grid of 16 per
+  page with a second page at `/products/page/2/` — a live URL carrying `rel="next"`. The
+  rebuild had grouped products by category on a single page, which dropped that URL. It is
+  now a paginated alphabetical archive again, with the result count ("Showing 1–16 of 29
+  results"), numbered pagination, `rel="next"`/`rel="prev"`, and the category label above
+  each card as the WooCommerce loop showed it.
 
 ### Intentional differences
 

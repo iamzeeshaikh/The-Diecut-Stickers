@@ -9,6 +9,9 @@ interface Props {
   ogType?: 'website' | 'article' | 'product';
   noindex?: boolean;
   schema?: unknown[];
+  /** Paginated archives declare their sequence, as the published site did. */
+  prev?: string;
+  next?: string;
 }
 
 const {
@@ -19,6 +22,8 @@ const {
   ogType = 'website',
   noindex = false,
   schema = [],
+  prev,
+  next,
 } = Astro.props;
 
 // Canonicals always point at the production origin, never a preview host.
@@ -33,7 +38,12 @@ const robots = IS_PREVIEW || noindex ? 'noindex,nofollow' : 'index,follow,max-im
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>{title}</title>
 <meta name="description" content={description} />
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="icon" href="/favicon-512.png" sizes="512x512" type="image/png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="canonical" href={canonical} />
+{prev && <link rel="prev" href={absoluteUrl(prev)} />}
+{next && <link rel="next" href={absoluteUrl(next)} />}
 <meta name="robots" content={robots} />
 
 <meta property="og:locale" content="en_US" />

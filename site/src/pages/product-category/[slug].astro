@@ -103,8 +103,9 @@ const schema = [
     </div>
   </section>
 
-  <section class="section-tight section-white" aria-label={`${category.name} products`}>
+  <section class="section-tight section-white" aria-labelledby="cat-listing">
     <div class="container">
+      <h2 id="cat-listing" class="visually-hidden">{category.name} products</h2>
       <p class="count">
         {items.length} {items.length === 1 ? 'product' : 'products'} in {category.name}
       </p>

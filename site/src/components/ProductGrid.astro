@@ -6,15 +6,17 @@ interface Props {
   products: Product[];
   /** How many leading cards are treated as above the fold. */
   eagerCount?: number;
+  /** Pass through to the card: show the category label. */
+  showCategory?: boolean;
 }
-const { products, eagerCount = 3 } = Astro.props;
+const { products, eagerCount = 3, showCategory = false } = Astro.props;
 ---
 
 <ul class="grid" role="list">
   {
     products.map((p, i) => (
       <li>
-        <ProductCard product={p} eager={i < eagerCount} />
+        <ProductCard product={p} eager={i < eagerCount} showCategory={showCategory} />
       </li>
     ))
   }
@@ -25,7 +27,7 @@ const { products, eagerCount = 3 } = Astro.props;
     display: grid;
     /* minmax(0,1fr) keeps wide children from forcing horizontal overflow. */
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 24px;
+    gap: 23px;
     list-style: none;
     margin: 0;
     padding: 0;

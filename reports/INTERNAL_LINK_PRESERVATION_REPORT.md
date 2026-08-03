@@ -13,9 +13,9 @@ compromised site before any content was edited, and unchanged since) with
 | Old links removed (destination did not survive) | 60 |
 | Old links updated (destination corrected) | 5 |
 | Old links unlinked (unrelated external destination) | 1 |
-| Links in the migrated site | 1338 |
+| Links in the migrated site | 1365 |
 | — contextual (inside body copy) | 78 |
-| — navigation, breadcrumbs, footer, related products | 1260 |
+| — navigation, breadcrumbs, footer, related products | 1287 |
 | Broken internal links | 0 |
 | Contextual self-links | 0 |
 | Links to malware or excluded pages | 0 |
@@ -87,5 +87,6 @@ and its category grid. They are listed for completeness.
 - `/product/large-die-cut-stickers/`
 - `/product/matte-stickers/`
 - `/products/`
+- `/products/page/2/`
 - `/refund_returns/`
 - `/terms-conditions/`

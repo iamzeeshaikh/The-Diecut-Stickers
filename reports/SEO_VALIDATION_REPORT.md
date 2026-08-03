@@ -139,30 +139,48 @@ return a real 410 rather than a 200 with apologetic text.
 
 ## Lighthouse
 
-Measured against the production build served locally over a concurrent static server.
+Measured against the production build served by a plain static server.
 Targets were Performance 90+, Accessibility 95+, Best Practices 95+, SEO 95+.
 
 | Page | Device | Perf | A11y | Best Practices | SEO | LCP | CLS |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| Homepage | Desktop | 99 | 100 | 100 | 100 | 0.8 s | 0 |
-| Product | Desktop | 99 | 100 | 100 | 100 | 0.7 s | 0 |
-| Homepage | Mobile | 95 | 100 | 100 | 100 | 2.2 s | 0 |
-| `/products/` | Mobile | 99 | 100 | 100 | 100 | 1.7 s | 0 |
-| Product (standard) | Mobile | 97 | 100 | 100 | 100 | 2.0 s | 0 |
-| Product (longest) | Mobile | 95 | 100 | 100 | 100 | 2.1 s | 0 |
-| Category | Mobile | 96 | 100 | 100 | 100 | 1.9 s | 0 |
-| About | Mobile | 99 | 100 | 100 | 100 | 1.7 s | 0 |
-| Contact | Mobile | 99 | 100 | 100 | 100 | 1.7 s | 0 |
+| Homepage | Mobile | 94 | 100 | 100 | 100 | 2.4 s | 0 |
+| `/products/` | Mobile | 90 | 100 | 100 | 100 | 2.4 s | 0 |
+| `/products/page/2/` | Mobile | 94 | 100 | 100 | 100 | 2.4 s | 0 |
+| Product (standard) | Mobile | 94 | 100 | 100 | 100 | 2.4 s | 0 |
+| Product (longest) | Mobile | 93 | 100 | 100 | 100 | 2.6 s | 0 |
+| Category | Mobile | 93 | 100 | 100 | 100 | 2.4 s | 0 |
+| About | Mobile | 94 | 100 | 100 | 100 | 2.4 s | 0 |
+| Contact | Mobile | 94 | 100 | 100 | 100 | 2.4 s | 0 |
 
 All targets met on every page. CLS is 0 and TBT is 0 ms throughout — there is almost no
 JavaScript: only the mobile menu, the gallery thumbnail swap, and the form's
 progressive-enhancement handler.
 
-Two changes were needed to get there, both documented in `MIGRATION_CONFLICTS.md`:
+### A correction to an earlier run
+
+An earlier pass reported desktop scores of 99 and mobile figures up to 99. Those runs were
+served through `serve -s`, whose single-page-application rewrite silently returned the
+homepage for every path — so the per-page numbers were all measuring the homepage. Re-run
+against a plain static server, the honest figures are the table above. They are lower on
+some pages but still clear of every target.
+
+That mistake also surfaced three genuine defects the bogus runs had hidden:
+
+- **`/favicon.ico` 404** logged a console error on every page, costing Best Practices 4
+  points. The published WordPress site had the same 404. A favicon set is now generated
+  from the site logo and declared in the head.
+- **Link blue `#216bdb` measured 4.47:1** against the tinted category pills on
+  `/products/` — just under the 4.5:1 AA minimum. Darkened to `#1b5cbf` (5.63:1).
+- **Heading order skipped from `<h1>` to `<h3>`** on `/products/` and the category pages,
+  where product-card titles followed the page title with no `<h2>` between. Both now carry
+  a visually-hidden section heading.
+
+### Changes made to reach these numbers
 
 - The four homepage USP animations were 3.2 MB of GIF. Converted to animated WebP and
   re-encoded at the size they actually render, they now total 460 kB with the motion
   intact, and are lazy-loaded because they are decorative (`aria-hidden`). This moved
-  mobile Performance from 83 to 99 and LCP from 4.6 s to 1.7 s.
-- The brand teal and purple failed contrast against white text. Darkened to the nearest
-  passing shades, which took Accessibility from 97 to 100.
+  mobile Performance from 83 to the low 90s and LCP from 4.6 s to ~2.4 s.
+- The brand teal and purple failed contrast against white text and were darkened to the
+  nearest passing shades.

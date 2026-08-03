@@ -7,8 +7,10 @@ interface Props {
   product: Product;
   /** Above-the-fold cards load eagerly; everything else is lazy. */
   eager?: boolean;
+  /** The published archive loop showed the category above the product name. */
+  showCategory?: boolean;
 }
-const { product, eager = false } = Astro.props;
+const { product, eager = false, showCategory = false } = Astro.props;
 const img = resolveImage(product.images[0] ?? '');
 ---
 
@@ -31,6 +33,7 @@ const img = resolveImage(product.images[0] ?? '');
       }
     </div>
     <div class="meta">
+      {showCategory && <p class="cat">{product.category}</p>}
       {product.price && <p class="price">${Number(product.price).toFixed(2)}</p>}
       <h3 class="name">{product.name}</h3>
     </div>
@@ -78,6 +81,13 @@ const img = resolveImage(product.images[0] ?? '');
   .meta {
     padding: 14px 12px 18px;
     text-align: center;
+  }
+  .cat {
+    margin: 0 0 4px;
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
   }
   .price {
     margin: 0 0 4px;

@@ -15,6 +15,7 @@ export interface Faq {
 
 export interface Product {
   id: number;
+  date: string;
   slug: string;
   name: string;
   sku: string;
@@ -63,6 +64,22 @@ for (const p of products) {
     `product ${p.slug} references unknown category ${p.categorySlug}`,
   );
 }
+
+/**
+ * Newest first, matching the order the published homepage gallery used.
+ * Ties break on id so the sequence is stable.
+ */
+export const productsByDate: Product[] = [...products].sort((a, b) =>
+  b.date.localeCompare(a.date) || b.id - a.id,
+);
+
+/** Alphabetical, matching the order the published /products/ archive used. */
+export const productsByName: Product[] = [...products].sort((a, b) =>
+  a.name.localeCompare(b.name),
+);
+
+/** The published archive paginated at 16 per page (/products/page/2/). */
+export const PRODUCTS_PER_PAGE = 16;
 
 export function productsInCategory(slug: string): Product[] {
   return products.filter((p) => p.categorySlug === slug);

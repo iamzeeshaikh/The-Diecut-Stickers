@@ -287,9 +287,13 @@ def main():
 
     # slugs must come from the authoritative XML records, never re-derived
     xml_slug = {int(i["id"]): i["slug"] for i in items if i["type"] == "product"}
+    xml_date = {int(i["id"]): i["date"] for i in items if i["type"] == "product"}
     for p in products:
         if p["id"] in xml_slug:
             p["slug"] = xml_slug[p["id"]]
+        # Publish date drives the homepage ordering, which the published site
+        # showed newest-first. Kept from the XML rather than the CSV.
+        p["date"] = xml_date.get(p["id"], "")
 
     cats = []
     order = ["by-material", "features", "shape-size", "sticker-types", "usage"]

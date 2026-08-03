@@ -13,35 +13,35 @@ source_url,destination_url,anchor_text,section_heading,link_type,destination_sta
 /,/product-category/features/,Features,,navigation/chrome,200,no
 /,/product-category/usage/,Usage,,navigation/chrome,200,no
 /,/products/,Our Products,,navigation/chrome,200,no
-/,/product/custom-vinyl-stickers/,$0.20 Custom Vinyl Stickers,Our sticker range,navigation/chrome,200,no
-/,/product/custom-clear-stickers/,$0.20 Custom Clear Stickers,Custom Vinyl Stickers,navigation/chrome,200,no
-/,/product/custom-holographic-stickers/,$0.20 Custom Holographic Stickers,Custom Clear Stickers,navigation/chrome,200,no
-/,/product/matte-stickers/,$0.20 Matte Stickers,Custom Holographic Stickers,navigation/chrome,200,no
-/,/product/glossy-stickers/,$0.20 Glossy Stickers,Matte Stickers,navigation/chrome,200,no
-/,/product/custom-metallic-stickers/,$0.20 Custom Metallic Stickers,Glossy Stickers,navigation/chrome,200,no
-/,/product/custom-eco-friendly-stickers/,$0.20 Custom Eco-Friendly Stickers,Custom Metallic Stickers,navigation/chrome,200,no
-/,/product/outdoor-stickers/,$0.20 Outdoor Stickers,Custom Eco-Friendly Stickers,navigation/chrome,200,no
-/,/product/indoor-stickers/,$0.20 Indoor Stickers,Outdoor Stickers,navigation/chrome,200,no
-/,/product/custom-car-stickers/,$0.20 Custom Car Stickers,Indoor Stickers,navigation/chrome,200,no
-/,/product/custom-window-stickers/,$0.20 Custom Window Stickers,Custom Car Stickers,navigation/chrome,200,no
-/,/product/custom-packaging-labels/,$0.20 Custom Packaging Labels,Custom Window Stickers,navigation/chrome,200,no
-/,/product/custom-promotional-stickers/,$0.20 Custom Promotional Stickers,Custom Packaging Labels,navigation/chrome,200,no
-/,/product/waterproof-stickers/,$0.20 Waterproof Stickers,Custom Promotional Stickers,navigation/chrome,200,no
-/,/product/custom-reusable-stickers/,$0.20 Custom Reusable Stickers,Waterproof Stickers,navigation/chrome,200,no
-/,/product/reflective-stickers/,$0.20 Reflective Stickers,Custom Reusable Stickers,navigation/chrome,200,no
-/,/product/glow-in-the-dark-stickers/,$0.20 Glow in the Dark Stickers,Reflective Stickers,navigation/chrome,200,no
-/,/product/custom-small-stickers/,$0.20 Custom Small Stickers,Glow in the Dark Stickers,navigation/chrome,200,no
-/,/product/custom-large-stickers/,$0.20 Custom Large Stickers,Custom Small Stickers,navigation/chrome,200,no
-/,/product/die-cut-decals/,$0.20 Die-Cut Decals,Custom Large Stickers,navigation/chrome,200,no
-/,/product/die-cut-labels/,$0.20 Die-Cut Labels,Die-Cut Decals,navigation/chrome,200,no
-/,/product/die-cut-vinyl-stickers/,Die Cut Vinyl Stickers,Die-Cut Labels,navigation/chrome,200,no
-/,/product/die-cut-car-stickers/,Die Cut Car Stickers,Die Cut Vinyl Stickers,navigation/chrome,200,no
-/,/product/die-cut-clear-stickers/,Die Cut Clear Stickers,Die Cut Car Stickers,navigation/chrome,200,no
-/,/product/die-cut-logo-stickers/,Die Cut Logo Stickers,Die Cut Clear Stickers,navigation/chrome,200,no
+/,/product/die-cut-paper-stickers/,Die Cut Paper Stickers,Our sticker range,navigation/chrome,200,no
+/,/product/large-die-cut-stickers/,Large Die Cut Stickers,Die Cut Paper Stickers,navigation/chrome,200,no
+/,/product/die-cut-water-proof-stickers/,Die Cut Water Proof Stickers,Large Die Cut Stickers,navigation/chrome,200,no
+/,/product/die-cut-logo-stickers/,Die Cut Logo Stickers,Die Cut Water Proof Stickers,navigation/chrome,200,no
 /,/product/holographic-die-cut-stickers/,Holographic Die Cut Stickers,Die Cut Logo Stickers,navigation/chrome,200,no
-/,/product/die-cut-water-proof-stickers/,Die Cut Water Proof Stickers,Holographic Die Cut Stickers,navigation/chrome,200,no
-/,/product/large-die-cut-stickers/,Large Die Cut Stickers,Die Cut Water Proof Stickers,navigation/chrome,200,no
-/,/product/die-cut-paper-stickers/,Die Cut Paper Stickers,Large Die Cut Stickers,navigation/chrome,200,no
+/,/product/die-cut-clear-stickers/,Die Cut Clear Stickers,Holographic Die Cut Stickers,navigation/chrome,200,no
+/,/product/die-cut-car-stickers/,Die Cut Car Stickers,Die Cut Clear Stickers,navigation/chrome,200,no
+/,/product/die-cut-vinyl-stickers/,Die Cut Vinyl Stickers,Die Cut Car Stickers,navigation/chrome,200,no
+/,/product/die-cut-labels/,$0.20 Die-Cut Labels,Die Cut Vinyl Stickers,navigation/chrome,200,no
+/,/product/die-cut-decals/,$0.20 Die-Cut Decals,Die-Cut Labels,navigation/chrome,200,no
+/,/product/custom-large-stickers/,$0.20 Custom Large Stickers,Die-Cut Decals,navigation/chrome,200,no
+/,/product/custom-small-stickers/,$0.20 Custom Small Stickers,Custom Large Stickers,navigation/chrome,200,no
+/,/product/glow-in-the-dark-stickers/,$0.20 Glow in the Dark Stickers,Custom Small Stickers,navigation/chrome,200,no
+/,/product/reflective-stickers/,$0.20 Reflective Stickers,Glow in the Dark Stickers,navigation/chrome,200,no
+/,/product/custom-reusable-stickers/,$0.20 Custom Reusable Stickers,Reflective Stickers,navigation/chrome,200,no
+/,/product/waterproof-stickers/,$0.20 Waterproof Stickers,Custom Reusable Stickers,navigation/chrome,200,no
+/,/product/custom-promotional-stickers/,$0.20 Custom Promotional Stickers,Waterproof Stickers,navigation/chrome,200,no
+/,/product/custom-packaging-labels/,$0.20 Custom Packaging Labels,Custom Promotional Stickers,navigation/chrome,200,no
+/,/product/custom-window-stickers/,$0.20 Custom Window Stickers,Custom Packaging Labels,navigation/chrome,200,no
+/,/product/custom-car-stickers/,$0.20 Custom Car Stickers,Custom Window Stickers,navigation/chrome,200,no
+/,/product/indoor-stickers/,$0.20 Indoor Stickers,Custom Car Stickers,navigation/chrome,200,no
+/,/product/outdoor-stickers/,$0.20 Outdoor Stickers,Indoor Stickers,navigation/chrome,200,no
+/,/product/custom-eco-friendly-stickers/,$0.20 Custom Eco-Friendly Stickers,Outdoor Stickers,navigation/chrome,200,no
+/,/product/custom-metallic-stickers/,$0.20 Custom Metallic Stickers,Custom Eco-Friendly Stickers,navigation/chrome,200,no
+/,/product/glossy-stickers/,$0.20 Glossy Stickers,Custom Metallic Stickers,navigation/chrome,200,no
+/,/product/matte-stickers/,$0.20 Matte Stickers,Glossy Stickers,navigation/chrome,200,no
+/,/product/custom-holographic-stickers/,$0.20 Custom Holographic Stickers,Matte Stickers,navigation/chrome,200,no
+/,/product/custom-clear-stickers/,$0.20 Custom Clear Stickers,Custom Holographic Stickers,navigation/chrome,200,no
+/,/product/custom-vinyl-stickers/,$0.20 Custom Vinyl Stickers,Custom Clear Stickers,navigation/chrome,200,no
 /,/about-us/,About Us,Company,navigation/chrome,200,no
 /,/contact-us/,Contact Us,Company,navigation/chrome,200,no
 /,/privacy-policy/,Privacy Policy,Company,navigation/chrome,200,no
@@ -140,7 +140,7 @@ source_url,destination_url,anchor_text,section_heading,link_type,destination_sta
 /product-category/by-material/,/product-category/usage/,Usage,,navigation/chrome,200,no
 /product-category/by-material/,/,Home,,navigation/chrome,200,no
 /product-category/by-material/,/products/,Products,,navigation/chrome,200,no
-/product-category/by-material/,/product/custom-vinyl-stickers/,$0.20 Custom Vinyl Stickers,,navigation/chrome,200,no
+/product-category/by-material/,/product/custom-vinyl-stickers/,$0.20 Custom Vinyl Stickers,By Material products,navigation/chrome,200,no
 /product-category/by-material/,/product/custom-clear-stickers/,$0.20 Custom Clear Stickers,Custom Vinyl Stickers,navigation/chrome,200,no
 /product-category/by-material/,/product/custom-holographic-stickers/,$0.20 Custom Holographic Stickers,Custom Clear Stickers,navigation/chrome,200,no
 /product-category/by-material/,/product/matte-stickers/,$0.20 Matte Stickers,Custom Holographic Stickers,navigation/chrome,200,no
@@ -174,7 +174,7 @@ source_url,destination_url,anchor_text,section_heading,link_type,destination_sta
 /product-category/features/,/product-category/usage/,Usage,,navigation/chrome,200,no
 /product-category/features/,/,Home,,navigation/chrome,200,no
 /product-category/features/,/products/,Products,,navigation/chrome,200,no
-/product-category/features/,/product/waterproof-stickers/,$0.20 Waterproof Stickers,,navigation/chrome,200,no
+/product-category/features/,/product/waterproof-stickers/,$0.20 Waterproof Stickers,Features products,navigation/chrome,200,no
 /product-category/features/,/product/custom-reusable-stickers/,$0.20 Custom Reusable Stickers,Waterproof Stickers,navigation/chrome,200,no
 /product-category/features/,/product/reflective-stickers/,$0.20 Reflective Stickers,Custom Reusable Stickers,navigation/chrome,200,no
 /product-category/features/,/product/glow-in-the-dark-stickers/,$0.20 Glow in the Dark Stickers,Reflective Stickers,navigation/chrome,200,no
@@ -206,7 +206,7 @@ source_url,destination_url,anchor_text,section_heading,link_type,destination_sta
 /product-category/shape-size/,/product-category/usage/,Usage,,navigation/chrome,200,no
 /product-category/shape-size/,/,Home,,navigation/chrome,200,no
 /product-category/shape-size/,/products/,Products,,navigation/chrome,200,no
-/product-category/shape-size/,/product/custom-small-stickers/,$0.20 Custom Small Stickers,,navigation/chrome,200,no
+/product-category/shape-size/,/product/custom-small-stickers/,$0.20 Custom Small Stickers,Shape & Size products,navigation/chrome,200,no
 /product-category/shape-size/,/product/custom-large-stickers/,$0.20 Custom Large Stickers,Custom Small Stickers,navigation/chrome,200,no
 /product-category/shape-size/,/product/large-die-cut-stickers/,Large Die Cut Stickers,Custom Large Stickers,navigation/chrome,200,no
 /product-category/shape-size/,/about-us/,About Us,Company,navigation/chrome,200,no
@@ -234,7 +234,7 @@ source_url,destination_url,anchor_text,section_heading,link_type,destination_sta
 /product-category/sticker-types/,/product-category/usage/,Usage,,navigation/chrome,200,no
 /product-category/sticker-types/,/,Home,,navigation/chrome,200,no
 /product-category/sticker-types/,/products/,Products,,navigation/chrome,200,no
-/product-category/sticker-types/,/product/die-cut-decals/,$0.20 Die-Cut Decals,,navigation/chrome,200,no
+/product-category/sticker-types/,/product/die-cut-decals/,$0.20 Die-Cut Decals,Sticker Types products,navigation/chrome,200,no
 /product-category/sticker-types/,/product/die-cut-labels/,$0.20 Die-Cut Labels,Die-Cut Decals,navigation/chrome,200,no
 /product-category/sticker-types/,/product/holographic-die-cut-stickers/,Holographic Die Cut Stickers,Die-Cut Labels,navigation/chrome,200,no
 /product-category/sticker-types/,/about-us/,About Us,Company,navigation/chrome,200,no
@@ -262,7 +262,7 @@ source_url,destination_url,anchor_text,section_heading,link_type,destination_sta
 /product-category/usage/,/product-category/usage/,Usage,,navigation/chrome,200,yes
 /product-category/usage/,/,Home,,navigation/chrome,200,no
 /product-category/usage/,/products/,Products,,navigation/chrome,200,no
-/product-category/usage/,/product/outdoor-stickers/,$0.20 Outdoor Stickers,,navigation/chrome,200,no
+/product-category/usage/,/product/outdoor-stickers/,$0.20 Outdoor Stickers,Usage products,navigation/chrome,200,no
 /product-category/usage/,/product/indoor-stickers/,$0.20 Indoor Stickers,Outdoor Stickers,navigation/chrome,200,no
 /product-category/usage/,/product/custom-car-stickers/,$0.20 Custom Car Stickers,Indoor Stickers,navigation/chrome,200,no
 /product-category/usage/,/product/custom-window-stickers/,$0.20 Custom Window Stickers,Custom Car Stickers,navigation/chrome,200,no
@@ -1244,40 +1244,24 @@ source_url,destination_url,anchor_text,section_heading,link_type,destination_sta
 /products/,/product-category/shape-size/,Shape & Size,,navigation/chrome,200,no
 /products/,/product-category/sticker-types/,Sticker Types,,navigation/chrome,200,no
 /products/,/product-category/usage/,Usage,,navigation/chrome,200,no
-/products/,/product-category/by-material/,All by material stickers,By Material,navigation/chrome,200,no
-/products/,/product/custom-vinyl-stickers/,$0.20 Custom Vinyl Stickers,By Material,navigation/chrome,200,no
-/products/,/product/custom-clear-stickers/,$0.20 Custom Clear Stickers,Custom Vinyl Stickers,navigation/chrome,200,no
-/products/,/product/custom-holographic-stickers/,$0.20 Custom Holographic Stickers,Custom Clear Stickers,navigation/chrome,200,no
-/products/,/product/matte-stickers/,$0.20 Matte Stickers,Custom Holographic Stickers,navigation/chrome,200,no
-/products/,/product/glossy-stickers/,$0.20 Glossy Stickers,Matte Stickers,navigation/chrome,200,no
-/products/,/product/custom-metallic-stickers/,$0.20 Custom Metallic Stickers,Glossy Stickers,navigation/chrome,200,no
-/products/,/product/custom-eco-friendly-stickers/,$0.20 Custom Eco-Friendly Stickers,Custom Metallic Stickers,navigation/chrome,200,no
-/products/,/product/die-cut-vinyl-stickers/,Die Cut Vinyl Stickers,Custom Eco-Friendly Stickers,navigation/chrome,200,no
-/products/,/product/die-cut-paper-stickers/,Die Cut Paper Stickers,Die Cut Vinyl Stickers,navigation/chrome,200,no
-/products/,/product-category/features/,All features stickers,Features,navigation/chrome,200,no
-/products/,/product/waterproof-stickers/,$0.20 Waterproof Stickers,Features,navigation/chrome,200,no
-/products/,/product/custom-reusable-stickers/,$0.20 Custom Reusable Stickers,Waterproof Stickers,navigation/chrome,200,no
-/products/,/product/reflective-stickers/,$0.20 Reflective Stickers,Custom Reusable Stickers,navigation/chrome,200,no
-/products/,/product/glow-in-the-dark-stickers/,$0.20 Glow in the Dark Stickers,Reflective Stickers,navigation/chrome,200,no
-/products/,/product/die-cut-clear-stickers/,Die Cut Clear Stickers,Glow in the Dark Stickers,navigation/chrome,200,no
-/products/,/product/die-cut-logo-stickers/,Die Cut Logo Stickers,Die Cut Clear Stickers,navigation/chrome,200,no
-/products/,/product/die-cut-water-proof-stickers/,Die Cut Water Proof Stickers,Die Cut Logo Stickers,navigation/chrome,200,no
-/products/,/product-category/shape-size/,All shape & size stickers,Shape & Size,navigation/chrome,200,no
-/products/,/product/custom-small-stickers/,$0.20 Custom Small Stickers,Shape & Size,navigation/chrome,200,no
-/products/,/product/custom-large-stickers/,$0.20 Custom Large Stickers,Custom Small Stickers,navigation/chrome,200,no
-/products/,/product/large-die-cut-stickers/,Large Die Cut Stickers,Custom Large Stickers,navigation/chrome,200,no
-/products/,/product-category/sticker-types/,All sticker types stickers,Sticker Types,navigation/chrome,200,no
-/products/,/product/die-cut-decals/,$0.20 Die-Cut Decals,Sticker Types,navigation/chrome,200,no
-/products/,/product/die-cut-labels/,$0.20 Die-Cut Labels,Die-Cut Decals,navigation/chrome,200,no
-/products/,/product/holographic-die-cut-stickers/,Holographic Die Cut Stickers,Die-Cut Labels,navigation/chrome,200,no
-/products/,/product-category/usage/,All usage stickers,Usage,navigation/chrome,200,no
-/products/,/product/outdoor-stickers/,$0.20 Outdoor Stickers,Usage,navigation/chrome,200,no
-/products/,/product/indoor-stickers/,$0.20 Indoor Stickers,Outdoor Stickers,navigation/chrome,200,no
-/products/,/product/custom-car-stickers/,$0.20 Custom Car Stickers,Indoor Stickers,navigation/chrome,200,no
-/products/,/product/custom-window-stickers/,$0.20 Custom Window Stickers,Custom Car Stickers,navigation/chrome,200,no
-/products/,/product/custom-packaging-labels/,$0.20 Custom Packaging Labels,Custom Window Stickers,navigation/chrome,200,no
-/products/,/product/custom-promotional-stickers/,$0.20 Custom Promotional Stickers,Custom Packaging Labels,navigation/chrome,200,no
-/products/,/product/die-cut-car-stickers/,Die Cut Car Stickers,Custom Promotional Stickers,navigation/chrome,200,no
+/products/,/product/custom-car-stickers/,Usage $0.20 Custom Car Stickers,Product listing,navigation/chrome,200,no
+/products/,/product/custom-clear-stickers/,By Material $0.20 Custom Clear Stickers,Custom Car Stickers,navigation/chrome,200,no
+/products/,/product/custom-eco-friendly-stickers/,By Material $0.20 Custom Eco-Friendly Stickers,Custom Clear Stickers,navigation/chrome,200,no
+/products/,/product/custom-holographic-stickers/,By Material $0.20 Custom Holographic Stickers,Custom Eco-Friendly Stickers,navigation/chrome,200,no
+/products/,/product/custom-large-stickers/,Shape & Size $0.20 Custom Large Stickers,Custom Holographic Stickers,navigation/chrome,200,no
+/products/,/product/custom-metallic-stickers/,By Material $0.20 Custom Metallic Stickers,Custom Large Stickers,navigation/chrome,200,no
+/products/,/product/custom-packaging-labels/,Usage $0.20 Custom Packaging Labels,Custom Metallic Stickers,navigation/chrome,200,no
+/products/,/product/custom-promotional-stickers/,Usage $0.20 Custom Promotional Stickers,Custom Packaging Labels,navigation/chrome,200,no
+/products/,/product/custom-reusable-stickers/,Features $0.20 Custom Reusable Stickers,Custom Promotional Stickers,navigation/chrome,200,no
+/products/,/product/custom-small-stickers/,Shape & Size $0.20 Custom Small Stickers,Custom Reusable Stickers,navigation/chrome,200,no
+/products/,/product/custom-vinyl-stickers/,By Material $0.20 Custom Vinyl Stickers,Custom Small Stickers,navigation/chrome,200,no
+/products/,/product/custom-window-stickers/,Usage $0.20 Custom Window Stickers,Custom Vinyl Stickers,navigation/chrome,200,no
+/products/,/product/die-cut-car-stickers/,Usage Die Cut Car Stickers,Custom Window Stickers,navigation/chrome,200,no
+/products/,/product/die-cut-clear-stickers/,Features Die Cut Clear Stickers,Die Cut Car Stickers,navigation/chrome,200,no
+/products/,/product/die-cut-logo-stickers/,Features Die Cut Logo Stickers,Die Cut Clear Stickers,navigation/chrome,200,no
+/products/,/product/die-cut-paper-stickers/,By Material Die Cut Paper Stickers,Die Cut Logo Stickers,navigation/chrome,200,no
+/products/,/products/page/2/,2,Die Cut Paper Stickers,navigation/chrome,200,no
+/products/,/products/page/2/,Next,Die Cut Paper Stickers,navigation/chrome,200,no
 /products/,/about-us/,About Us,Company,navigation/chrome,200,no
 /products/,/contact-us/,Contact Us,Company,navigation/chrome,200,no
 /products/,/privacy-policy/,Privacy Policy,Company,navigation/chrome,200,no
@@ -1288,6 +1272,49 @@ source_url,destination_url,anchor_text,section_heading,link_type,destination_sta
 /products/,/product-category/shape-size/,Shape & Size,Sticker Categories,navigation/chrome,200,no
 /products/,/product-category/sticker-types/,Sticker Types,Sticker Categories,navigation/chrome,200,no
 /products/,/product-category/usage/,Usage,Sticker Categories,navigation/chrome,200,no
+/products/page/2/,/,,,navigation/chrome,200,no
+/products/page/2/,/,Home,,navigation/chrome,200,no
+/products/page/2/,/products/,Products,,navigation/chrome,200,no
+/products/page/2/,/product-category/by-material/,By Material,,navigation/chrome,200,no
+/products/page/2/,/product-category/shape-size/,Shape & Size,,navigation/chrome,200,no
+/products/page/2/,/product-category/sticker-types/,Sticker Types,,navigation/chrome,200,no
+/products/page/2/,/,Home,,navigation/chrome,200,no
+/products/page/2/,/products/,Products,,navigation/chrome,200,no
+/products/page/2/,/product-category/by-material/,By Material,,navigation/chrome,200,no
+/products/page/2/,/product-category/shape-size/,Shape & Size,,navigation/chrome,200,no
+/products/page/2/,/product-category/sticker-types/,Sticker Types,,navigation/chrome,200,no
+/products/page/2/,/product-category/features/,Features,,navigation/chrome,200,no
+/products/page/2/,/product-category/usage/,Usage,,navigation/chrome,200,no
+/products/page/2/,/,Home,,navigation/chrome,200,no
+/products/page/2/,/product-category/by-material/,By Material,,navigation/chrome,200,no
+/products/page/2/,/product-category/features/,Features,,navigation/chrome,200,no
+/products/page/2/,/product-category/shape-size/,Shape & Size,,navigation/chrome,200,no
+/products/page/2/,/product-category/sticker-types/,Sticker Types,,navigation/chrome,200,no
+/products/page/2/,/product-category/usage/,Usage,,navigation/chrome,200,no
+/products/page/2/,/product/die-cut-vinyl-stickers/,By Material Die Cut Vinyl Stickers,Product listing,navigation/chrome,200,no
+/products/page/2/,/product/die-cut-water-proof-stickers/,Features Die Cut Water Proof Stickers,Die Cut Vinyl Stickers,navigation/chrome,200,no
+/products/page/2/,/product/die-cut-decals/,Sticker Types $0.20 Die-Cut Decals,Die Cut Water Proof Stickers,navigation/chrome,200,no
+/products/page/2/,/product/die-cut-labels/,Sticker Types $0.20 Die-Cut Labels,Die-Cut Decals,navigation/chrome,200,no
+/products/page/2/,/product/glossy-stickers/,By Material $0.20 Glossy Stickers,Die-Cut Labels,navigation/chrome,200,no
+/products/page/2/,/product/glow-in-the-dark-stickers/,Features $0.20 Glow in the Dark Stickers,Glossy Stickers,navigation/chrome,200,no
+/products/page/2/,/product/holographic-die-cut-stickers/,Sticker Types Holographic Die Cut Stickers,Glow in the Dark Stickers,navigation/chrome,200,no
+/products/page/2/,/product/indoor-stickers/,Usage $0.20 Indoor Stickers,Holographic Die Cut Stickers,navigation/chrome,200,no
+/products/page/2/,/product/large-die-cut-stickers/,Shape & Size Large Die Cut Stickers,Indoor Stickers,navigation/chrome,200,no
+/products/page/2/,/product/matte-stickers/,By Material $0.20 Matte Stickers,Large Die Cut Stickers,navigation/chrome,200,no
+/products/page/2/,/product/outdoor-stickers/,Usage $0.20 Outdoor Stickers,Matte Stickers,navigation/chrome,200,no
+/products/page/2/,/product/reflective-stickers/,Features $0.20 Reflective Stickers,Outdoor Stickers,navigation/chrome,200,no
+/products/page/2/,/product/waterproof-stickers/,Features $0.20 Waterproof Stickers,Reflective Stickers,navigation/chrome,200,no
+/products/page/2/,/products/,1,Waterproof Stickers,navigation/chrome,200,no
+/products/page/2/,/about-us/,About Us,Company,navigation/chrome,200,no
+/products/page/2/,/contact-us/,Contact Us,Company,navigation/chrome,200,no
+/products/page/2/,/privacy-policy/,Privacy Policy,Company,navigation/chrome,200,no
+/products/page/2/,/refund_returns/,Refund and Returns Policy,Company,navigation/chrome,200,no
+/products/page/2/,/terms-conditions/,Terms & Conditions,Company,navigation/chrome,200,no
+/products/page/2/,/product-category/by-material/,By Material,Sticker Categories,navigation/chrome,200,no
+/products/page/2/,/product-category/features/,Features,Sticker Categories,navigation/chrome,200,no
+/products/page/2/,/product-category/shape-size/,Shape & Size,Sticker Categories,navigation/chrome,200,no
+/products/page/2/,/product-category/sticker-types/,Sticker Types,Sticker Categories,navigation/chrome,200,no
+/products/page/2/,/product-category/usage/,Usage,Sticker Categories,navigation/chrome,200,no
 /refund_returns/,/,,,navigation/chrome,200,no
 /refund_returns/,/,Home,,navigation/chrome,200,no
 /refund_returns/,/products/,Products,,navigation/chrome,200,no

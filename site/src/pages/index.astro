@@ -3,7 +3,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProductGrid from '../components/ProductGrid.astro';
 import CTASection from '../components/CTASection.astro';
-import { products } from '../lib/catalogue';
+import { products, productsByDate } from '../lib/catalogue';
 import pages from '../data/pages.json';
 import { absoluteUrl } from '../lib/site';
 
@@ -64,7 +64,7 @@ const content = page.content
   <h1 class="visually-hidden">Custom die cut stickers printed to your artwork</h1>
 
   <section class="usps" aria-label="Why order from The Die Cut Stickers">
-    <div class="container usp-grid">
+    <div class="container usp-grid narrow-usps">
       {
         USPS.map((u, i) => (
           <div class:list={['usp', i < 2 && 'usp-tint']}>
@@ -90,9 +90,9 @@ const content = page.content
   </div>
 
   <section class="section-tight" aria-labelledby="catalogue-heading">
-    <div class="container">
+    <div class="container narrow-grid">
       <h2 id="catalogue-heading" class="visually-hidden">Our sticker range</h2>
-      <ProductGrid products={products} eagerCount={3} />
+      <ProductGrid products={productsByDate} eagerCount={3} />
     </div>
   </section>
 
@@ -109,10 +109,23 @@ const content = page.content
   .usps {
     padding: 34px 0 6px;
   }
+  /*
+   * Measured from the published homepage capture (1349px viewport): the value
+   * proposition row ran ~1025px wide with 4 cards and a ~29px gap, and the
+   * product gallery ran ~895px with 3 cards and a ~23px gap. Both sat narrower
+   * than the 1200px theme container, so they are constrained here to keep the
+   * card size and grid density the same as the original.
+   */
+  .narrow-usps {
+    max-width: 1055px;
+  }
+  .narrow-grid {
+    max-width: 927px;
+  }
   .usp-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 18px;
+    gap: 29px;
   }
   .usp {
     background: var(--white);

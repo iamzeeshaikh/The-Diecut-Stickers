@@ -12,7 +12,7 @@ still the compromised WordPress install.**
 
 | Metric | Count |
 | --- | --- |
-| Pages migrated | 41 |
+| Pages migrated | 42 (41 + paginated archive page 2) |
 | Products migrated | 29 (of 29 legitimate) |
 | Categories migrated | 5 (of 5 legitimate) |
 | Legitimate URLs preserved 1:1 | 41 |
@@ -32,6 +32,7 @@ still the compromised WordPress install.**
 | Orphan indexable pages | 0 |
 | Broken internal links | 0 |
 | Validation checks passing | 28 / 28 |
+| Lighthouse (mobile, all pages) | Perf 90–94, A11y 100, Best Practices 100, SEO 100 |
 
 ---
 
@@ -49,6 +50,14 @@ and a unique title and meta description written for it (the archives had none).
 
 **7 pages**: homepage, `/products/`, `/about-us/`, `/contact-us/`, `/privacy-policy/`,
 `/terms-conditions/`, `/refund_returns/` (underscore preserved exactly as published).
+
+**Layout matched to the captures.** The two supplied PDFs were rendered at the original
+1348 px capture width and measured pixel by pixel. The homepage USP row (1023 px, 4 cards
+of 234 px) and product gallery (895 px, 3 cards of 283 px) both sat narrower than the
+1200 px theme container, and the product template sat wider at 1296 px. Each is now
+constrained to its measured width, and the homepage grid is sorted newest-first as
+published. `/products/` is a paginated alphabetical archive again, preserving
+`/products/page/2/`.
 
 **Design** rebuilt from the supplied PDFs, the Elementor templates and the live markup:
 teal contact bar, circular logo with centred nav and purple phone pill, animated USP
