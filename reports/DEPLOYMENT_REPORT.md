@@ -1,5 +1,40 @@
 # Deployment Report
 
+## STATUS: LIVE
+
+**https://thediecutstickers.com now serves this Astro site.** The cutover happened when
+both domains were added to the Vercel project — the Cloudflare A record was already
+pointing at a Vercel anycast IP (`216.150.16.1`), so attaching the domain routed live
+traffic here immediately. No Cloudflare DNS record was created, changed or deleted.
+
+Two things had to be corrected the moment it went live:
+
+1. `PUBLIC_SITE_ENV` was unset, so the production build was serving
+   `robots.txt: Disallow: /` and `noindex,nofollow` on every page — actively asking search
+   engines to drop the site. The flag is now set on the Production environment and the
+   site rebuilt; `robots.txt` reads `Allow: /` and pages are `index,follow`.
+2. The quote form returns **HTTP 503** because `SMTP_PASS` is not set. Enquiries cannot be
+   submitted until a Gmail App Password is added. See `ENVIRONMENT_VARIABLES.md`.
+
+### Domains
+
+| Domain | Behaviour |
+| --- | --- |
+| `thediecutstickers.com` | Primary, serves the site |
+| `www.thediecutstickers.com` | **308 redirect to the apex**, path preserved |
+| `thediecutstickers.vercel.app` | Vercel default, also assigned |
+
+Verified live: `https://www.thediecutstickers.com/products/` → `308` →
+`https://thediecutstickers.com/products/`.
+
+### Rollback, now that it is live
+
+DNS is untouched, so the fastest revert is to remove `thediecutstickers.com` from this
+Vercel project — traffic stops being routed here. The old WordPress host is still running
+but the DNS A record no longer points at it, so reverting to WordPress means repointing
+Cloudflare at the Hostinger IP as well. Bear in mind that puts the compromised site,
+including the service-worker dropper, back in front of visitors.
+
 ## Current state
 
 | Item | Value |
