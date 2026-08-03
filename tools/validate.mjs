@@ -57,7 +57,11 @@ async function main() {
     pages.set(rel === '/404.html' ? '/404.html' : rel, await readFile(f, 'utf8'));
   }
 
-  const indexable = [...pages.entries()].filter(([u]) => u !== '/404.html');
+  const isNoindex = (html) => /<meta name="robots" content="[^"]*noindex/i.test(html);
+  const indexable = [...pages.entries()].filter(
+    ([u, h]) => u !== '/404.html' && !isNoindex(h),
+  );
+  const noindexPages = [...pages.entries()].filter(([u, h]) => u !== '/404.html' && isNoindex(h));
 
   // ---------------------------------------------------------------- routes
   const productSlugs = JSON.parse(
@@ -269,6 +273,8 @@ async function main() {
       linkedTo.add(href.split('#')[0].split('?')[0]);
     }
   }
+  // Intentionally noindex pages (the thank-you confirmation) are reached by
+  // redirect after a POST, so having no inbound link is expected.
   const orphans = indexable.map(([u]) => u).filter((u) => u !== '/' && !linkedTo.has(u));
   orphans.length
     ? fail('no orphan indexable pages', orphans.join(', '))
@@ -354,6 +360,15 @@ async function main() {
   notFound && /noindex/.test(notFound)
     ? pass('custom 404 exists and is noindex')
     : fail('custom 404 exists and is noindex', 'missing or indexable');
+
+  // Noindex pages must stay out of the sitemap.
+  const leaked = noindexPages
+    .map(([u]) => u)
+    .filter((u) => sitemap.includes(ORIGIN + u));
+  leaked.length
+    ? fail('noindex pages are absent from the sitemap', leaked.join(', '))
+    : pass('noindex pages are absent from the sitemap',
+           noindexPages.map(([u]) => u).join(', ') || 'none');
 
   // ------------------------------------------------------------ mixed content
   const mixed = [];

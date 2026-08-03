@@ -12,11 +12,12 @@ server-side only. The validation suite asserts that no secret appears in any cli
 | --- | --- | --- | --- |
 | `SMTP_HOST` | `smtp.hostinger.com` | Production, Preview | Mail server hostname. |
 | `SMTP_PORT` | `465` | Production, Preview | `465` for implicit TLS, `587` for STARTTLS. Defaults to `465`. |
-| `SMTP_SECURE` | `true` | Production, Preview | `true` for port 465, `false` for 587. Defaults to `true`. |
+| `SMTP_SECURE` | *(omit)* | Production, Preview | Optional. Derived from the port when unset: 465 → implicit TLS, 587 → STARTTLS. Only set it to override. |
 | `SMTP_USER` | `info@thediecutstickers.com` | Production, Preview | SMTP username. |
 | `SMTP_PASS` | *(secret)* | Production, Preview | SMTP password. **Rotate the old value first** — see `SECURITY_CUTOVER_CHECKLIST.md`. |
-| `SMTP_FROM` | `info@thediecutstickers.com` | Production, Preview | Envelope sender. Falls back to `SMTP_USER`. Must be a mailbox the server is allowed to send as, or messages will be rejected or spam-foldered. |
-| `INQUIRY_TO` | `info@thediecutstickers.com` | Production, Preview | Where enquiries are delivered. Falls back to the address in `src/lib/site.ts`. |
+| `SMTP_FROM_EMAIL` | `info@thediecutstickers.com` | Production, Preview | Envelope sender. **Must be the authenticated mailbox or a verified alias** — Gmail and most providers rewrite or reject anything else. If it is not a valid address the code falls back to `SMTP_USER` and logs a warning. `SMTP_FROM` is accepted as an alias for this. |
+| `SMTP_FROM_NAME` | `The Die Cut Stickers` | Production, Preview | Display name on the From header. |
+| `SMTP_TO` | `info@thediecutstickers.com` | Production, Preview | Where enquiries are delivered. `INQUIRY_TO` is accepted as an alias. Falls back to the address in `src/lib/site.ts`. |
 
 ## Controls indexability
 
@@ -33,6 +34,21 @@ Canonicals, Open Graph URLs, schema URLs and the sitemap always use
 into them; this is asserted by the validation suite.
 
 ---
+
+## Gmail specifics
+
+If you use `smtp.gmail.com`:
+
+- **Port 587** needs STARTTLS. Leave `SMTP_SECURE` unset and the code derives it from the
+  port; setting it to `true` on 587 will fail to connect.
+- **`SMTP_PASS` must be a Google App Password**, not the account password. Generate one at
+  <https://myaccount.google.com/apppasswords> (requires 2-Step Verification). It is 16
+  characters; paste it without spaces.
+- **Gmail ignores a From address it does not own.** Mail will appear to come from the
+  authenticated account unless you add the address under Gmail → Settings → Accounts →
+  "Send mail as" and verify it.
+- Gmail's free tier caps outbound mail at roughly 500 messages a day, which is ample for a
+  quote form but worth knowing.
 
 ## Behaviour when SMTP is not configured
 
@@ -80,8 +96,8 @@ migration. To verify on the deployed preview:
 1. Add the SMTP variables to the Preview environment and redeploy.
 2. Submit the form on the deployed preview URL — not localhost, so the real serverless
    function runs.
-3. A success message means the SMTP server accepted the message. Confirm it arrived at
-   `INQUIRY_TO`, and that Reply-To is the enquirer's address.
+3. On success the browser is redirected to `/thank-you/`. Confirm the mail arrived at
+   `SMTP_TO`, and that Reply-To is the enquirer's address.
 4. Attach a test file to confirm artwork uploads arrive intact.
 5. Check the function logs in Vercel for `[inquiry]` errors.
 

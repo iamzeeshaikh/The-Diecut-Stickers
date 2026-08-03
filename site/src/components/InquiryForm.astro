@@ -298,12 +298,19 @@ const names = products.map((p) => p.name).sort((a, b) => a.localeCompare(b));
       button.textContent = 'Sending…';
 
       try {
-        const res = await fetch(form.action, { method: 'POST', body: new FormData(form) });
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
         const data = await res.json().catch(() => ({}));
         if (res.ok && data.ok) {
-          // Success is only ever shown once the server confirms delivery.
+          // Only reached once the server confirms delivery. Reset first so a
+          // back-navigation cannot re-present a filled form.
           form.reset();
-          say(data.message || 'Thank you. Your enquiry has been sent and we will be in touch shortly.', 'ok');
+          say('Sent. Taking you to the confirmation page…', 'ok');
+          window.location.assign(data.redirect || '/thank-you/');
+          return;
         } else {
           say(data.message || 'Sorry, your enquiry could not be sent. Please email info@thediecutstickers.com or call +1-929-2141-874.', 'error');
         }

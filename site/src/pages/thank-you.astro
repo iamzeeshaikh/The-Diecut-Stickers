@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { SITE } from '../lib/site';
+import { categories } from '../lib/catalogue';
+
+/*
+ * Post-submission confirmation. Reached only after the SMTP server has accepted
+ * the enquiry — the endpoint never sends anyone here on failure.
+ *
+ * noindex: a thank-you page has no search intent, and letting it rank would put
+ * a "we've received your enquiry" page in front of people who never submitted
+ * one. It is deliberately absent from the sitemap for the same reason.
+ */
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Thank you' }];
+---
+
+<BaseLayout
+  title="Thank you — your enquiry has been sent | The Die Cut Stickers"
+  description="Your enquiry has been received. Our team will get back to you shortly."
+  path="/thank-you/"
+  noindex
+>
+  <Breadcrumbs items={crumbs} />
+
+  <section class="section">
+    <div class="container narrow">
+      <p class="tick" aria-hidden="true">✓</p>
+      <h1>Thank you — your enquiry is on its way</h1>
+      <p class="lede">
+        We have received your details and our team will get back to you shortly, usually
+        within one business day.
+      </p>
+
+      <div class="card">
+        <h2>Need us sooner?</h2>
+        <p>
+          Email <a href={`mailto:${SITE.email}`}>{SITE.email}</a> or call
+          <a href={`tel:${SITE.phoneHref}`}>{SITE.phone}</a> and quote your company name.
+        </p>
+      </div>
+
+      <h2>While you're here</h2>
+      <ul class="links" role="list">
+        <li><a href="/products/">Browse all sticker products</a></li>
+        {
+          categories.map((c) => (
+            <li>
+              <a href={`/product-category/${c.slug}/`}>{c.name}</a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p><a class="btn btn-primary" href="/">Back to the homepage</a></p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .narrow {
+    max-width: 760px;
+  }
+  .tick {
+    display: grid;
+    place-items: center;
+    width: 62px;
+    height: 62px;
+    margin: 0 0 18px;
+    border-radius: 50%;
+    background: var(--teal);
+    color: #fff;
+    font-size: 2rem;
+    line-height: 1;
+  }
+  .lede {
+    font-size: 1.05rem;
+  }
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 20px 22px;
+    margin: 26px 0;
+  }
+  .card h2 {
+    margin-top: 0;
+    font-size: 1.1rem;
+  }
+  .card p {
+    margin: 0;
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+    margin-bottom: 28px;
+  }
+  .links a {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: var(--tint);
+    color: var(--blue);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  .links a:hover {
+    background: var(--purple);
+    color: #fff;
+  }
+</style>
