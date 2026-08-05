@@ -72,5 +72,9 @@ const baseSchema = [
       <slot />
     </main>
     <SiteFooter />
+    {/* ZeeOps live chat. Loaded last and deferred so it never blocks render.
+        Conversations land in the dashboard at chat.zeeops.dev under the
+        `thediecutstickers` site. */}
+    <script src="https://chat.zeeops.dev/widget.js?siteId=thediecutstickers" defer is:inline></script>
   </body>
 </html>
