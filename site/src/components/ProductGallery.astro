@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import { resolveImage, productAlt } from '../lib/images';
 
 interface Props {
@@ -14,6 +14,19 @@ const resolved = images
     r.img !== undefined,
   );
 const main = resolved[0];
+
+/*
+ * Full-size renditions for every gallery image, generated once at build time
+ * with the exact widths/sizes the main <Image> uses. Thumbnail buttons carry
+ * them as data attributes so a click swaps the main image to the SAME quality
+ * it renders at on load — never the 80/160px thumbnail files.
+ */
+const MAIN_SIZES = '(max-width: 760px) 92vw, 420px';
+const fullSize = await Promise.all(
+  resolved.map((r) =>
+    getImage({ src: r.img, widths: [400, 600, 800], sizes: MAIN_SIZES }),
+  ),
+);
 ---
 
 {
@@ -25,10 +38,10 @@ const main = resolved[0];
           src={main.img}
           alt={main.alt}
           widths={[400, 600, 800]}
-          sizes="(max-width: 760px) 92vw, 420px"
+          sizes={MAIN_SIZES}
           loading="eager"
           fetchpriority="high"
-          decoding="sync"
+          decoding="async"
         />
       </div>
 
@@ -38,12 +51,24 @@ const main = resolved[0];
             <li>
               <button
                 type="button"
-                class="thumb"
+                class:list={['thumb', i === 0 && 'active']}
                 data-index={i}
-                aria-label={`Show image ${i + 1} of ${resolved.length}`}
+                data-src={fullSize[i].src}
+                data-srcset={fullSize[i].srcSet.attribute}
+                data-alt={r.alt}
+                aria-label={`View image ${i + 1} of ${resolved.length}`}
                 aria-pressed={i === 0 ? 'true' : 'false'}
               >
-                <Image src={r.img} alt="" widths={[80, 160]} sizes="72px" loading="lazy" />
+                <Image
+                  src={r.img}
+                  alt={`${name} image ${i + 1}`}
+                  widths={[80, 160]}
+                  sizes="72px"
+                  width={72}
+                  height={72}
+                  loading="lazy"
+                  decoding="async"
+                />
               </button>
             </li>
           ))}
@@ -58,15 +83,43 @@ const main = resolved[0];
   const main = document.getElementById('gallery-main') as HTMLImageElement | null;
   if (root && main) {
     const buttons = Array.from(root.querySelectorAll<HTMLButtonElement>('.thumb'));
+
+    // Warm a full-size rendition so the swap is instant when clicked.
+    const warmed = new Set<string>();
+    const warm = (btn: HTMLButtonElement) => {
+      const src = btn.dataset.src;
+      if (!src || warmed.has(src)) return;
+      warmed.add(src);
+      const img = new Image();
+      img.fetchPriority = 'low';
+      if (btn.dataset.srcset) {
+        img.sizes = main.sizes || '';
+        img.srcset = btn.dataset.srcset;
+      }
+      img.src = src;
+    };
+    const warmAll = () => buttons.forEach(warm);
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(warmAll, { timeout: 3000 });
+    } else {
+      window.addEventListener('load', () => setTimeout(warmAll, 400), { once: true });
+    }
+
     buttons.forEach((btn) => {
+      btn.addEventListener('pointerenter', () => warm(btn));
+      btn.addEventListener('touchstart', () => warm(btn), { passive: true });
       btn.addEventListener('click', () => {
-        const thumb = btn.querySelector('img');
-        if (!thumb) return;
-        // Swap in the thumbnail's own responsive sources.
-        main.src = thumb.src;
-        main.srcset = thumb.srcset;
-        main.alt = btn.getAttribute('aria-label') ?? main.alt;
-        buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+        const src = btn.dataset.src;
+        if (!src) return;
+        // srcset must be swapped before src or the browser keeps the old candidate.
+        main.srcset = btn.dataset.srcset || '';
+        main.src = src;
+        if (btn.dataset.alt) main.alt = btn.dataset.alt;
+        buttons.forEach((b) => {
+          const on = b === btn;
+          b.classList.toggle('active', on);
+          b.setAttribute('aria-pressed', String(on));
+        });
       });
     });
   }
@@ -109,6 +162,7 @@ const main = resolved[0];
     height: 100%;
     object-fit: cover;
   }
+  .thumb.active,
   .thumb[aria-pressed='true'] {
     border-color: var(--purple-accent);
   }

@@ -14,7 +14,10 @@ const modules = import.meta.glob<{ default: ImageMetadata }>(
 
 const byName = new Map<string, ImageMetadata>();
 for (const [path, mod] of Object.entries(modules)) {
-  byName.set(path.replace(/^.*\//, ''), mod.default);
+  const name = path.replace(/^.*\//, '');
+  // Skip macOS AppleDouble sidecars (._foo.jpg) that leak in from exFAT drives.
+  if (name.startsWith('._')) continue;
+  byName.set(name, mod.default);
 }
 
 /** Accepts either a bare filename or the original WordPress URL. */
