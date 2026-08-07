@@ -5,6 +5,7 @@ import SiteFooter from '../components/SiteFooter.astro';
 import { SITE, absoluteUrl } from '../lib/site';
 import '../styles/global.css';
 
+import WhatsAppButton from '../components/WhatsAppButton.astro';
 interface Props {
   title: string;
   description: string;
@@ -76,5 +77,6 @@ const baseSchema = [
         Conversations land in the dashboard at chat.zeeops.dev under the
         `thediecutstickers` site. */}
     <script src="https://chat.zeeops.dev/widget.js?siteId=thediecutstickers" defer is:inline></script>
+      <WhatsAppButton />
   </body>
 </html>
