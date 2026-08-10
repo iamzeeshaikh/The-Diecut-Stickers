@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { products, categories, PRODUCTS_PER_PAGE } from '../lib/catalogue';
+import { BLOG_POSTS } from '../lib/blog';
 import { absoluteUrl } from '../lib/site';
 
 // Pages two and up of the product archive. Indexable, so they belong here.
@@ -25,6 +26,8 @@ export const GET: APIRoute = () => {
       priority: '0.8',
     })),
     ...products.map((p) => ({ loc: absoluteUrl(`/product/${p.slug}/`), priority: '0.8' })),
+    { loc: absoluteUrl('/blog/'), priority: '0.7' },
+    ...BLOG_POSTS.map((p) => ({ loc: absoluteUrl(p.url), priority: '0.6' })),
     { loc: absoluteUrl('/about-us/'), priority: '0.5' },
     { loc: absoluteUrl('/contact-us/'), priority: '0.6' },
     { loc: absoluteUrl('/privacy-policy/'), priority: '0.3' },

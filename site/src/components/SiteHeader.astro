@@ -8,6 +8,8 @@ import logo from '../assets/img/logo-badge.png';
 import MobileNavigation from './MobileNavigation.astro';
 
 // The published main menu carried Home, Products and three category links.
+// Blog is appended: it is new to the rebuild, so it has no published position
+// to preserve.
 const NAV = [
   { label: 'Home', href: '/' },
   { label: 'Products', href: '/products/' },
@@ -15,6 +17,7 @@ const NAV = [
     .map((s) => categories.find((c) => c.slug === s))
     .filter((c) => c !== undefined)
     .map((c) => ({ label: c!.name, href: `/product-category/${c!.slug}/` })),
+  { label: 'Blog', href: '/blog/' },
 ];
 
 const current = Astro.url.pathname;

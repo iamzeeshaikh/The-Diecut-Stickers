@@ -1,0 +1,232 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CTASection from '../../components/CTASection.astro';
+import { BLOG_POSTS, formatPostDate, type BlogPost } from '../../lib/blog';
+import { absoluteUrl, SITE } from '../../lib/site';
+
+export function getStaticPaths() {
+  return BLOG_POSTS.map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+
+interface Props {
+  post: BlogPost;
+}
+
+const { post } = Astro.props;
+const Content = post.Content as any;
+
+const crumbs = [
+  { label: 'Home', href: '/' },
+  { label: 'Blog', href: '/blog/' },
+  { label: post.title },
+];
+
+// The two most recent other posts, so every article has a way onward.
+const related = BLOG_POSTS.filter((p) => p.slug !== post.slug).slice(0, 3);
+---
+
+<BaseLayout
+  title={post.metaTitle}
+  description={post.metaDescription}
+  path={post.url}
+  ogImage={post.hero.src}
+  ogType="article"
+  schema={[
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: crumbs.map((c, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: c.label,
+        ...(c.href ? { item: absoluteUrl(c.href) } : {}),
+      })),
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      '@id': absoluteUrl(`${post.url}#article`),
+      headline: post.title,
+      description: post.metaDescription,
+      image: absoluteUrl(post.hero.src),
+      datePublished: post.date,
+      dateModified: post.date,
+      inLanguage: 'en-US',
+      mainEntityOfPage: { '@type': 'WebPage', '@id': absoluteUrl(post.url) },
+      isPartOf: { '@id': absoluteUrl('/blog/#blog') },
+      author: { '@id': absoluteUrl('/#organization') },
+      publisher: { '@id': absoluteUrl('/#organization') },
+    },
+  ]}
+>
+  <Breadcrumbs items={crumbs} />
+
+  <article class="section-tight">
+    <div class="container post">
+      <header class="post-head">
+        <h1>{post.title}</h1>
+        <p class="meta">
+          Published <time datetime={post.date}>{formatPostDate(post.date)}</time> by {SITE.name}
+        </p>
+      </header>
+
+      <Image
+        class="hero"
+        src={post.hero}
+        alt={post.imageAlt}
+        widths={[640, 900, 1200]}
+        sizes="(max-width: 900px) 100vw, 860px"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      />
+
+      <div class="body">
+        <Content />
+      </div>
+    </div>
+  </article>
+
+  {
+    related.length > 0 && (
+      <section class="section-tight related-wrap">
+        <div class="container post">
+          <h2 class="related-heading">Keep reading</h2>
+          <ul class="related">
+            {related.map((p) => (
+              <li>
+                <a href={p.url}>{p.title}</a>
+                <span class="related-excerpt">{p.excerpt}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  <CTASection id="quote" />
+</BaseLayout>
+
+<style>
+  .post {
+    max-width: 860px;
+  }
+
+  .post-head h1 {
+    line-height: 1.25;
+    margin: 0 0 10px;
+  }
+  .meta {
+    margin: 0 0 22px;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .hero {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+    margin-bottom: 30px;
+  }
+
+  /* The markdown body is rendered content, so it is styled globally. */
+  .body :global(h2) {
+    font-size: 1.42rem;
+    line-height: 1.3;
+    margin: 38px 0 12px;
+  }
+  .body :global(h3) {
+    font-size: 1.1rem;
+    margin: 26px 0 8px;
+  }
+  .body :global(p) {
+    margin: 0 0 16px;
+    line-height: 1.78;
+    color: var(--ink-soft);
+  }
+  .body :global(ul),
+  .body :global(ol) {
+    margin: 0 0 18px;
+    padding-left: 22px;
+    color: var(--ink-soft);
+  }
+  .body :global(li) {
+    margin-bottom: 8px;
+    line-height: 1.7;
+  }
+  .body :global(a) {
+    color: var(--blue);
+    text-decoration: underline;
+  }
+  .body :global(a:hover) {
+    color: var(--purple-dark);
+  }
+  .body :global(strong) {
+    color: var(--ink);
+  }
+  .body :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 20px;
+    font-size: 0.94rem;
+  }
+  .body :global(th),
+  .body :global(td) {
+    border: 1px solid var(--line);
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+  }
+  .body :global(th) {
+    background: var(--tint);
+    font-weight: 700;
+  }
+  /* Wide tables scroll inside themselves rather than the page. */
+  .body :global(.table-scroll) {
+    overflow-x: auto;
+  }
+
+  .related-wrap {
+    background: var(--page);
+    border-top: 1px solid var(--line);
+  }
+  .related-heading {
+    font-size: 1.3rem;
+    margin: 0 0 16px;
+  }
+  .related {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 16px;
+  }
+  .related li {
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .related li:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+  .related a {
+    display: block;
+    font-weight: 600;
+    color: var(--ink);
+    text-decoration: none;
+    padding: 2px 0;
+  }
+  .related a:hover {
+    color: var(--purple-dark);
+    text-decoration: underline;
+  }
+  .related-excerpt {
+    display: block;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+</style>
