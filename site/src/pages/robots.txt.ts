@@ -12,10 +12,15 @@ export const GET: APIRoute = () => {
         'User-agent: *',
         'Allow: /',
         '',
-        '# Injected spam namespaces from the previous WordPress compromise.',
-        '# These return HTTP 410; the rules stop crawlers re-requesting them.',
-        'Disallow: /category/',
-        'Disallow: /tag/',
+        /*
+         * NOTE: /category/ and /tag/ were previously disallowed here. That was
+         * counterproductive. Those namespaces are injected spam from the
+         * WordPress compromise and return HTTP 410, but a crawler that is
+         * disallowed never requests the URL, so it never sees the 410 and the
+         * page can sit in the index as "indexed, though blocked by robots.txt"
+         * indefinitely. Letting crawlers fetch them is what actually removes
+         * them. The rules can go back once the URLs are gone from the index.
+         */
         '',
         `Sitemap: ${PRODUCTION_ORIGIN}/sitemap.xml`,
         '',

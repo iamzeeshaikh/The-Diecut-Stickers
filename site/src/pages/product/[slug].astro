@@ -54,6 +54,10 @@ const descriptionHtml = product.description
  * price shown on the page, free shipping (advertised across product copy) and
  * the 10-day free-return-by-mail policy documented at /refund_returns/.
  */
+
+/** Site-wide per-sticker entry price, used if a record ever carries none. */
+const UNIT_PRICE = 0.3;
+
 const schema: Record<string, unknown>[] = [
   {
     '@context': 'https://schema.org',
@@ -69,57 +73,55 @@ const schema: Record<string, unknown>[] = [
       .map((i) => resolveImage(i))
       .filter((i) => i !== undefined)
       .map((i) => absoluteUrl(i!.src)),
-    ...(product.price
-      ? {
-          offers: {
-            '@type': 'Offer',
-            url: absoluteUrl(path),
-            price: Number(product.price).toFixed(2),
-            priceCurrency: 'USD',
-            priceValidUntil: '2027-08-04',
-            availability: 'https://schema.org/InStock',
-            itemCondition: 'https://schema.org/NewCondition',
-            seller: { '@id': absoluteUrl('/#organization') },
-            shippingDetails: {
-              '@type': 'OfferShippingDetails',
-              shippingRate: {
-                '@type': 'MonetaryAmount',
-                value: '0.00',
-                currency: 'USD',
-              },
-              shippingDestination: {
-                '@type': 'DefinedRegion',
-                addressCountry: 'US',
-              },
-              deliveryTime: {
-                '@type': 'ShippingDeliveryTime',
-                // Production turnaround stated on-site ranges 3-10 business
-                // days depending on the product; FedEx ground transit after.
-                handlingTime: {
-                  '@type': 'QuantitativeValue',
-                  minValue: 3,
-                  maxValue: 10,
-                  unitCode: 'DAY',
-                },
-                transitTime: {
-                  '@type': 'QuantitativeValue',
-                  minValue: 2,
-                  maxValue: 5,
-                  unitCode: 'DAY',
-                },
-              },
-            },
-            hasMerchantReturnPolicy: {
-              '@type': 'MerchantReturnPolicy',
-              applicableCountry: 'US',
-              returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
-              merchantReturnDays: 10,
-              returnMethod: 'https://schema.org/ReturnByMail',
-              returnFees: 'https://schema.org/FreeReturn',
-            },
+    offers: {
+      '@type': 'Offer',
+      url: absoluteUrl(path),
+      // Every product must reach Google with a concrete price, so this falls
+      // back to the site-wide entry price rather than dropping the offer.
+      price: (Number(product.price) || UNIT_PRICE).toFixed(2),
+      priceCurrency: 'USD',
+      priceValidUntil: '2027-08-04',
+      availability: 'https://schema.org/InStock',
+      itemCondition: 'https://schema.org/NewCondition',
+      seller: { '@id': absoluteUrl('/#organization') },
+      shippingDetails: {
+        '@type': 'OfferShippingDetails',
+        shippingRate: {
+          '@type': 'MonetaryAmount',
+          value: '0.00',
+          currency: 'USD',
+        },
+        shippingDestination: {
+          '@type': 'DefinedRegion',
+          addressCountry: 'US',
+        },
+        deliveryTime: {
+          '@type': 'ShippingDeliveryTime',
+          // Production turnaround stated on-site ranges 3-10 business
+          // days depending on the product; FedEx ground transit after.
+          handlingTime: {
+            '@type': 'QuantitativeValue',
+            minValue: 3,
+            maxValue: 10,
+            unitCode: 'DAY',
           },
-        }
-      : {}),
+          transitTime: {
+            '@type': 'QuantitativeValue',
+            minValue: 2,
+            maxValue: 5,
+            unitCode: 'DAY',
+          },
+        },
+      },
+      hasMerchantReturnPolicy: {
+        '@type': 'MerchantReturnPolicy',
+        applicableCountry: 'US',
+        returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+        merchantReturnDays: 10,
+        returnMethod: 'https://schema.org/ReturnByMail',
+        returnFees: 'https://schema.org/FreeReturn',
+      },
+    },
   },
   {
     '@context': 'https://schema.org',

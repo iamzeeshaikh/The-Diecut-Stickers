@@ -1,0 +1,49 @@
+---
+/**
+ * Root-level catch-all that returns HTTP 410 for the injected spam pages left
+ * behind by the WordPress compromise, and 404 for anything else.
+ *
+ * Why a list and not a blanket 410 on every unknown URL: a 410 asserts the
+ * address is permanently dead. That is true of the spam, but it is not true of
+ * a mistyped or future URL, so unknown addresses keep returning 404.
+ *
+ * The slugs in src/data/spam-urls.json were taken from Search Console — every
+ * root-level URL Google had indexed that is not part of the clean catalogue.
+ * They were serving HTTP 404, which de-indexes eventually; 410 says the removal
+ * is permanent and is acted on faster.
+ *
+ * Spam is never redirected anywhere. Pointing these at commercial pages would
+ * pass their signals into the clean site.
+ *
+ * Static routes take precedence over this one, so /about-us/, /blog/,
+ * /sitemap.xml and the rest are unaffected. Deeper paths (/product/*,
+ * /category/*, /tag/*) never reach here either — /category and /tag have their
+ * own 410 routes.
+ */
+import GonePage from '../components/GonePage.astro';
+import NotFoundPage from '../components/NotFoundPage.astro';
+import spamUrls from '../data/spam-urls.json';
+
+export const prerender = false;
+
+const SPAM = new Set(spamUrls as string[]);
+
+const raw = Astro.params.slug ?? '';
+// Non-Latin spam slugs (Greek, Bengali) arrive percent-encoded.
+let slug = raw;
+try {
+  slug = decodeURIComponent(raw);
+} catch {
+  // Malformed escape sequence — fall back to the raw value, which will simply
+  // miss the set and 404.
+}
+
+const isSpam = SPAM.has(slug) || SPAM.has(raw);
+
+if (!isSpam) {
+  Astro.response.status = 404;
+  Astro.response.statusText = 'Not Found';
+}
+---
+
+{isSpam ? <GonePage /> : <NotFoundPage />}
