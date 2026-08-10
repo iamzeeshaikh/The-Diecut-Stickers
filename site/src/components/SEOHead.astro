@@ -67,12 +67,11 @@ const robots = IS_PREVIEW || noindex ? 'noindex,nofollow' : 'index,follow,max-im
 <meta name="twitter:description" content={description} />
 {image && <meta name="twitter:image" content={image} />}
 
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-  rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?family=ADLaM+Display&display=swap"
-/>
+{/* No webfont is loaded on purpose. ADLaM Display used to be pulled from
+    Google Fonts here, but nothing ever applied it — the --font-display
+    variable it fed was declared and never used — so it was a render-blocking
+    third-party stylesheet (~1.07s of the 2.46s FCP) for a face that never
+    painted. Body and headings both use the system stack. */}
 
 {
   schema.map((s) => (
