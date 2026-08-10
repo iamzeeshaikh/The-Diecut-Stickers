@@ -25,6 +25,15 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'Refund and Returns Polic
         ...(c.href ? { item: absoluteUrl(c.href) } : {}),
       })),
     },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      '@id': absoluteUrl(path) + '#webpage',
+      url: absoluteUrl(path),
+      name: 'Refund and Returns Policy ',
+      description: ' The Die Cut Stickers|Our refund and returns policy for custom printed stickers, including how to report a print or delivery issue.',
+      inLanguage: 'en-US',
+    },
   ]}
 >
   <Breadcrumbs items={crumbs} />

@@ -26,6 +26,15 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'About Us' }];
         ...(c.href ? { item: absoluteUrl(c.href) } : {}),
       })),
     },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'AboutPage',
+      '@id': absoluteUrl(path) + '#webpage',
+      url: absoluteUrl(path),
+      name: 'About Us | The Die Cut Stickers',
+      description: 'The Die Cut Stickers prints precision-cut custom stickers for branding, packaging and events, with experienced designers and premium materials.',
+      inLanguage: 'en-US',
+    },
   ]}
 >
   <Breadcrumbs items={crumbs} />

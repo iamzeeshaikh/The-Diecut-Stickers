@@ -49,16 +49,25 @@ const content = page.content
   path="/"
   schema={[
     {
+      // The homepage lists the catalogue, so the page itself is the
+      // CollectionPage that owns the list rather than a floating ItemList.
       '@context': 'https://schema.org',
-      '@type': 'ItemList',
-      name: 'Custom die cut stickers',
-      numberOfItems: products.length,
-      itemListElement: products.map((p, i) => ({
-        '@type': 'ListItem',
-        position: i + 1,
-        name: p.name,
-        url: absoluteUrl(`/product/${p.slug}/`),
-      })),
+      '@type': 'CollectionPage',
+      '@id': absoluteUrl('/') + '#collection',
+      url: absoluteUrl('/'),
+      name: page.seoTitle,
+      description: page.seoDescription,
+      mainEntity: {
+        '@type': 'ItemList',
+        name: 'Custom die cut stickers',
+        numberOfItems: products.length,
+        itemListElement: products.map((p, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: p.name,
+          url: absoluteUrl(`/product/${p.slug}/`),
+        })),
+      },
     },
   ]}
 >

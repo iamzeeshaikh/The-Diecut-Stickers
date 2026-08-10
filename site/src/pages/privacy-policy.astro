@@ -25,6 +25,15 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'Privacy Policy' }];
         ...(c.href ? { item: absoluteUrl(c.href) } : {}),
       })),
     },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      '@id': absoluteUrl(path) + '#webpage',
+      url: absoluteUrl(path),
+      name: 'Privacy Policy ',
+      description: ' The Die Cut Stickers|How The Die Cut Stickers collects, uses and protects the information you share when you request a quote or place a custom sticker order.',
+      inLanguage: 'en-US',
+    },
   ]}
 >
   <Breadcrumbs items={crumbs} />
