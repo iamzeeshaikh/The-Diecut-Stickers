@@ -1,0 +1,45 @@
+---
+/**
+ * The 410 body. Rendered by GonePage.astro (on-demand routes, which set the
+ * status themselves) and by src/pages/410.astro (prerendered, whose status is
+ * supplied by the Vercel route that serves it).
+ *
+ * Sets no status of its own: prerendered pages ignore Astro.response and Astro
+ * warns when it is set there.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Page removed | The Die Cut Stickers"
+  description="This page has been permanently removed."
+  path="/410/"
+  noindex
+>
+  <section class="section">
+    <div class="container narrow">
+      <p class="code">410</p>
+      <h1>This page has been permanently removed</h1>
+      <p>
+        The address you followed pointed at content that was never part of this website. It has
+        been deleted and will not return.
+      </p>
+      <p>
+        <a class="btn btn-primary" href="/">Go to the homepage</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .narrow {
+    max-width: 720px;
+  }
+  .code {
+    font-size: 3.4rem;
+    font-weight: 800;
+    color: var(--purple);
+    margin: 0;
+    line-height: 1;
+  }
+</style>

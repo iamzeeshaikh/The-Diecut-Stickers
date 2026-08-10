@@ -6,8 +6,12 @@
  *
  * They are deliberately NOT redirected anywhere: pointing spam URLs at
  * commercial pages would pass their signals into the clean site.
+ *
+ * For on-demand routes only — the status set here is what makes it a 410.
+ * Prerendered pages render GoneBody directly and take their status from the
+ * Vercel route that serves them.
  */
-import BaseLayout from '../layouts/BaseLayout.astro';
+import GoneBody from './GoneBody.astro';
 
 Astro.response.status = 410;
 Astro.response.statusText = 'Gone';
@@ -15,36 +19,4 @@ Astro.response.headers.set('cache-control', 'public, max-age=3600');
 Astro.response.headers.set('x-robots-tag', 'noindex, nofollow');
 ---
 
-<BaseLayout
-  title="Page removed | The Die Cut Stickers"
-  description="This page has been permanently removed."
-  path="/410/"
-  noindex
->
-  <section class="section">
-    <div class="container narrow">
-      <p class="code">410</p>
-      <h1>This page has been permanently removed</h1>
-      <p>
-        The address you followed pointed at content that was never part of this website. It has
-        been deleted and will not return.
-      </p>
-      <p>
-        <a class="btn btn-primary" href="/">Go to the homepage</a>
-      </p>
-    </div>
-  </section>
-</BaseLayout>
-
-<style>
-  .narrow {
-    max-width: 720px;
-  }
-  .code {
-    font-size: 3.4rem;
-    font-weight: 800;
-    color: var(--purple);
-    margin: 0;
-    line-height: 1;
-  }
-</style>
+<GoneBody />

@@ -1,0 +1,38 @@
+---
+/**
+ * Fallback for /product/* addresses that are not in the catalogue.
+ *
+ * Real products are prerendered by ./[slug].astro, which is the more specific
+ * route and is emitted as static HTML at build time, so it always wins. Only
+ * addresses with no static file reach this one.
+ *
+ * The slugs in src/data/gone-product-slugs.json are the burger-box catalogue
+ * that the previous owner's WordPress install carried. They never existed as
+ * products on this domain and never will, so they get a 410. Everything else —
+ * typos, guesses, a product slug that might exist later — keeps returning 404.
+ */
+import GonePage from '../../components/GonePage.astro';
+import NotFoundPage from '../../components/NotFoundPage.astro';
+import goneSlugs from '../../data/gone-product-slugs.json';
+
+export const prerender = false;
+
+const GONE = new Set(goneSlugs as string[]);
+
+const raw = Astro.params.gone ?? '';
+let slug = raw;
+try {
+  slug = decodeURIComponent(raw);
+} catch {
+  // Malformed escape sequence — fall through to the 404 below.
+}
+
+const isGone = GONE.has(slug) || GONE.has(raw);
+
+if (!isGone) {
+  Astro.response.status = 404;
+  Astro.response.statusText = 'Not Found';
+}
+---
+
+{isGone ? <GonePage /> : <NotFoundPage />}

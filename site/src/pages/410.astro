@@ -1,0 +1,17 @@
+---
+/**
+ * Prerendered 410 body, served by the Vercel route that the
+ * `gone-namespaces` integration in astro.config.mjs injects. That route
+ * supplies the 410 status; this page only supplies the HTML.
+ *
+ * Needed because URLs ending in a file extension can never reach an Astro
+ * route on this site: `trailingSlash: 'always'` makes every emitted route
+ * pattern require a trailing slash, and Vercel's own normalisation refuses to
+ * add one to a path whose last segment contains a dot. See astro.config.mjs.
+ *
+ * Excluded from the sitemap by hand — see src/pages/sitemap.xml.ts.
+ */
+import GoneBody from '../components/GoneBody.astro';
+---
+
+<GoneBody />
