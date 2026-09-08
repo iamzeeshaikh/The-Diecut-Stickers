@@ -176,8 +176,8 @@ OWNER_PRICES = {
     "die-cut-paper-stickers": "0.30",
 }
 
-NEW_PHONE_DISPLAY = "(503) 358-0443"
-NEW_PHONE_HREF = "+15033580443"
+NEW_PHONE_DISPLAY = "(503) 461-4788"
+NEW_PHONE_HREF = "+15034614788"
 
 
 def update_phone(s: str) -> str:

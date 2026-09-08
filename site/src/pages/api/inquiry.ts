@@ -8,6 +8,8 @@
 import type { APIRoute } from 'astro';
 import { PRODUCTION_ORIGIN, SITE } from '../../lib/site';
 
+const LEAD_RECIPIENTS = ['shanimazhar82@gmail.com', 'dev@zeecustomboxes.com'] as const;
+
 export const prerender = false;
 
 /**
@@ -276,8 +278,6 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   const host = env('SMTP_HOST');
   const user = env('SMTP_USER');
   const pass = env('SMTP_PASS');
-  const to = env('SMTP_TO') || env('INQUIRY_TO') || SITE.email;
-
   const port = Number(env('SMTP_PORT') || 465);
   /*
    * Derived from the port rather than defaulted to true: 465 is implicit TLS,
@@ -323,7 +323,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 
     await transport.sendMail({
       from: `"${fromName}" <${fromEmail}>`,
-      to,
+      to: [...LEAD_RECIPIENTS],
       replyTo: `${headerSafe(name)} <${headerSafe(email)}>`,
       subject: headerSafe(
         product ? `Quote request: ${product}` : 'Website enquiry',

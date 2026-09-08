@@ -384,7 +384,7 @@ async function main() {
     : pass('retired phone number is absent');
 
   // And the current one must actually be reachable.
-  const NEW_PHONE = 'tel:+15033580443';
+  const NEW_PHONE = 'tel:+15034614788';
   const missingPhone = [...pages.entries()].filter(([, h]) => !h.includes(NEW_PHONE));
   missingPhone.length
     ? fail('current phone number is present sitewide', missingPhone.map(([u]) => u).slice(0, 6).join(', '))
