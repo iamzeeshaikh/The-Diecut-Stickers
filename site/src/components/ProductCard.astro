@@ -2,28 +2,32 @@
 import { Image } from 'astro:assets';
 import type { Product } from '../lib/catalogue';
 import { resolveImage, productAlt } from '../lib/images';
+import { displayName, productContent } from '../lib/product-content';
+import { FACTS } from '../lib/facts';
 
 interface Props {
   product: Product;
-  /** Above-the-fold cards load eagerly; everything else is lazy. */
   eager?: boolean;
-  /** The published archive loop showed the category above the product name. */
   showCategory?: boolean;
 }
 const { product, eager = false, showCategory = false } = Astro.props;
 const img = resolveImage(product.images[0] ?? '');
+const name = displayName(product);
+const rewrite = productContent(product.slug);
+const blurb = rewrite?.tagline ?? '';
+const price = Number(product.price) || FACTS.unitPriceFrom;
 ---
 
-<article class="card">
+<article class="card product-card">
   <a class="card-link" href={`/product/${product.slug}/`}>
     <div class="thumb">
       {
         img ? (
           <Image
             src={img}
-            alt={productAlt(product.name, 0, product.images.length)}
-            widths={[240, 360, 480]}
-            sizes="(max-width: 560px) 45vw, (max-width: 960px) 30vw, 300px"
+            alt={productAlt(name, 0, product.images.length)}
+            widths={[300, 420, 600]}
+            sizes="(max-width: 560px) 46vw, (max-width: 960px) 31vw, 300px"
             loading={eager ? 'eager' : 'lazy'}
             decoding={eager ? 'sync' : 'async'}
           />
@@ -34,22 +38,23 @@ const img = resolveImage(product.images[0] ?? '');
     </div>
     <div class="meta">
       {showCategory && <p class="cat">{product.category}</p>}
-      {product.price && <p class="price">${Number(product.price).toFixed(2)}</p>}
-      <h3 class="name">{product.name}</h3>
+      <h3 class="name">{name}</h3>
+      {blurb && <p class="blurb">{blurb}</p>}
+      <p class="price">
+        From <strong>${price.toFixed(2)}</strong> per sticker
+      </p>
     </div>
   </a>
 </article>
 
 <style>
-  .card {
-    background: var(--white);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-sm);
+  .product-card {
     overflow: hidden;
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
     height: 100%;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
   }
-  .card:hover {
+  .product-card:hover {
+    border-color: var(--line-strong);
     box-shadow: var(--shadow);
     transform: translateY(-2px);
   }
@@ -62,47 +67,66 @@ const img = resolveImage(product.images[0] ?? '');
   }
   .thumb {
     aspect-ratio: 1 / 1;
-    background: #f4f6fa;
-    display: grid;
-    place-items: center;
+    background: var(--paper);
     overflow: hidden;
+    border-bottom: 1px solid var(--line);
   }
   .thumb :global(img) {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  .product-card:hover .thumb :global(img) {
+    transform: scale(1.03);
   }
   .placeholder {
-    font-size: 0.78rem;
+    display: grid;
+    place-items: center;
+    height: 100%;
+    font-size: 0.8rem;
     color: var(--muted);
-    text-align: center;
-    padding: 12px;
   }
   .meta {
-    padding: 14px 12px 18px;
-    text-align: center;
+    padding: 14px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
   }
   .cat {
-    margin: 0 0 4px;
-    font-size: 0.75rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    margin: 0;
+    font-size: 0.78rem;
     color: var(--muted);
-  }
-  .price {
-    margin: 0 0 4px;
-    font-weight: 700;
-    color: var(--ink);
-    font-size: 0.95rem;
   }
   .name {
     margin: 0;
-    font-size: 0.95rem;
-    font-weight: 600;
+    font-family: var(--font);
+    font-size: 1.05rem;
+    font-weight: 700;
     color: var(--ink);
-    line-height: 1.4;
+    line-height: 1.3;
   }
   .card-link:hover .name {
-    color: var(--purple-dark);
+    color: var(--teal-dark);
+  }
+  .blurb {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.45;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .price {
+    margin: auto 0 0;
+    padding-top: 8px;
+    font-size: 0.92rem;
+    color: var(--muted);
+  }
+  .price strong {
+    color: var(--ink);
   }
 </style>

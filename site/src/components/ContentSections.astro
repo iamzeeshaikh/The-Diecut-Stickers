@@ -1,0 +1,40 @@
+---
+/**
+ * Renders the h2 + html sections from a content JSON. Tables are wrapped so
+ * they scroll inside their own box on phones instead of the page.
+ */
+import type { ContentSection } from '../lib/category-content';
+
+interface Props {
+  sections: ContentSection[];
+  class?: string;
+}
+const { sections, class: cls } = Astro.props;
+const slug = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+const wrap = (html: string) =>
+  html.replace(/<table/gi, '<div class="table-scroll"><table').replace(/<\/table>/gi, '</table></div>');
+---
+
+<div class:list={['rich-text', 'content-sections', cls]}>
+  {
+    sections.map((s) => (
+      <section id={slug(s.h2)}>
+        <h2>{s.h2}</h2>
+        <Fragment set:html={wrap(s.html)} />
+      </section>
+    ))
+  }
+</div>
+
+<style>
+  .content-sections section + section {
+    margin-top: 2.2rem;
+  }
+  .content-sections :global(h3) {
+    margin-top: 1.3em;
+  }
+</style>

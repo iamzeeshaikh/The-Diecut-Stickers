@@ -1,0 +1,48 @@
+{
+  "slug": "shape-size",
+  "navLabel": "Shapes & Sizes",
+  "name": "Sticker Shapes and Sizes",
+  "h1": "Custom Sticker Shapes and Sizes",
+  "seoTitle": "Custom Sticker Shapes and Sizes | Small to Large Die Cut",
+  "seoDescription": "Custom stickers cut to any shape, from half-inch mini labels to 24 x 36 inch large format. Size charts by use, shape options, and what artwork each cut needs.",
+  "tagline": "Any outline, any size from half an inch to three feet. Here is how to choose a size that gets read and a shape that cuts cleanly.",
+  "quickAnswer": "Custom sticker size and shape are set by your artwork, not a fixed catalog: we cut to any outline from 0.5 inch up to 24 by 36 inches. Small stickers suit product labels, seals and sheets; large stickers suit walls, vehicles and signage. Every shape is priced by its square-inch area and quantity, from $0.30 per sticker.",
+  "sections": [
+    {
+      "h2": "Size is a reading-distance decision",
+      "html": "<p>The right size is the smallest one that can be read from wherever the viewer stands. A jar label is read at arm's length, so 2 inches is plenty. A van door is read from across a parking lot, so letters need to be at least 3 inches tall and the whole graphic 18 inches or more. Ordering bigger than the reading distance needs wastes material; ordering smaller turns the sticker into a decoration nobody can read.</p><ol><li>Measure the surface and note the flat area, not the total area.</li><li>Decide the longest distance the sticker must be read from.</li><li>Allow about 1 inch of letter height per 10 feet of distance.</li><li>Print your artwork at that size on office paper and tape it in place.</li><li>Adjust before you order; a proof on screen never shows scale.</li></ol><p>The <a href=\"/blog/custom-sticker-sizes-from-mini-to-large-format/\">sticker sizing guide from mini to large format</a> has distance tables for packaging, laptops, windows and vehicles.</p>"
+    },
+    {
+      "h2": "Common sizes by use",
+      "html": "<table><thead><tr><th>Use</th><th>Typical size</th><th>Shape that works</th><th>Product page</th></tr></thead><tbody><tr><td>Packaging seals and tamper labels</td><td>1 to 1.5 in</td><td>Circle, oval</td><td>Small stickers</td></tr><tr><td>Jar, bottle and candle labels</td><td>2 to 4 in</td><td>Rectangle, rounded rectangle, die cut</td><td>Packaging labels</td></tr><tr><td>Laptop and water bottle stickers</td><td>2.5 to 4 in</td><td>Die cut to artwork</td><td>Die cut vinyl</td></tr><tr><td>Window and door graphics</td><td>6 to 18 in</td><td>Die cut, clear film</td><td>Window stickers</td></tr><tr><td>Vehicle doors and tailgates</td><td>12 to 24 in</td><td>Die cut, cast vinyl</td><td>Car stickers</td></tr><tr><td>Walls, floors and signage</td><td>18 to 36 in</td><td>Die cut, large format</td><td>Large stickers</td></tr></tbody></table><p>Sizes are quoted by the bounding box of the shape (the smallest rectangle that contains it), so a 4-inch circle and a 4-inch square cost the same. Our <a href=\"/product/custom-small-stickers/\">custom small stickers page</a> covers the sheet and roll options that make tiny sizes economical.</p>"
+    },
+    {
+      "h2": "Shapes: standard cuts versus die cut outlines",
+      "html": "<p>Standard shapes are circles, squares, rectangles, rounded rectangles and ovals. They nest tightly on the sheet, cut fast and are the cheapest way to get a given area. Die cut shapes follow your artwork outline: a logo, a mascot, a product silhouette, a piece of lettering. The cut path comes from your vector file with a 1/16-inch offset so the blade never clips the printed edge. Kiss cut sheets are a third option, where several shapes sit on one backing sheet and peel individually.</p><ul><li>Circle or square when the design has a border or a photo background.</li><li>Die cut when the design is a logo, character or word mark on its own.</li><li>Kiss cut sheets for sticker packs, planner stickers and giveaways.</li><li>Rounded corners on rectangles, because sharp corners lift first.</li><li>Inside cut-outs only on pieces larger than 3 inches.</li></ul><p>Die cut work for brands is explained in detail on the <a href=\"/product/die-cut-logo-stickers/\">die cut logo sticker page</a>, including the minimum line widths that survive cutting.</p>"
+    },
+    {
+      "h2": "Small stickers: sheets, rolls and minimum detail",
+      "html": "<p>Anything under 2 inches is a small sticker, and the floor is about 0.5 inch for a die cut piece or 0.75 inch for anything carrying text. Below that, type becomes unreadable and peeling the sticker from its backing takes tweezers. Small runs are usually supplied on sheets or rolls rather than as individual pieces; rolls suit a label dispenser on a packing bench, sheets suit hand application and sticker packs. Keep stroke widths above 1 point and avoid thin serifs. Type below 6 point should be bold.</p>"
+    },
+    {
+      "h2": "Large stickers: material and application change",
+      "html": "<p>Past about 12 inches, the material matters more than the print. Calendered vinyl shrinks a little over time and can pull away at the edges on a large piece; cast vinyl does not, so vehicle and long-term wall graphics over 18 inches are quoted on cast film. Application changes too: large pieces go on with a squeegee and, on glass, a wet method that lets you slide the graphic into place before the adhesive grabs. Large format sizes top out at 24 by 36 inches in one piece; bigger graphics are supplied in panels with overlap marks. The <a href=\"/product/custom-large-stickers/\">custom large stickers page</a> lists material choices by size and surface, and the die cut version covers shaped wall and vehicle graphics.</p>"
+    },
+    {
+      "h2": "Artwork rules that decide whether a shape will cut",
+      "html": "<p>A die cut needs a vector outline (AI, EPS, SVG or PDF) or a PNG with a transparent background at 300 dpi that we can trace. Points narrower than 0.1 inch, stems thinner than 0.08 inch and inside corners sharper than about 30 degrees do not cut reliably; we round or thicken them on the proof and show you the change. Text that is meant to be cut as separate letters becomes a single sticker with a clear or white bridge between letters unless you want individual pieces. If you are unsure, send the file through the quote form and we return a proof with the cut line drawn in red before anything is printed.</p>"
+    }
+  ],
+  "faqs": [
+    { "q": "What is the smallest custom sticker you can make?", "a": "Half an inch across for a plain die cut shape, and about three-quarters of an inch for anything carrying text you expect people to read. Below that the sticker is hard to peel and type under 6 point disappears. Small sizes are supplied on sheets or rolls." },
+    { "q": "What is the largest sticker size available?", "a": "Twenty-four by thirty-six inches in a single piece. Larger graphics are printed in panels with overlap marks and applied one at a time. Pieces over 18 inches are quoted on cast vinyl so they do not shrink or lift at the edges." },
+    { "q": "How is a die cut sticker priced by size?", "a": "By the bounding box, the smallest rectangle that fits the shape, multiplied by the quantity. A 3-inch circle and a 3-inch square cost the same. Complex outlines with fine points add a small amount for cutting time, which we show on the quote." },
+    { "q": "Can a sticker have a hole or cut-out in the middle?", "a": "Yes, on pieces larger than about 3 inches. Inside cut-outs are weeded by hand, so they add a little to the price and need to be at least 0.25 inch across. On small stickers we recommend printing the hole as white or clear instead." },
+    { "q": "Should I order kiss cut sheets or individual die cut stickers?", "a": "Sheets when several designs ship together or the sticker is handed out in packs; the backing keeps them flat and easy to peel. Individual die cut pieces when each sticker is applied on its own, such as a logo on a product or a laptop." },
+    { "q": "What file do I need for a custom shape?", "a": "A vector file (AI, EPS, SVG or PDF) with the outline as a path, or a 300 dpi PNG with a transparent background that we can trace. We add a 1/16-inch offset and send the cut line back on the proof in red so you can see exactly where the blade runs." },
+    { "q": "Do rounded corners matter on rectangular stickers?", "a": "Yes. Sharp corners catch on fingers, sleeves and packaging and are the first place a sticker lifts. A corner radius of 0.125 inch on small labels and 0.25 inch on larger rectangles noticeably extends how long the sticker stays flat." },
+    { "q": "How big should lettering be to read from a distance?", "a": "Roughly 1 inch of letter height for every 10 feet of reading distance. A sticker read from a sidewalk 30 feet away needs 3-inch letters; a label read in hand needs 10 to 12 point. Print the artwork at size on paper and test it before ordering." },
+    { "q": "Can I order the same design in several sizes?", "a": "Yes. Each size is a separate run with its own 100-piece minimum, but they share one setup and one proof, so the second and third sizes cost less than a fresh order. Many brands order 2-inch, 3-inch and 4-inch versions of one logo." },
+    { "q": "Why did the shape on my proof change slightly from my file?", "a": "Our prepress team smooths points narrower than 0.1 inch and thickens stems under 0.08 inch so the cut does not tear or lift. The proof marks every change. If a detail must stay, we can print it inside a simpler outline instead." }
+  ]
+}

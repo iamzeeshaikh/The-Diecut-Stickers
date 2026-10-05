@@ -1,0 +1,72 @@
+---
+/**
+ * A short, quotable definition under the H1. Written so a search engine or
+ * assistant can lift it as the direct answer; styled as a plain callout,
+ * not a badge.
+ */
+interface Props {
+  text: string;
+  highlights?: string[];
+}
+const { text, highlights = [] } = Astro.props;
+---
+
+<div class="quick">
+  <p class="quick-text">{text}</p>
+  {
+    highlights.length > 0 && (
+      <dl class="quick-facts">
+        {highlights.map((h) => {
+          const [k, ...rest] = h.split(':');
+          const v = rest.join(':').trim();
+          return v ? (
+            <div>
+              <dt>{k.trim()}</dt>
+              <dd>{v}</dd>
+            </div>
+          ) : (
+            <div>
+              <dd>{h}</dd>
+            </div>
+          );
+        })}
+      </dl>
+    )
+  }
+</div>
+
+<style>
+  .quick {
+    border-left: 3px solid var(--teal);
+    padding: 4px 0 4px 18px;
+    margin: 0 0 1.5rem;
+  }
+  .quick-text {
+    font-size: 1.08rem;
+    color: var(--ink-soft);
+    margin: 0;
+    max-width: 72ch;
+  }
+  .quick-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 26px;
+    margin: 12px 0 0;
+    font-size: 0.93rem;
+  }
+  .quick-facts div {
+    display: flex;
+    gap: 6px;
+  }
+  .quick-facts dt {
+    color: var(--muted);
+  }
+  .quick-facts dt::after {
+    content: ':';
+  }
+  .quick-facts dd {
+    margin: 0;
+    color: var(--ink);
+    font-weight: 600;
+  }
+</style>

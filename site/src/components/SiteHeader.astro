@@ -1,40 +1,42 @@
 ---
 import { Image } from 'astro:assets';
 import { SITE } from '../lib/site';
-import { categories } from '../lib/catalogue';
-// Trimmed variant: the source PNG pads a 300x300 badge into a 500x300 canvas,
-// which made the logo render far smaller than its box.
+import { FACTS } from '../lib/facts';
+import { categories, productsInCategory } from '../lib/catalogue';
+import { categoryMeta } from '../lib/category-content';
+import { resolveImage } from '../lib/images';
 import logo from '../assets/img/logo-badge.png';
-import MobileNavigation from './MobileNavigation.astro';
 
-// The published main menu carried Home, Products and three category links.
-// Blog is appended: it is new to the rebuild, so it has no published position
-// to preserve.
-const NAV = [
-  { label: 'Home', href: '/' },
-  { label: 'Products', href: '/products/' },
-  ...['by-material', 'shape-size', 'sticker-types']
-    .map((s) => categories.find((c) => c.slug === s))
-    .filter((c) => c !== undefined)
-    .map((c) => ({ label: c!.name, href: `/product-category/${c!.slug}/` })),
+/*
+ * One "Stickers" menu that exposes every category and every product, so no
+ * product sits more than one hover away from any page. Desktop: a full-width
+ * panel; phones: the same lists inside an off-canvas drawer with per-category
+ * accordions. Both are plain HTML + a few lines of JS for aria state.
+ */
+const groups = categories.map((c) => {
+  const meta = categoryMeta(c.slug);
+  const items = productsInCategory(c.slug);
+  const thumb = items[0] ? resolveImage(items[0].images[0] ?? '') : undefined;
+  return { slug: c.slug, href: `/product-category/${c.slug}/`, label: meta.navLabel, items, thumb };
+});
+
+const TOP = [
   { label: 'Blog', href: '/blog/' },
+  { label: 'About', href: '/about-us/' },
+  { label: 'Contact', href: '/contact-us/' },
 ];
 
 const current = Astro.url.pathname;
+const inStickers = current.startsWith('/product') || current === '/products/';
 ---
 
-<header class="site-header">
+<header class="site-header" id="site-header">
   <div class="top-row">
     <div class="container top-inner">
-      <a class="top-link" href={`mailto:${SITE.email}`}>
-        <span aria-hidden="true">✉</span> {SITE.email}
-      </a>
-      <a class="top-link" href={`tel:${SITE.phoneHref}`}>
-        <span aria-hidden="true">✆</span> {SITE.phone}
-      </a>
-      <div class="top-social">
-        <a href={SITE.social.facebook} aria-label="Facebook" rel="noopener noreferrer" target="_blank">f</a>
-        <a href={SITE.social.linkedin} aria-label="LinkedIn" rel="noopener noreferrer" target="_blank">in</a>
+      <p class="top-note">{FACTS.shipping} · {FACTS.proof} · Delivered in {FACTS.deliveryDays}</p>
+      <div class="top-links">
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+        <a href={`tel:${SITE.phoneHref}`}>{SITE.phoneDisplay}</a>
       </div>
     </div>
   </div>
@@ -42,15 +44,59 @@ const current = Astro.url.pathname;
   <div class="main-row">
     <div class="container main-inner">
       <a href="/" class="brand" aria-label={`${SITE.name} home`}>
-        <Image src={logo} alt={`${SITE.name} logo`} width={300} height={300} loading="eager" />
+        <Image src={logo} alt="" width={96} height={96} loading="eager" />
+        <span class="brand-text">
+          <span class="brand-name">The Die Cut Stickers</span>
+          <span class="brand-tag">Custom stickers, cut to any shape</span>
+        </span>
       </a>
 
       <nav class="primary-nav" aria-label="Primary">
         <ul>
+          <li class="has-menu">
+            <button
+              type="button"
+              class="nav-link menu-btn"
+              id="stickers-btn"
+              aria-expanded="false"
+              aria-controls="stickers-menu"
+              aria-current={inStickers ? 'page' : undefined}
+            >
+              Stickers
+              <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+            </button>
+            <div class="mega" id="stickers-menu" hidden>
+              <div class="container mega-inner">
+                {
+                  groups.map((g) => (
+                    <div class="mega-col">
+                      <a class="mega-head" href={g.href}>
+                        {g.thumb && <Image src={g.thumb} alt="" width={44} height={44} loading="lazy" />}
+                        <span>{g.label}</span>
+                      </a>
+                      <ul>
+                        {g.items.map((p) => (
+                          <li>
+                            <a href={`/product/${p.slug}/`}>{p.name}</a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))
+                }
+                <div class="mega-aside">
+                  <p class="mega-aside-title">Not sure which sticker you need?</p>
+                  <p>Tell us where it will be used and send your artwork. We reply with a price, a material suggestion and a free proof.</p>
+                  <a class="btn btn-primary" href="/get-a-quote/">Design your custom stickers</a>
+                  <a class="all-link" href="/products/">All 29 sticker products</a>
+                </div>
+              </div>
+            </div>
+          </li>
           {
-            NAV.map((item) => (
+            TOP.map((item) => (
               <li>
-                <a href={item.href} aria-current={current === item.href ? 'page' : undefined}>
+                <a class="nav-link" href={item.href} aria-current={current === item.href ? 'page' : undefined}>
                   {item.label}
                 </a>
               </li>
@@ -59,145 +105,522 @@ const current = Astro.url.pathname;
         </ul>
       </nav>
 
-      <a class="phone-pill" href={`tel:${SITE.phoneHref}`}>{SITE.phoneDisplay}</a>
-
-      <MobileNavigation items={NAV} />
+      <div class="header-actions">
+        <a class="phone" href={`tel:${SITE.phoneHref}`}>
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 006.6 6.6l2.2-2.2a1 1 0 011-.25c1.1.37 2.3.57 3.6.57a1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57a1 1 0 01-.25 1z" fill="currentColor"/></svg>
+          <span>{SITE.phoneDisplay}</span>
+        </a>
+        <a class="btn btn-primary quote-btn" href="/get-a-quote/">Get a Quote</a>
+        <button type="button" class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="mobile-menu">
+          <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span class="visually-hidden">Open menu</span>
+        </button>
+      </div>
     </div>
   </div>
+
+  <div class="drawer-backdrop" id="menu-backdrop" hidden></div>
+  <nav class="drawer" id="mobile-menu" aria-label="Mobile" hidden>
+    <div class="drawer-head">
+      <span class="drawer-title">Menu</span>
+      <button type="button" class="drawer-close" id="menu-close">
+        <span aria-hidden="true">×</span><span class="visually-hidden">Close menu</span>
+      </button>
+    </div>
+    <a class="btn btn-primary drawer-cta" href="/get-a-quote/">Get a Quote</a>
+    <p class="drawer-label">Stickers</p>
+    {
+      groups.map((g) => (
+        <details class="drawer-group">
+          <summary>{g.label}</summary>
+          <ul>
+            <li><a href={g.href}>All {g.label.toLowerCase()}</a></li>
+            {g.items.map((p) => (
+              <li>
+                <a href={`/product/${p.slug}/`}>{p.name}</a>
+              </li>
+            ))}
+          </ul>
+        </details>
+      ))
+    }
+    <ul class="drawer-links">
+      <li><a href="/products/">All products</a></li>
+      {TOP.map((i) => <li><a href={i.href}>{i.label}</a></li>)}
+    </ul>
+    <div class="drawer-contact">
+      <a href={`tel:${SITE.phoneHref}`}>{SITE.phoneDisplay}</a>
+      <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+    </div>
+  </nav>
 </header>
+
+<script>
+  const header = document.getElementById('site-header');
+  const btn = document.getElementById('stickers-btn');
+  const menu = document.getElementById('stickers-menu');
+  const li = btn?.closest('.has-menu');
+  let closeTimer: number | undefined;
+
+  function openMega() {
+    if (!btn || !menu) return;
+    window.clearTimeout(closeTimer);
+    menu.hidden = false;
+    btn.setAttribute('aria-expanded', 'true');
+    li?.classList.add('open');
+  }
+  function closeMega(now = false) {
+    if (!btn || !menu) return;
+    const run = () => {
+      menu.hidden = true;
+      btn.setAttribute('aria-expanded', 'false');
+      li?.classList.remove('open');
+    };
+    if (now) run();
+    else closeTimer = window.setTimeout(run, 120);
+  }
+  btn?.addEventListener('click', () => (menu?.hidden ? openMega() : closeMega(true)));
+  li?.addEventListener('mouseenter', () => {
+    if (window.matchMedia('(hover: hover)').matches) openMega();
+  });
+  li?.addEventListener('mouseleave', () => {
+    if (window.matchMedia('(hover: hover)').matches) closeMega();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeMega(true);
+      closeDrawer();
+    }
+  });
+  document.addEventListener('click', (e) => {
+    if (li && !li.contains(e.target as Node)) closeMega(true);
+  });
+
+  const toggle = document.getElementById('menu-toggle');
+  const drawer = document.getElementById('mobile-menu');
+  const backdrop = document.getElementById('menu-backdrop');
+  const close = document.getElementById('menu-close');
+  function openDrawer() {
+    if (!drawer || !backdrop || !toggle) return;
+    drawer.hidden = false;
+    backdrop.hidden = false;
+    toggle.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => drawer.classList.add('open'));
+  }
+  function closeDrawer() {
+    if (!drawer || !backdrop || !toggle || drawer.hidden) return;
+    drawer.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    window.setTimeout(() => {
+      drawer.hidden = true;
+      backdrop.hidden = true;
+    }, 200);
+  }
+  toggle?.addEventListener('click', () => (drawer?.hidden ? openDrawer() : closeDrawer()));
+  close?.addEventListener('click', closeDrawer);
+  backdrop?.addEventListener('click', closeDrawer);
+
+  // Compact header after scrolling past the top bar.
+  let last = 0;
+  window.addEventListener(
+    'scroll',
+    () => {
+      const y = window.scrollY;
+      if ((y > 40) !== (last > 40)) header?.classList.toggle('scrolled', y > 40);
+      last = y;
+    },
+    { passive: true },
+  );
+</script>
 
 <style>
   .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 60;
     background: var(--white);
+    border-bottom: 1px solid var(--line);
   }
-
   .top-row {
-    background: var(--teal);
-    color: #fff;
-    font-size: 0.9rem;
+    background: var(--ink);
+    color: #d9e2de;
+    font-size: 0.86rem;
+    transition: height 0.2s ease;
   }
   .top-inner {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    gap: 24px;
-    flex-wrap: wrap;
-    padding-block: 12px;
+    gap: 16px;
+    min-height: 36px;
   }
-  .top-link {
+  .top-note {
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .top-links {
+    display: flex;
+    gap: 20px;
+    flex: 0 0 auto;
+  }
+  .top-links a {
     color: #fff;
     text-decoration: none;
-    white-space: nowrap;
-    /* Standalone links, so they carry a full-size tap target. */
-    display: inline-block;
-    padding: 3px 2px;
-    min-height: 24px;
   }
-  .top-link:hover {
-    color: #fff;
+  .top-links a:hover {
     text-decoration: underline;
   }
-  .top-social {
-    display: flex;
-    gap: 8px;
-  }
-  .top-social a {
-    display: grid;
-    place-items: center;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    /* Brand-blue pills as published. Facebook's #1877f2 gives white text only
-       4.23:1, so each is nudged to the nearest darker shade that clears AA. */
-    background: #1462c4;
-    color: #fff;
-    font-size: 0.72rem;
-    font-weight: 700;
-    text-decoration: none;
-  }
-  .top-social a:last-child {
-    background: #0a66c2;
-  }
-  .top-social a:hover {
-    filter: brightness(1.15);
-    color: #fff;
+  .site-header.scrolled .top-row {
+    display: none;
   }
 
   .main-inner {
     display: flex;
     align-items: center;
-    gap: 20px;
-    padding-block: 12px;
+    gap: 28px;
+    min-height: 76px;
   }
   .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--ink);
     flex: 0 0 auto;
-    line-height: 0;
   }
-  .brand img {
-    width: auto;
-    height: 88px;
+  .brand :global(img) {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+  }
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+  }
+  .brand-name {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 1.2rem;
+    letter-spacing: -0.01em;
+  }
+  .brand-tag {
+    font-size: 0.78rem;
+    color: var(--muted);
   }
 
   .primary-nav {
     flex: 1 1 auto;
-    display: flex;
-    justify-content: center;
   }
-  .primary-nav ul {
+  .primary-nav > ul {
     display: flex;
-    gap: 26px;
+    gap: 4px;
     list-style: none;
     margin: 0;
     padding: 0;
-    flex-wrap: wrap;
-    justify-content: center;
   }
-  .primary-nav a {
-    color: var(--ink);
-    text-decoration: none;
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    font: inherit;
     font-weight: 600;
-    font-size: 0.98rem;
-    padding: 6px 0;
-    border-bottom: 2px solid transparent;
+    font-size: 1rem;
+    color: var(--ink);
+    background: none;
+    border: 0;
+    border-radius: var(--radius);
+    text-decoration: none;
+    cursor: pointer;
+    min-height: 44px;
   }
-  .primary-nav a:hover,
-  .primary-nav a[aria-current='page'] {
-    color: var(--purple-dark);
-    border-bottom-color: var(--purple);
+  .nav-link:hover,
+  .nav-link[aria-current='page'] {
+    color: var(--teal-dark);
+    background: var(--teal-soft);
+  }
+  .menu-btn svg {
+    transition: transform 0.15s ease;
+  }
+  .has-menu.open .menu-btn svg {
+    transform: rotate(180deg);
   }
 
-  .phone-pill {
+  .mega {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    background: var(--white);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 18px 40px rgba(20, 24, 28, 0.12);
+  }
+  .mega-inner {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) 1.2fr;
+    gap: 24px;
+    padding-block: 26px 30px;
+  }
+  .mega-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 1.02rem;
+    color: var(--ink);
+    text-decoration: none;
+    padding-bottom: 10px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+  .mega-head :global(img) {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+  }
+  .mega-head:hover {
+    color: var(--teal-dark);
+  }
+  .mega-col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .mega-col li a {
+    display: block;
+    padding: 5px 0;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    text-decoration: none;
+  }
+  .mega-col li a:hover {
+    color: var(--teal-dark);
+    text-decoration: underline;
+  }
+  .mega-aside {
+    background: var(--paper);
+    border-radius: var(--radius-lg);
+    padding: 22px;
+    align-self: start;
+  }
+  .mega-aside-title {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 1.08rem;
+    color: var(--ink);
+    margin: 0 0 8px;
+  }
+  .mega-aside p {
+    font-size: 0.95rem;
+    margin-bottom: 14px;
+  }
+  .mega-aside .btn {
+    width: 100%;
+    margin-bottom: 12px;
+  }
+  .all-link {
+    font-size: 0.95rem;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
     flex: 0 0 auto;
-    background: var(--purple);
-    color: #fff;
-    font-weight: 700;
-    font-style: italic;
-    padding: 12px 24px;
-    border-radius: 999px;
+  }
+  .phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: var(--ink);
     text-decoration: none;
     white-space: nowrap;
   }
-  .phone-pill:hover {
-    background: var(--purple-dark);
-    color: #fff;
+  .phone:hover {
+    color: var(--teal-dark);
+  }
+  .menu-toggle,
+  .drawer-close {
+    display: none;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    padding: 10px;
+    min-width: 44px;
+    min-height: 44px;
+    color: var(--ink);
+  }
+  .bars {
+    display: grid;
+    gap: 5px;
+  }
+  .bars span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: currentColor;
   }
 
-  @media (max-width: 960px) {
-    .primary-nav,
-    .phone-pill {
+  .drawer-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 24, 28, 0.45);
+    z-index: 70;
+  }
+  .drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(360px, 90vw);
+    background: var(--white);
+    z-index: 80;
+    overflow-y: auto;
+    padding: 0 20px 32px;
+    transform: translateX(100%);
+    transition: transform 0.2s ease;
+  }
+  .drawer.open {
+    transform: none;
+  }
+  .drawer-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 60px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 14px;
+  }
+  .drawer-title {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+  .drawer-close {
+    display: inline-flex;
+    font-size: 1.8rem;
+    line-height: 1;
+  }
+  .drawer-cta {
+    width: 100%;
+    margin-bottom: 18px;
+  }
+  .drawer-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 6px;
+  }
+  .drawer-group {
+    border-bottom: 1px solid var(--line);
+  }
+  .drawer-group summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 12px 0;
+    font-weight: 600;
+    color: var(--ink);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .drawer-group summary::-webkit-details-marker {
+    display: none;
+  }
+  .drawer-group summary::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid var(--muted);
+    border-bottom: 2px solid var(--muted);
+    transform: rotate(45deg);
+    transition: transform 0.15s ease;
+  }
+  .drawer-group[open] summary::after {
+    transform: rotate(-135deg);
+  }
+  .drawer-group ul {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 10px 12px;
+  }
+  .drawer-group li a,
+  .drawer-links li a {
+    display: block;
+    padding: 8px 0;
+    color: var(--ink-soft);
+    text-decoration: none;
+  }
+  .drawer-links {
+    list-style: none;
+    margin: 14px 0 0;
+    padding: 0;
+  }
+  .drawer-links li a {
+    font-weight: 600;
+    color: var(--ink);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 0;
+  }
+  .drawer-contact {
+    display: grid;
+    gap: 8px;
+    margin-top: 20px;
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 1100px) {
+    .brand-tag {
       display: none;
     }
+    .phone span {
+      display: none;
+    }
+  }
+  @media (max-width: 960px) {
+    .primary-nav,
+    .phone,
+    .top-note {
+      display: none;
+    }
+    .top-inner {
+      justify-content: center;
+    }
+    .menu-toggle {
+      display: inline-flex;
+    }
     .main-inner {
+      min-height: 64px;
       justify-content: space-between;
     }
-    .brand img {
-      height: 62px;
+    .brand :global(img) {
+      width: 40px;
+      height: 40px;
+    }
+    .brand-name {
+      font-size: 1.05rem;
     }
   }
   @media (max-width: 420px) {
-    .top-inner {
-      gap: 10px 16px;
-      font-size: 0.82rem;
+    .quote-btn {
+      padding-inline: 14px;
+      font-size: 0.92rem;
+    }
+    .top-links {
+      gap: 12px;
+      font-size: 0.8rem;
     }
   }
 </style>

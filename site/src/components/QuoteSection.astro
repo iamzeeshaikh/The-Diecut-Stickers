@@ -1,0 +1,93 @@
+---
+/**
+ * Closing quote block on every page: the compact form plus the facts a
+ * buyer wants before filling it in. Replaces the migrated CTASection.
+ */
+import { SITE } from '../lib/site';
+import { FACTS } from '../lib/facts';
+import InquiryForm from './InquiryForm.astro';
+
+interface Props {
+  heading?: string;
+  selectedProduct?: string;
+  id?: string;
+}
+const {
+  heading = 'Get a price for your stickers',
+  selectedProduct = '',
+  id = 'quote',
+} = Astro.props;
+---
+
+<section class="quote section" id={id} aria-labelledby={`${id}-heading`}>
+  <div class="container quote-inner">
+    <div class="quote-copy">
+      <h2 id={`${id}-heading`}>{heading}</h2>
+      <p class="quote-lead">
+        Send the size, quantity and where the stickers will be used. Artwork is optional at this stage.
+        You get a price and a material suggestion back by email, then a free proof before anything prints.
+      </p>
+      <ol class="steps">
+        <li><strong>Quote within one business day.</strong> Price per sticker, material and any artwork notes.</li>
+        <li><strong>Free digital proof.</strong> Cut line drawn in, colors checked, nothing prints until you approve.</li>
+        <li><strong>Production in {FACTS.productionDays}.</strong> Delivered by {FACTS.carrier} within {FACTS.deliveryDays}, shipping free in the US.</li>
+      </ol>
+      <p class="quote-contact">
+        Prefer to talk? Call <a href={`tel:${SITE.phoneHref}`}>{SITE.phoneDisplay}</a> or email
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a>. Office: {SITE.addressLine}.
+      </p>
+    </div>
+    <div class="quote-form card">
+      <InquiryForm variant="compact" id={`${id}-form`} selectedProduct={selectedProduct} heading="Request a quote" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .quote {
+    background: var(--teal-dark);
+    color: #e6f0ec;
+  }
+  .quote h2 {
+    color: #fff;
+  }
+  .quote-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: 48px;
+    align-items: start;
+  }
+  .quote-lead {
+    font-size: 1.08rem;
+    max-width: 56ch;
+  }
+  .steps {
+    padding-left: 1.3em;
+    margin: 1.2rem 0;
+    max-width: 56ch;
+  }
+  .steps li {
+    margin-bottom: 0.6em;
+  }
+  .steps strong {
+    color: #fff;
+  }
+  .quote-contact {
+    font-size: 0.95rem;
+    margin: 0;
+  }
+  .quote-contact a {
+    color: #fff;
+  }
+  .quote-form {
+    padding: 26px;
+    background: var(--white);
+    color: var(--ink-soft);
+  }
+  @media (max-width: 900px) {
+    .quote-inner {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+  }
+</style>

@@ -4,47 +4,60 @@ import type { Faq } from '../lib/catalogue';
 interface Props {
   faqs: Faq[];
   heading?: string;
-  headingLevel?: 'h2' | 'h3';
+  intro?: string;
+  id?: string;
 }
-const { faqs, heading, headingLevel = 'h2' } = Astro.props;
-const Heading = headingLevel;
+const { faqs, heading = 'Frequently asked questions', intro, id = 'faqs' } = Astro.props;
 ---
 
 {
   faqs.length > 0 && (
-    <div class="faqs">
-      {heading && <Heading>{heading}</Heading>}
-      {/* <details> gives a keyboard-accessible accordion with no JavaScript. */}
-      {faqs.map((f) => (
-        <details class="faq">
-          <summary>
-            <span>{f.q}</span>
-            <span class="chev" aria-hidden="true" />
-          </summary>
-          <div class="answer">
-            <p>{f.a}</p>
-          </div>
-        </details>
-      ))}
-    </div>
+    <section class="faq-block" id={id} aria-labelledby={`${id}-heading`}>
+      <div class="faq-head">
+        <h2 id={`${id}-heading`}>{heading}</h2>
+        {intro && <p>{intro}</p>}
+      </div>
+      <div class="faqs">
+        {faqs.map((f, i) => (
+          <details class="faq" open={i === 0}>
+            <summary>
+              <span>{f.q}</span>
+              <span class="chev" aria-hidden="true" />
+            </summary>
+            <div class="answer">
+              <p>{f.a}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
   )
 }
 
 <style>
+  .faq-head {
+    max-width: 720px;
+    margin-bottom: 1.4rem;
+  }
+  .faq-head p {
+    color: var(--muted);
+    margin: 0;
+  }
+  .faqs {
+    border-top: 1px solid var(--line);
+  }
   .faq {
-    background: var(--white);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    margin-bottom: 10px;
+    border-bottom: 1px solid var(--line);
   }
   summary {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 14px;
-    padding: 14px 16px;
+    gap: 16px;
+    padding: 16px 2px;
     cursor: pointer;
     font-weight: 600;
+    font-size: 1.05rem;
     color: var(--ink);
     list-style: none;
     min-height: 44px;
@@ -52,20 +65,25 @@ const Heading = headingLevel;
   summary::-webkit-details-marker {
     display: none;
   }
+  summary:hover {
+    color: var(--teal-dark);
+  }
   .chev {
     flex: 0 0 auto;
-    width: 10px;
-    height: 10px;
+    width: 9px;
+    height: 9px;
     border-right: 2px solid var(--muted);
     border-bottom: 2px solid var(--muted);
     transform: rotate(45deg);
-    transition: transform 0.2s ease;
+    transition: transform 0.15s ease;
+    margin-right: 4px;
   }
-  .faq[open] .chev {
+  details[open] .chev {
     transform: rotate(-135deg);
   }
   .answer {
-    padding: 0 16px 14px;
+    padding: 0 2px 18px;
+    max-width: 76ch;
   }
   .answer p {
     margin: 0;

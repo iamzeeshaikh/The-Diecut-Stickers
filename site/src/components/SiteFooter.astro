@@ -1,45 +1,85 @@
 ---
 import { Image } from 'astro:assets';
 import { SITE } from '../lib/site';
-import { categories } from '../lib/catalogue';
+import { FACTS } from '../lib/facts';
+import { categories, products } from '../lib/catalogue';
+import { categoryMeta } from '../lib/category-content';
+import { displayName } from '../lib/product-content';
 import dmca from '../assets/img/dmca-badge-w250-2x1-01.png';
 import ssl from '../assets/img/SSL-Badge.png';
 import guarantee from '../assets/img/guarantee_image.webp';
 import iso from '../assets/img/ISO.webp';
+import payments from '../assets/img/payments.png';
 
 const COMPANY = [
-  { label: 'About Us', href: '/about-us/' },
+  { label: 'About us', href: '/about-us/' },
+  { label: 'Get a quote', href: '/get-a-quote/' },
+  { label: 'Contact', href: '/contact-us/' },
   { label: 'Blog', href: '/blog/' },
-  { label: 'Contact Us', href: '/contact-us/' },
-  { label: 'Privacy Policy', href: '/privacy-policy/' },
-  { label: 'Refund and Returns Policy', href: '/refund_returns/' },
-  { label: 'Terms & Conditions', href: '/terms-conditions/' },
+  { label: 'HTML sitemap', href: '/sitemap/' },
+  { label: 'Privacy policy', href: '/privacy-policy/' },
+  { label: 'Refund and returns policy', href: '/refund_returns/' },
+  { label: 'Terms and conditions', href: '/terms-conditions/' },
 ];
+
+// The products buyers search for most (Search Console, 12 months).
+const POPULAR = [
+  'waterproof-stickers',
+  'custom-eco-friendly-stickers',
+  'outdoor-stickers',
+  'die-cut-decals',
+  'die-cut-labels',
+  'matte-stickers',
+  'glossy-stickers',
+  'custom-vinyl-stickers',
+  'custom-clear-stickers',
+  'custom-holographic-stickers',
+]
+  .map((s) => products.find((p) => p.slug === s))
+  .filter((p) => p !== undefined);
+const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
   <div class="container footer-grid">
-    <div>
-      <h2 class="footer-heading visually-hidden">Contact details</h2>
-      <ul class="contact-list">
-        <li>
-          <span class="lbl">Email:</span>
-          <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
-        </li>
-        <li>
-          <span class="lbl">Phone:</span>
-          <a href={`tel:${SITE.phoneHref}`}>{SITE.phone}</a>
-        </li>
-        <li>
-          <span class="lbl">Address:</span>
-          <span>{SITE.addressLine}</span>
-        </li>
+    <div class="footer-brand">
+      <p class="footer-logo">The Die Cut Stickers</p>
+      <p class="footer-about">
+        Custom stickers, decals and labels printed in full color and cut to any shape. Free design help,
+        a free proof on every order and free shipping within the United States.
+      </p>
+      <ul class="facts">
+        <li>From {FACTS.unitPriceFromLabel} per sticker, minimum {FACTS.minOrderLabel}</li>
+        <li>Production {FACTS.productionDays}, delivered in {FACTS.deliveryDays}</li>
+        <li>Gloss, matte or spot UV on every material</li>
       </ul>
-      <div class="socials">
-        <a href={SITE.social.facebook} aria-label="Facebook" rel="noopener noreferrer" target="_blank">f</a>
-        <a href={SITE.social.linkedin} aria-label="LinkedIn" rel="noopener noreferrer" target="_blank">in</a>
-      </div>
+      <address class="footer-contact">
+        <a href={`tel:${SITE.phoneHref}`}>{SITE.phoneDisplay}</a>
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+        <span>{SITE.addressLine}</span>
+      </address>
     </div>
+
+    <nav aria-labelledby="footer-stickers">
+      <h2 class="footer-heading" id="footer-stickers">Stickers</h2>
+      <ul>
+        {
+          categories.map((c) => (
+            <li>
+              <a href={`/product-category/${c.slug}/`}>{categoryMeta(c.slug).navLabel}</a>
+            </li>
+          ))
+        }
+        <li><a href="/products/">All products</a></li>
+      </ul>
+    </nav>
+
+    <nav aria-labelledby="footer-popular">
+      <h2 class="footer-heading" id="footer-popular">Popular</h2>
+      <ul>
+        {POPULAR.map((p) => <li><a href={`/product/${p.slug}/`}>{displayName(p)}</a></li>)}
+      </ul>
+    </nav>
 
     <nav aria-labelledby="footer-company">
       <h2 class="footer-heading" id="footer-company">Company</h2>
@@ -47,29 +87,17 @@ const COMPANY = [
         {COMPANY.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
       </ul>
     </nav>
-
-    <nav aria-labelledby="footer-categories">
-      <h2 class="footer-heading" id="footer-categories">Sticker Categories</h2>
-      <ul>
-        {
-          categories.map((c) => (
-            <li>
-              <a href={`/product-category/${c.slug}/`}>{c.name}</a>
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
   </div>
 
   <div class="footer-bottom">
     <div class="container bottom-inner">
-      <p class="copyright">{SITE.copyright}</p>
+      <p class="copyright">© {year} {SITE.name}. {SITE.copyright.replace(/^Copyright © /, '')}</p>
       <div class="badges">
-        <Image src={dmca} alt="DMCA protected" height={34} loading="lazy" />
-        <Image src={ssl} alt="SSL secured" height={34} loading="lazy" />
-        <Image src={guarantee} alt="100% satisfaction guarantee" height={34} loading="lazy" />
-        <Image src={iso} alt="ISO certified" height={34} loading="lazy" />
+        <Image src={payments} alt="PayPal, Visa, Mastercard, Apple Pay and Google Pay accepted" height={28} loading="lazy" />
+        <Image src={ssl} alt="SSL secured" height={28} loading="lazy" />
+        <Image src={guarantee} alt="100% satisfaction guarantee" height={28} loading="lazy" />
+        <Image src={iso} alt="ISO certified" height={28} loading="lazy" />
+        <Image src={dmca} alt="DMCA protected" height={28} loading="lazy" />
       </div>
     </div>
   </div>
@@ -78,111 +106,126 @@ const COMPANY = [
 <style>
   .site-footer {
     background: var(--footer);
-    color: rgba(255, 255, 255, 0.82);
-    font-size: 0.95rem;
+    color: #c9d3cf;
+    margin-top: 0;
   }
   .footer-grid {
     display: grid;
-    grid-template-columns: 1.4fr 1fr 1fr;
-    gap: 36px;
-    padding-block: 48px;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    gap: 40px;
+    padding-block: 56px 40px;
+  }
+  .footer-logo {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 1.35rem;
+    color: #fff;
+    margin: 0 0 10px;
+  }
+  .footer-about {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0 0 14px;
+    max-width: 44ch;
+  }
+  .facts {
+    list-style: none;
+    margin: 0 0 18px;
+    padding: 0;
+    font-size: 0.9rem;
+  }
+  .facts li {
+    padding: 3px 0 3px 16px;
+    position: relative;
+  }
+  .facts li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #5fb292;
+  }
+  .footer-contact {
+    font-style: normal;
+    display: grid;
+    gap: 4px;
+    font-size: 0.95rem;
+  }
+  .footer-contact a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .footer-contact a:hover {
+    text-decoration: underline;
   }
   .footer-heading {
-    color: #fff;
-    font-size: 0.85rem;
-    letter-spacing: 0.09em;
+    font-family: var(--font);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    margin-bottom: 16px;
+    color: #fff;
+    margin: 0 0 14px;
   }
-  .site-footer ul {
+  .site-footer nav ul {
     list-style: none;
     margin: 0;
     padding: 0;
   }
-  .site-footer li {
-    margin-bottom: 4px;
+  .site-footer nav li {
+    margin-bottom: 7px;
   }
-  .site-footer a {
-    color: rgba(255, 255, 255, 0.82);
+  .site-footer nav a {
+    color: #c9d3cf;
     text-decoration: none;
-    /* Keeps the tap target at least 24px tall without changing the rhythm. */
-    display: inline-block;
-    padding: 5px 0;
+    font-size: 0.95rem;
   }
-  .site-footer a:hover {
+  .site-footer nav a:hover {
     color: #fff;
     text-decoration: underline;
   }
-  .contact-list .lbl {
-    display: block;
-    color: #fff;
-    font-weight: 700;
-    font-size: 0.8rem;
-  }
-  .socials {
-    display: flex;
-    gap: 10px;
-    margin-top: 18px;
-  }
-  .socials a {
-    display: grid;
-    place-items: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.12);
-    font-size: 0.78rem;
-    font-weight: 700;
-  }
-  .socials a:hover {
-    background: rgba(255, 255, 255, 0.25);
-    text-decoration: none;
-  }
-
   .footer-bottom {
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
-    background: #1f1f1f;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
   }
   .bottom-inner {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     gap: 20px;
     flex-wrap: wrap;
     padding-block: 18px;
+    font-size: 0.85rem;
   }
   .copyright {
     margin: 0;
-    font-size: 0.82rem;
   }
   .badges {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 14px;
     flex-wrap: wrap;
   }
   .badges :global(img) {
-    height: 34px;
+    height: 28px;
     width: auto;
-    background: #fff;
-    border-radius: 4px;
-    padding: 3px 6px;
+    opacity: 0.9;
   }
-
-  @media (max-width: 860px) {
+  @media (max-width: 960px) {
     .footer-grid {
       grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+    .footer-brand {
+      grid-column: 1 / -1;
     }
   }
-  @media (max-width: 560px) {
+  @media (max-width: 520px) {
     .footer-grid {
       grid-template-columns: 1fr;
-      gap: 28px;
-      padding-block: 34px;
-    }
-    .bottom-inner {
-      justify-content: center;
-      text-align: center;
     }
   }
 </style>
