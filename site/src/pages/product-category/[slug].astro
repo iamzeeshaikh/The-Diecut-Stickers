@@ -5,7 +5,8 @@ import ProductGrid from '../../components/ProductGrid.astro';
 import CTASection from '../../components/CTASection.astro';
 import { categories, productsInCategory } from '../../lib/catalogue';
 import { resolveImage } from '../../lib/images';
-import { absoluteUrl } from '../../lib/site';
+import { absoluteUrl, SITE } from '../../lib/site';
+import { legacyRating } from '../../lib/legacy-ratings';
 
 export function getStaticPaths() {
   return categories.map((category) => ({ params: { slug: category.slug }, props: { category } }));
@@ -76,12 +77,36 @@ const schema = [
     mainEntity: {
       '@type': 'ItemList',
       numberOfItems: items.length,
-      itemListElement: items.map((p, i) => ({
-        '@type': 'ListItem',
-        position: i + 1,
-        name: p.name,
-        url: absoluteUrl(`/product/${p.slug}/`),
-      })),
+      // The WordPress archive listed each product as a Product node carrying
+      // its rating; products with a restored rating are listed the same way.
+      itemListElement: items.map((p, i) => {
+        const rating = legacyRating(p.slug);
+        const url = absoluteUrl(`/product/${p.slug}/`);
+        if (!rating.aggregateRating) {
+          return { '@type': 'ListItem', position: i + 1, name: p.name, url };
+        }
+        return {
+          '@type': 'ListItem',
+          position: i + 1,
+          item: {
+            '@type': 'Product',
+            name: p.name,
+            url,
+            sku: p.sku,
+            description: p.seoDescription,
+            brand: { '@type': 'Brand', name: SITE.name },
+            offers: {
+              '@type': 'Offer',
+              url,
+              // Same figure as the product page's Offer.
+              price: (Number(p.price) || 0.3).toFixed(2),
+              priceCurrency: 'USD',
+              availability: 'https://schema.org/InStock',
+            },
+            ...rating,
+          },
+        };
+      }),
     },
   },
 ];

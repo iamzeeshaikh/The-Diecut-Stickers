@@ -1,0 +1,728 @@
+{
+  "_comment": "Rating schema exactly as the old WordPress site published it on each product page (recovered from Wayback snapshots taken before the 2026-08-03 migration). Restored 2026-10-05; values are verbatim, do not edit.",
+  "custom-car-stickers": {
+    "_source": "https://web.archive.org/web/20260309095324id_/https://thediecutstickers.com/product/custom-car-stickers/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2024-10-08T06:25:16+00:00",
+        "description": "Customize your car with unique car stickers. Choose from a variety of materials and finishes. Choose from a wide range of materials and finishes.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "custom-clear-stickers": {
+    "_source": "https://web.archive.org/web/20260116020234id_/https://thediecutstickers.com/product/custom-clear-stickers/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2024-10-07T17:16:17+00:00",
+        "description": "Custom clear stickers at wholesale prices! High-quality, customizable with gloss, matte, or spot UV finishes. Fast turnaround and free design.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "custom-eco-friendly-stickers": {
+    "_source": "https://web.archive.org/web/20260116035535id_/https://thediecutstickers.com/product/custom-eco-friendly-stickers/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2024-10-07T18:05:31+00:00",
+        "description": "Create custom, eco-friendly stickers at wholesale prices. Fast turnaround, free design, and high-quality materials. Free design and shipping included.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "custom-holographic-stickers": {
+    "_source": "https://web.archive.org/web/20260116032714id_/https://thediecutstickers.com/product/custom-holographic-stickers/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2024-10-07T17:25:07+00:00",
+        "description": "Custom holographic stickers at wholesale prices. Free design, fast turnaround, various coatings. High-quality materials, fast delivery.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "custom-large-stickers": {
+    "_source": "https://web.archive.org/web/20260116022432id_/https://thediecutstickers.com/product/custom-large-stickers/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2024-10-08T07:42:20+00:00",
+        "description": "Custom large stickers at wholesale prices! Create eye-catching designs with our high-quality materials and fast turnaround.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "custom-metallic-stickers": {
+    "_source": "https://web.archive.org/web/20251109014326id_/https://thediecutstickers.com/product/custom-metallic-stickers/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2024-10-07T17:57:34+00:00",
+        "description": "Bulk order metallic stickers for your business at competitive prices. Get high-quality, customizable stickers with fast turnaround times.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "custom-packaging-labels": {
+    "_source": "https://web.archive.org/web/20260309090014id_/https://thediecutstickers.com/product/custom-packaging-labels/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2024-10-08T06:41:20+00:00",
+        "description": "Custom packaging labels in various sizes, materials, and finishes. Fast turnaround, free design, and competitive pricing.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "custom-promotional-stickers": {
+    "_source": "https://web.archive.org/web/20260210215108id_/https://thediecutstickers.com/product/custom-promotional-stickers/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2024-10-08T06:52:59+00:00",
+        "description": "Promote your brand with custom-shaped stickers. Choose from various materials, coatings, and sizes at The Die Cut Stickers.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "custom-reusable-stickers": {
+    "_source": "https://web.archive.org/web/20260309084737id_/https://thediecutstickers.com/product/custom-reusable-stickers/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2024-10-08T07:10:04+00:00",
+        "description": "Reusable stickers wholesale: Buy bulk reusable stickers at wholesale prices. Customize with your logo, message, and preferred coating.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "custom-small-stickers": {
+    "_source": "https://web.archive.org/web/20260309090054id_/https://thediecutstickers.com/product/custom-small-stickers/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2024-10-08T07:36:37+00:00",
+        "description": "Custom small stickers for branding, promotions, or personal use. Choose from various materials, coatings, and sizes. Quote Us.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "custom-vinyl-stickers": {
+    "_source": "https://web.archive.org/web/20260116035109id_/https://thediecutstickers.com/product/custom-vinyl-stickers/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2024-10-07T12:46:49+00:00",
+        "description": "Custom vinyl stickers at wholesale prices! Get high-quality, personalized stickers for your brand with fast turnaround times.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "custom-window-stickers": {
+    "_source": "https://web.archive.org/web/20260309082142id_/https://thediecutstickers.com/product/custom-window-stickers/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2024-10-08T06:35:07+00:00",
+        "description": "Custom window stickers at wholesale prices. High-quality, durable materials. Fast turnaround times. Free design and shipping.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "die-cut-car-stickers": {
+    "_source": "https://web.archive.org/web/20260309084521id_/https://thediecutstickers.com/product/die-cut-car-stickers/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2025-11-08T08:55:31+00:00",
+        "description": "Weather-safe Die Cut Car Stickers for glass, metal, and painted surfaces. Bright colors, strong adhesive, bulk printing, and fast turnaround times.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "die-cut-clear-stickers": {
+    "_source": "https://web.archive.org/web/20260309095951id_/https://thediecutstickers.com/product/die-cut-clear-stickers/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2025-11-08T09:07:11+00:00",
+        "description": "Transparent die cut clear stickers for cups, bottles, jars, and packaging. Strong adhesive, bright printing, weather-safe, and wholesale supply.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "die-cut-decals": {
+    "_source": "https://web.archive.org/web/20260116041205id_/https://thediecutstickers.com/product/die-cut-decals/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2024-10-08T07:51:20+00:00",
+        "description": "Custom die-cut decals for unique branding. High-quality vinyl, weatherproof, and easy to apply. Perfect for business promotion or personal use.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "die-cut-labels": {
+    "_source": "https://web.archive.org/web/20260116031457id_/https://thediecutstickers.com/product/die-cut-labels/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2024-10-08T07:59:28+00:00",
+        "description": "Custom die-cut labels at wholesale prices. Fast turnaround, high-quality materials, and free design. Choose from various sizes, shapes, and finishes.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "die-cut-logo-stickers": {
+    "_source": "https://web.archive.org/web/20260309090126id_/https://thediecutstickers.com/product/die-cut-logo-stickers/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2025-11-08T10:02:53+00:00",
+        "description": "Weather-safe die cut logo stickers for jars, laptops, bottles, and retail packaging. Strong adhesive, full-color CMYK printing, and bulk supply options.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "die-cut-paper-stickers": {
+    "_source": "https://web.archive.org/web/20260210204532id_/https://thediecutstickers.com/product/die-cut-paper-stickers/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2025-11-08T11:15:22+00:00",
+        "description": "Die Cut Paper Stickers with bright colors and clean shapes for jars, bakery boxes, cups, and packaging. Bulk supply, custom sizes, and fast production.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "die-cut-vinyl-stickers": {
+    "_source": "https://web.archive.org/web/20260309081118id_/https://thediecutstickers.com/product/die-cut-vinyl-stickers/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2025-11-07T13:38:44+00:00",
+        "description": "Weather-safe Die Cut Vinyl Stickers for cars, bottles, laptops, and packaging. Bulk supply, clean cutting, strong adhesive, and bright CMYK prints.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "die-cut-water-proof-stickers": {
+    "_source": "https://web.archive.org/web/20251208214522id_/https://thediecutstickers.com/product/die-cut-water-proof-stickers/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2025-11-08T10:07:50+00:00",
+        "description": "Waterproof die cut stickers for bottles, cars, and packaging. Strong adhesive, sharp printing, bulk wholesale, and fast turnaround for branding.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "glossy-stickers": {
+    "_source": "https://web.archive.org/web/20260116020811id_/https://thediecutstickers.com/product/glossy-stickers/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2024-10-07T17:45:46+00:00",
+        "description": "Buy bulk glossy stickers at affordable prices. Choose from various sizes, shapes, and finishes. Order now and get free shipping.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "glow-in-the-dark-stickers": {
+    "_source": "https://web.archive.org/web/20260116024924id_/https://thediecutstickers.com/product/glow-in-the-dark-stickers/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2024-10-08T07:28:19+00:00",
+        "description": "Brighten up your world with our glow-in-the-dark stickers. Custom sizes, shapes, and colors available. Finest Quality. Order Today!",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "holographic-die-cut-stickers": {
+    "_source": "https://web.archive.org/web/20260309090558id_/https://thediecutstickers.com/product/holographic-die-cut-stickers/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2025-11-08T09:50:25+00:00",
+        "description": "Shiny holographic die cut stickers for logos, merch, and packaging. Strong adhesive, CMYK printing, and low wholesale pricing for all businesses.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "indoor-stickers": {
+    "_source": "https://web.archive.org/web/20251208220650id_/https://thediecutstickers.com/product/indoor-stickers/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2024-10-07T18:28:32+00:00",
+        "description": "High-quality custom stickers for indoor use. Perfect for promotions, branding, and more. Fast turnaround, free design, and various coating options.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "large-die-cut-stickers": {
+    "_source": "https://web.archive.org/web/20251208221219id_/https://thediecutstickers.com/product/large-die-cut-stickers/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2025-11-08T10:43:06+00:00",
+        "description": "Large Die Cut Stickers with weather-safe vinyl, bright CMYK printing, and strong adhesive for cars, windows, walls, and retail branding.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "matte-stickers": {
+    "_source": "https://web.archive.org/web/20260210212831id_/https://thediecutstickers.com/product/matte-stickers/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2024-10-07T17:34:25+00:00",
+        "description": "High-quality matte stickers for professional branding. Customizable sizes, shapes, and styles. Fast turnaround times and affordable prices.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "outdoor-stickers": {
+    "_source": "https://web.archive.org/web/20260210222404id_/https://thediecutstickers.com/product/outdoor-stickers/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2024-10-07T18:16:25+00:00",
+        "description": "Get high-quality, personalized outdoor stickers. Choose from various materials, coatings, and sizes. Contact us for a quote.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "reflective-stickers": {
+    "_source": "https://web.archive.org/web/20260116025226id_/https://thediecutstickers.com/product/reflective-stickers/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2024-10-08T07:20:15+00:00",
+        "description": "Create high-quality, custom reflective stickers for your business. Choose from various sizes, shapes, and finishes. Fast turnaround and free design.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  },
+  "waterproof-stickers": {
+    "_source": "https://web.archive.org/web/20260309080849id_/https://thediecutstickers.com/product/waterproof-stickers/",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "reviewCount": 1
+    },
+    "review": [
+      {
+        "@type": "Review",
+        "author": {
+          "@type": "Person",
+          "name": "shanimazhar82@gmail.com"
+        },
+        "datePublished": "2024-10-08T07:02:37+00:00",
+        "description": "Looking for high-quality, waterproof stickers? Customize your design and enjoy fast turnaround times. Order now and make a lasting impression.",
+        "reviewRating": {
+          "@type": "Rating",
+          "bestRating": "5",
+          "ratingValue": "5",
+          "worstRating": "1"
+        }
+      }
+    ]
+  }
+}

@@ -284,6 +284,9 @@ async function main() {
   const products = JSON.parse(
     await readFile(path.join(ROOT, 'site/src/data/products.json'), 'utf8'),
   );
+  const legacyRatings = JSON.parse(
+    await readFile(path.join(ROOT, 'site/src/data/legacy-ratings.json'), 'utf8'),
+  );
   const faqMismatch = [];
   for (const p of products) {
     const h = pages.get(`/product/${p.slug}/`);
@@ -326,7 +329,12 @@ async function main() {
       continue;
     }
     if (ld.name !== p.name) schemaProblems.push(`${p.slug}: name mismatch`);
-    if (ld.aggregateRating || ld.review) schemaProblems.push(`${p.slug}: fabricated rating/review`);
+    // Ratings must be exactly the old WordPress page's (src/data/legacy-ratings.json), never new ones.
+    const legacy = legacyRatings[p.slug];
+    if (JSON.stringify(ld.aggregateRating ?? null) !== JSON.stringify(legacy?.aggregateRating ?? null) ||
+        JSON.stringify(ld.review ?? null) !== JSON.stringify(legacy?.review ?? null)) {
+      schemaProblems.push(`${p.slug}: rating/review differs from legacy-ratings.json`);
+    }
     if (p.price && !ld.offers) schemaProblems.push(`${p.slug}: priced product without Offer`);
     if (!p.price && ld.offers) schemaProblems.push(`${p.slug}: invented Offer`);
     if (ld.offers && ld.offers.price !== Number(p.price).toFixed(2)) {
