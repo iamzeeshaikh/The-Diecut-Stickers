@@ -1,0 +1,109 @@
+---
+/**
+ * HTML sitemap: every indexable page, grouped, so each one has a crawlable
+ * text link from a hub even if a menu changes.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import { categories, productsInCategory } from '../lib/catalogue';
+import { categoryMeta } from '../lib/category-content';
+import { displayName } from '../lib/product-content';
+import { BLOG_POSTS } from '../lib/blog';
+import { absoluteUrl } from '../lib/site';
+
+const path = '/sitemap/';
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Sitemap' }];
+const groups = categories.map((c) => ({ meta: categoryMeta(c.slug), items: productsInCategory(c.slug) }));
+const PAGES = [
+  { label: 'Home', href: '/' },
+  { label: 'All sticker products', href: '/products/' },
+  { label: 'Design your custom stickers', href: '/get-a-quote/' },
+  { label: 'About us', href: '/about-us/' },
+  { label: 'Contact', href: '/contact-us/' },
+  { label: 'Blog', href: '/blog/' },
+  { label: 'Privacy policy', href: '/privacy-policy/' },
+  { label: 'Refund and returns policy', href: '/refund_returns/' },
+  { label: 'Terms and conditions', href: '/terms-conditions/' },
+];
+---
+
+<BaseLayout
+  title="Sitemap | The Die Cut Stickers"
+  description="Every page on thediecutstickers.com: sticker products by category, guides, company pages and policies."
+  path={path}
+  schema={[
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: crumbs.map((c, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: c.label,
+        ...(c.href ? { item: absoluteUrl(c.href) } : {}),
+      })),
+    },
+  ]}
+>
+  <Breadcrumbs items={crumbs} />
+  <section class="section-tight section-white">
+    <div class="container">
+      <h1>Sitemap</h1>
+      <div class="map-grid">
+        <div>
+          <h2>Pages</h2>
+          <ul>{PAGES.map((p) => <li><a href={p.href}>{p.label}</a></li>)}</ul>
+          <h2>Guides</h2>
+          <ul>{BLOG_POSTS.map((p) => <li><a href={p.url}>{p.title}</a></li>)}</ul>
+        </div>
+        {
+          groups.map((g) => (
+            <div>
+              <h2><a href={`/product-category/${g.meta.slug}/`}>{g.meta.navLabel}</a></h2>
+              <ul>
+                {g.items.map((p) => (
+                  <li>
+                    <a href={`/product/${p.slug}/`}>{displayName(p)}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .map-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 32px 40px;
+  }
+  .map-grid h2 {
+    font-size: 1.15rem;
+    margin: 0 0 10px;
+  }
+  .map-grid h2 a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .map-grid ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px;
+  }
+  .map-grid li {
+    padding: 4px 0;
+  }
+  @media (max-width: 800px) {
+    .map-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 520px) {
+    .map-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -8,6 +8,7 @@
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { categories } from '../lib/catalogue';
+import { categoryMeta } from '../lib/category-content';
 ---
 
 <BaseLayout
@@ -32,7 +33,7 @@ import { categories } from '../lib/catalogue';
         {
           categories.map((c) => (
             <li>
-              <a href={`/product-category/${c.slug}/`}>{c.name}</a>
+              <a href={`/product-category/${c.slug}/`}>{categoryMeta(c.slug).navLabel}</a>
             </li>
           ))
         }
@@ -47,8 +48,9 @@ import { categories } from '../lib/catalogue';
   }
   .code {
     font-size: 3.4rem;
-    font-weight: 800;
-    color: var(--purple);
+    font-weight: 600;
+    font-family: var(--font-serif);
+    color: var(--teal);
     margin: 0;
     line-height: 1;
   }

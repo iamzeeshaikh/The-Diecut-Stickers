@@ -1,19 +1,27 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
-import ContentSection from '../components/ContentSection.astro';
-import CTASection from '../components/CTASection.astro';
-import pages from '../data/pages.json';
-import { absoluteUrl } from '../lib/site';
+import QuoteSection from '../components/QuoteSection.astro';
+import FAQSection from '../components/FAQSection.astro';
+import { absoluteUrl, SITE } from '../lib/site';
+import { FACTS } from '../lib/facts';
+import faqs from '../data/page-faqs/about.json';
+import photo from '../assets/img/Die-Cut-Labels.jpg';
+import guarantee from '../assets/img/guarantee_image.webp';
+import iso from '../assets/img/ISO.webp';
+import ssl from '../assets/img/SSL-Badge.png';
 
-const page = pages['about-us'];
 const path = '/about-us/';
-const crumbs = [{ label: 'Home', href: '/' }, { label: 'About Us' }];
+const title = 'About The Die Cut Stickers | Custom Sticker Printer, Phoenix AZ';
+const description =
+  'The Die Cut Stickers prints custom die cut stickers, decals and labels from Phoenix, Arizona: free proofs, free design help, free US shipping.';
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'About us' }];
 ---
 
 <BaseLayout
-  title="About Us | The Die Cut Stickers"
-  description="The Die Cut Stickers prints precision-cut custom stickers for branding, packaging and events, with experienced designers and premium materials."
+  title={title}
+  description={description}
   path={path}
   schema={[
     {
@@ -31,24 +39,168 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'About Us' }];
       '@type': 'AboutPage',
       '@id': absoluteUrl(path) + '#webpage',
       url: absoluteUrl(path),
-      name: 'About Us | The Die Cut Stickers',
-      description: 'The Die Cut Stickers prints precision-cut custom stickers for branding, packaging and events, with experienced designers and premium materials.',
+      name: title,
+      description,
       inLanguage: 'en-US',
+      mainEntity: { '@id': absoluteUrl('/#organization') },
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqs.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
     },
   ]}
 >
   <Breadcrumbs items={crumbs} />
-  <section class="section-tight">
-    <div class="container narrow">
-      <h1>{page.h1 || 'About Us'}</h1>
+
+  <section class="section-tight section-white">
+    <div class="container about-grid">
+      <div class="about-copy rich-text">
+        <h1>About The Die Cut Stickers</h1>
+        <p class="lead">
+          A custom sticker printer in Phoenix, Arizona, making die cut stickers, decals and labels for small
+          businesses, brands, fleets and event organizers across the United States.
+        </p>
+        <h2>What we do</h2>
+        <p>
+          We print your artwork in full color on vinyl, clear film, paper, holographic, metallic, reflective,
+          glow-in-the-dark and eco-friendly stock, then cut it to the outline of the design. Orders run from
+          100 pieces for a maker's first product label up to fleet sets and packaging runs of several thousand.
+          Every job gets a free digital proof with the cut line drawn in, and nothing prints until it is approved.
+        </p>
+        <h2>How we work</h2>
+        <p>
+          The person who quotes your job is the person who checks the file. That matters more in stickers than
+          in most printing, because the common failures happen before the press: a paper label on a cold
+          bottle, a laminate missing from an outdoor sign, a fine point that will not cut. We look at the
+          surface and the use first, and if a cheaper material will do the same job we say so in the quote.
+        </p>
+        <ol>
+          <li>Send the size, quantity and where the stickers will live. Artwork is optional at this stage.</li>
+          <li>Receive a price within one business day with a material recommendation.</li>
+          <li>Approve the free proof. Changes are free until you do.</li>
+          <li>Production takes {FACTS.productionDays}; {FACTS.carrier} delivers within {FACTS.deliveryDays}, shipping free in the US.</li>
+        </ol>
+        <h2>What every order includes</h2>
+        <ul>
+          <li>{FACTS.proof}</li>
+          <li>{FACTS.design}</li>
+          <li>{FACTS.shipping}</li>
+          <li>Full-color CMYK with Pantone matching, offset for long runs and digital for short ones</li>
+          <li>Gloss, matte or spot UV finish; laminate for anything outdoors or washed</li>
+          <li>Reprint at no charge for any print, cutting or shipping defect reported within {FACTS.returnsDays} days</li>
+        </ul>
+        <h2>Where to find us</h2>
+        <p>
+          Our office is at {SITE.addressLine}. It is a working office rather than a showroom, so samples go out
+          by post: ask for a swatch pack on the quote form. Call <a href={`tel:${SITE.phoneHref}`}>{SITE.phoneDisplay}</a>
+          or email {SITE.email} on weekdays, Arizona time.
+        </p>
+        <p>
+          The full product range, with a comparison table for each way of browsing, starts on the
+          <a href="/products/">page listing all 29 sticker products</a>.
+        </p>
+      </div>
+      <aside class="about-aside">
+        <Image class="about-photo" src={photo} alt="Die cut sticker sheets ready for packing at The Die Cut Stickers" widths={[400, 600]} sizes="(max-width: 900px) 90vw, 380px" loading="lazy" />
+        <div class="card facts-card">
+          <h3>At a glance</h3>
+          <dl>
+            <div><dt>Location</dt><dd>Phoenix, Arizona</dd></div>
+            <div><dt>Ships to</dt><dd>All 50 US states, free</dd></div>
+            <div><dt>Minimum order</dt><dd>{FACTS.minOrderLabel} per design</dd></div>
+            <div><dt>Starting price</dt><dd>{FACTS.unitPriceFromLabel} per sticker</dd></div>
+            <div><dt>Production</dt><dd>{FACTS.productionDays}</dd></div>
+            <div><dt>Largest size</dt><dd>{FACTS.maxSize} in one piece</dd></div>
+          </dl>
+          <div class="badges">
+            <Image src={guarantee} alt="100% satisfaction guarantee" height={40} loading="lazy" />
+            <Image src={iso} alt="ISO certified" height={40} loading="lazy" />
+            <Image src={ssl} alt="SSL secured" height={40} loading="lazy" />
+          </div>
+        </div>
+      </aside>
     </div>
   </section>
-  <ContentSection html={page.content} narrow white />
-  <CTASection id="quote" />
+
+  <section class="section-tight">
+    <div class="container">
+      <FAQSection faqs={faqs} heading="About the company: questions customers ask" />
+    </div>
+  </section>
+
+  <QuoteSection id="quote" />
 </BaseLayout>
 
 <style>
-  .narrow {
-    max-width: 860px;
+  .about-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 380px;
+    gap: 48px;
+    align-items: start;
+  }
+  .about-copy {
+    max-width: 72ch;
+  }
+  .about-aside {
+    display: grid;
+    gap: 20px;
+    position: sticky;
+    top: 100px;
+  }
+  .about-aside :global(.about-photo) {
+    width: 100%;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--line);
+  }
+  .facts-card {
+    padding: 20px 22px;
+  }
+  .facts-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+  .facts-card dl {
+    margin: 0 0 16px;
+    display: grid;
+    gap: 8px;
+    font-size: 0.95rem;
+  }
+  .facts-card dl div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 6px;
+  }
+  .facts-card dt {
+    color: var(--muted);
+  }
+  .facts-card dd {
+    margin: 0;
+    color: var(--ink);
+    font-weight: 600;
+    text-align: right;
+  }
+  .badges {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+  .badges :global(img) {
+    height: 40px;
+    width: auto;
+  }
+  @media (max-width: 900px) {
+    .about-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .about-aside {
+      position: static;
+    }
   }
 </style>

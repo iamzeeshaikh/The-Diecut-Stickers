@@ -4,7 +4,7 @@
   "name": "Sticker Finishes and Features",
   "h1": "Custom Stickers by Finish and Feature",
   "seoTitle": "Waterproof, Reflective, Glow & Reusable Stickers | Features",
-  "seoDescription": "Stickers chosen by what they do: waterproof, reflective, glow in the dark, reusable, clear and logo-shaped. What each feature adds, what it costs and where it fails.",
+  "seoDescription": "Stickers chosen by what they do: waterproof, reflective, glow in the dark, reusable, clear and logo-shaped. What each feature adds, costs and where it fails.",
   "tagline": "Features are the add-ons that turn a plain vinyl sticker into one that survives rain, reflects headlights, glows, or peels off clean.",
   "quickAnswer": "A sticker feature is a material or coating choice that changes how the sticker behaves: waterproof laminates seal ink against moisture, reflective film returns light to its source, glow-in-the-dark film charges in daylight, reusable adhesive lets a sticker be moved, and clear film hides the backing. Each feature is available on die cut shapes from $0.30 per sticker.",
   "sections": [
@@ -34,15 +34,45 @@
     }
   ],
   "faqs": [
-    { "q": "What is the difference between waterproof and weatherproof stickers?", "a": "Waterproof describes the material: vinyl and polypropylene do not absorb water. Weatherproof describes the whole sticker surviving sun, rain, heat and cold for years, which needs a laminate over the ink and a permanent adhesive. Every weatherproof sticker is waterproof; not every waterproof sticker is weatherproof." },
-    { "q": "Can reflective stickers be printed in full color?", "a": "Yes, but colors come out muted because the reflective layer sits behind the ink and dulls them. Bold, high-contrast designs with two or three solid colors work best. Pastels and photographic images lose most of their punch on reflective film." },
-    { "q": "How long do glow in the dark stickers glow?", "a": "Twenty minutes to about an hour of useful glow after ten to fifteen minutes under daylight or bright room light. The glow is strongest in the first few minutes and fades gradually. The film recharges every time it sees light, for years." },
-    { "q": "Do reusable stickers work outdoors?", "a": "Not reliably. Low-tack and static-cling adhesives lose grip in heat and rain and will not hold on textured or dusty surfaces. Use them on indoor glass, smooth plastic and painted walls. For outdoor use that must still come off clean, choose removable-adhesive vinyl instead." },
-    { "q": "Which features can be combined on one sticker?", "a": "Waterproof laminate goes on almost anything. Clear film pairs with reusable backing for windows. Reflective and glow films each take a die cut outline and a laminate but not each other. We will tell you on the proof if a requested combination will not hold up." },
-    { "q": "Is a die cut sticker more expensive than a square one?", "a": "Slightly, because the cut path is custom and simple shapes nest more efficiently on the sheet. On runs of 250 or more the difference is usually a few cents per piece. Fine points, narrow stems and inside cut-outs add more than a plain outline." },
-    { "q": "Why did my clear stickers look dull on a dark bottle?", "a": "Clear film has no white layer, so any color printed on it takes on the surface behind it. A white ink underlay beneath the design fixes this: colors stay opaque while the unprinted areas stay transparent. Ask for it on any clear sticker going on a dark or colored surface." },
-    { "q": "Can waterproof stickers go through a dishwasher?", "a": "Laminated vinyl with permanent adhesive survives home dishwashers on tumblers, bottles and lunch boxes. Apply to a clean, dry surface and wait 24 hours before the first wash. Paper, kraft and unlaminated stickers will not survive even one cycle." },
-    { "q": "Do reflective stickers meet DOT or safety standards?", "a": "Our reflective vinyl is an engineering-grade film suited to visibility on trailers, equipment, helmets and signs. It is not certified DOT-C2 conspicuity tape, which is a regulated product with its own pattern and placement rules. Tell us if you need a certified tape and we will say so." },
-    { "q": "What finish should I choose for a feature sticker?", "a": "Gloss on reflective and holographic film, because matte dulls the effect. Matte on glow film if the sticker is read under bright light, gloss if it mostly glows. Waterproof and clear stickers take either; matte hides fingerprints, gloss makes colors deeper." }
+    {
+      "q": "What is the difference between waterproof and weatherproof stickers?",
+      "a": "Waterproof describes the material: vinyl and polypropylene do not absorb water. Weatherproof describes the whole sticker surviving sun, rain, heat and cold for years, which needs a laminate over the ink and a permanent adhesive. Every weatherproof sticker is waterproof; not every waterproof sticker is weatherproof."
+    },
+    {
+      "q": "Can reflective stickers be printed in full color?",
+      "a": "Yes, but colors come out muted because the reflective layer sits behind the ink and dulls them. Bold, high-contrast designs with two or three solid colors work best. Pastels and photographic images lose most of their punch on reflective film."
+    },
+    {
+      "q": "How long do glow in the dark stickers glow?",
+      "a": "Twenty minutes to about an hour of useful glow after ten to fifteen minutes under daylight or bright room light. The glow is strongest in the first few minutes and fades gradually. The film recharges every time it sees light, for years."
+    },
+    {
+      "q": "Do reusable stickers work outdoors?",
+      "a": "Not reliably. Low-tack and static-cling adhesives lose grip in heat and rain and will not hold on textured or dusty surfaces. Use them on indoor glass, smooth plastic and painted walls. For outdoor use that must still come off clean, choose removable-adhesive vinyl instead."
+    },
+    {
+      "q": "Which features can be combined on one sticker?",
+      "a": "Waterproof laminate goes on almost anything. Clear film pairs with reusable backing for windows. Reflective and glow films each take a die cut outline and a laminate but not each other. We will tell you on the proof if a requested combination will not hold up."
+    },
+    {
+      "q": "Is a die cut sticker more expensive than a square one?",
+      "a": "Slightly, because the cut path is custom and simple shapes nest more efficiently on the sheet. On runs of 250 or more the difference is usually a few cents per piece. Fine points, narrow stems and inside cut-outs add more than a plain outline."
+    },
+    {
+      "q": "Why did my clear stickers look dull on a dark bottle?",
+      "a": "Clear film has no white layer, so any color printed on it takes on the surface behind it. A white ink underlay beneath the design fixes this: colors stay opaque while the unprinted areas stay transparent. Ask for it on any clear sticker going on a dark or colored surface."
+    },
+    {
+      "q": "Can waterproof stickers go through a dishwasher?",
+      "a": "Laminated vinyl with permanent adhesive survives home dishwashers on tumblers, bottles and lunch boxes. Apply to a clean, dry surface and wait 24 hours before the first wash. Paper, kraft and unlaminated stickers will not survive even one cycle."
+    },
+    {
+      "q": "Do reflective stickers meet DOT or safety standards?",
+      "a": "Our reflective vinyl is an engineering-grade film suited to visibility on trailers, equipment, helmets and signs. It is not certified DOT-C2 conspicuity tape, which is a regulated product with its own pattern and placement rules. Tell us if you need a certified tape and we will say so."
+    },
+    {
+      "q": "What finish should I choose for a feature sticker?",
+      "a": "Gloss on reflective and holographic film, because matte dulls the effect. Matte on glow film if the sticker is read under bright light, gloss if it mostly glows. Waterproof and clear stickers take either; matte hides fingerprints, gloss makes colors deeper."
+    }
   ]
 }

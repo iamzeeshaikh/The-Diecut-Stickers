@@ -1,187 +1,588 @@
 ---
-
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import HeroSlider from '../components/HeroSlider.astro';
 import ProductGrid from '../components/ProductGrid.astro';
-import CTASection from '../components/CTASection.astro';
-import { products, productsByDate } from '../lib/catalogue';
-import pages from '../data/pages.json';
-import { absoluteUrl } from '../lib/site';
+import QuoteSection from '../components/QuoteSection.astro';
+import FAQSection from '../components/FAQSection.astro';
+import { products, categories, productsInCategory } from '../lib/catalogue';
+import { categoryMeta } from '../lib/category-content';
+import { displayName } from '../lib/product-content';
+import { resolveImage } from '../lib/images';
+import { BLOG_POSTS } from '../lib/blog';
+import { absoluteUrl, SITE } from '../lib/site';
+import { FACTS } from '../lib/facts';
+import homeFaqs from '../data/page-faqs/home.json';
 
-const page = pages.home;
+import heroA from '../assets/img/Custom-Die-Cut-Decals.jpg';
+import heroB from '../assets/img/Holographic-Stickers.jpg';
+import heroC from '../assets/img/Custom-Die-Cut-Labels.jpg';
 
-/*
- * The published homepage led with four animated value propositions. The source
- * GIFs totalled 3.2 MB, so they were converted to animated WebP (860 kB) which
- * keeps the motion without wrecking LCP. They are served straight from /public
- * because Astro's image pipeline flattens animation to a single frame.
- */
-const USPS = [
-  {
-    src: '/img/Customize-Your-Design-Size-Style.webp',
-    title: 'Customize Your Design, Size & Style',
-    w: 320,
-    h: 180,
-  },
-  {
-    src: '/img/High-Quality-Offset-Printing.webp',
-    title: 'Design Your Perfect Sticker Today',
-    w: 320,
-    h: 268,
-  },
-  { src: '/img/Offset-Press.webp', title: 'High Quality Offset Printing', w: 320, h: 303 },
-  {
-    src: '/img/Order-Now-for-Fast-8-10-Day-Ships-1.webp',
-    title: 'Order Now for Fast 8-10 Day Shipping',
-    w: 320,
-    h: 240,
-  },
+const TITLE = 'Custom Die Cut Stickers, Cut to Any Shape | The Die Cut Stickers';
+const DESCRIPTION =
+  'Custom die cut stickers printed in full color on vinyl, clear, holographic, paper or eco stock and cut to your artwork outline. Free proof, free US shipping.';
+
+// The products buyers search for most (Search Console, 12 months).
+const POPULAR = [
+  'waterproof-stickers',
+  'custom-eco-friendly-stickers',
+  'outdoor-stickers',
+  'die-cut-decals',
+  'die-cut-labels',
+  'matte-stickers',
+  'glossy-stickers',
+  'custom-vinyl-stickers',
+  'custom-clear-stickers',
+]
+  .map((s) => products.find((p) => p.slug === s))
+  .filter((p) => p !== undefined);
+
+const tiles = categories.map((c) => {
+  const meta = categoryMeta(c.slug);
+  const items = productsInCategory(c.slug);
+  const img = items[0] ? resolveImage(items[0].images[0] ?? '') : undefined;
+  return { href: `/product-category/${c.slug}/`, label: meta.navLabel, tagline: meta.tagline, img, names: items.slice(0, 4).map(displayName), count: items.length };
+});
+
+const USES = [
+  { label: 'Laptops, bottles and merch', slug: 'die-cut-vinyl-stickers', note: 'Laminated vinyl, 2.5 to 4 in, die cut to the logo.' },
+  { label: 'Product packaging and jars', slug: 'custom-packaging-labels', note: 'BOPP or vinyl for wet products, paper for dry goods, on rolls or sheets.' },
+  { label: 'Cars, trucks and fleets', slug: 'custom-car-stickers', note: 'Cast vinyl with laminate, letters 3 in or taller to read from the next lane.' },
+  { label: 'Shop windows and doors', slug: 'custom-window-stickers', note: 'Clear film inside the glass or white vinyl outside, 6 to 18 in.' },
+  { label: 'Outdoor equipment and signs', slug: 'outdoor-stickers', note: 'Gloss laminate, permanent adhesive, three to five years outside.' },
+  { label: 'Events and giveaways', slug: 'custom-promotional-stickers', note: 'Die cut shapes people keep, 2 to 4 in, gloss finish.' },
 ];
 
-const content = page.content
-  .replace(/<table/gi, '<div class="table-scroll"><table')
-  .replace(/<\/table>/gi, '</table></div>');
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': absoluteUrl('/') + '#webpage',
+    url: absoluteUrl('/'),
+    name: TITLE,
+    description: DESCRIPTION,
+    isPartOf: { '@id': absoluteUrl('/#website') },
+    about: { '@id': absoluteUrl('/#organization') },
+    mainEntity: {
+      '@type': 'ItemList',
+      name: 'Custom die cut stickers',
+      numberOfItems: products.length,
+      itemListElement: products.map((p, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: displayName(p),
+        url: absoluteUrl(`/product/${p.slug}/`),
+      })),
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: homeFaqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
 ---
 
-<BaseLayout
-  title={page.seoTitle}
-  description={page.seoDescription}
-  path="/"
-  schema={[
-    {
-      // The homepage lists the catalogue, so the page itself is the
-      // CollectionPage that owns the list rather than a floating ItemList.
-      '@context': 'https://schema.org',
-      '@type': 'CollectionPage',
-      '@id': absoluteUrl('/') + '#collection',
-      url: absoluteUrl('/'),
-      name: page.seoTitle,
-      description: page.seoDescription,
-      mainEntity: {
-        '@type': 'ItemList',
-        name: 'Custom die cut stickers',
-        numberOfItems: products.length,
-        itemListElement: products.map((p, i) => ({
-          '@type': 'ListItem',
-          position: i + 1,
-          name: p.name,
-          url: absoluteUrl(`/product/${p.slug}/`),
-        })),
-      },
-    },
-  ]}
->
-  <HeroSlider />
-
-  <section class="usps" aria-label="Why order from The Die Cut Stickers">
-    <div class="container usp-grid narrow-usps">
-      {
-        USPS.map((u, i) => (
-          <div class:list={['usp', i < 2 && 'usp-tint']}>
-            <img
-              src={u.src}
-              alt=""
-              aria-hidden="true"
-              width={u.w}
-              height={u.h}
-              loading="lazy"
-              decoding="async"
-              fetchpriority="low"
-            />
-            <p class="usp-title">{u.title}</p>
-          </div>
-        ))
-      }
+<BaseLayout title={TITLE} description={DESCRIPTION} path="/" ogImage={heroA.src} schema={schema}>
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <h1>Custom Die Cut Stickers, Cut to Any Shape</h1>
+        <p class="hero-lead">
+          Your artwork printed in full color on vinyl, clear, holographic, paper or eco stock, then cut along
+          its outline. A free proof before anything prints, free shipping in the US, and delivery in
+          {FACTS.deliveryDays}.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary btn-lg" href="/get-a-quote/">Design your custom stickers</a>
+          <a class="btn btn-outline btn-lg" href="/products/">See all 29 sticker types</a>
+        </div>
+        <dl class="hero-facts">
+          <div><dt>From</dt><dd>{FACTS.unitPriceFromLabel} per sticker</dd></div>
+          <div><dt>Minimum</dt><dd>{FACTS.minOrderLabel}</dd></div>
+          <div><dt>Production</dt><dd>{FACTS.productionDays}</dd></div>
+          <div><dt>Finishes</dt><dd>Gloss, matte, spot UV</dd></div>
+        </dl>
+      </div>
+      <div class="hero-media" aria-hidden="true">
+        <Image class="m1" src={heroA} alt="" widths={[420, 640, 900]} sizes="(max-width: 860px) 90vw, 520px" loading="eager" fetchpriority="high" />
+        <Image class="m2" src={heroB} alt="" widths={[240, 360]} sizes="200px" loading="eager" />
+        <Image class="m3" src={heroC} alt="" widths={[240, 360]} sizes="200px" loading="lazy" />
+      </div>
     </div>
   </section>
 
-  <div class="container products-cta">
-    <a class="btn btn-primary" href="/products/">Our Products</a>
-  </div>
-
-  <section class="section-tight" aria-labelledby="catalogue-heading">
-    <div class="container narrow-grid">
-      <h2 id="catalogue-heading" class="visually-hidden">Our sticker range</h2>
-      <ProductGrid products={productsByDate} eagerCount={3} />
+  <section class="section-tight" aria-labelledby="browse-heading">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="browse-heading">Find the right sticker by material, feature or use</h2>
+        <p>Five ways into the same 29 products. Each category page compares its options in a table and explains where each one fails.</p>
+      </div>
+      <ul class="tiles" role="list">
+        {
+          tiles.map((t) => (
+            <li>
+              <a class="tile card" href={t.href}>
+                {t.img && <Image src={t.img} alt="" widths={[200, 320]} sizes="140px" loading="lazy" />}
+                <span class="tile-body">
+                  <span class="tile-title">{t.label}</span>
+                  <span class="tile-names">{t.names.join(' · ')}{t.count > 4 ? ` · ${t.count - 4} more` : ''}</span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </section>
 
-  <section class="section section-white home-copy">
-    <div class="container narrow">
-      <div class="rich-text" set:html={content} />
+  <section class="section section-white" aria-labelledby="popular-heading">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="popular-heading">The stickers people order most</h2>
+        <p>Waterproof, eco-friendly and outdoor stickers lead every month. Each page shows the material, a specification table and a dozen answered questions.</p>
+      </div>
+      <ProductGrid products={POPULAR} eagerCount={0} />
+      <p class="more-link"><a href="/products/">All 29 custom sticker products</a></p>
     </div>
   </section>
 
-  <CTASection id="quote" />
+  <section class="section" aria-labelledby="how-heading">
+    <div class="container how-grid">
+      <div>
+        <h2 id="how-heading">How an order works</h2>
+        <p class="lead">No account to create. Send the job, approve the proof, receive the stickers.</p>
+      </div>
+      <ol class="how-list">
+        <li>
+          <strong>Tell us the job.</strong> Product, size in inches, quantity and where the stickers will live. Artwork can come later.
+        </li>
+        <li>
+          <strong>Get a price within one business day.</strong> Per-sticker cost, a material recommendation and any notes on the file.
+        </li>
+        <li>
+          <strong>Approve a free proof.</strong> Artwork at size with the cut line drawn in. Changes at this stage are free.
+        </li>
+        <li>
+          <strong>Printed in {FACTS.productionDays}, delivered in {FACTS.deliveryDays}.</strong> {FACTS.carrier}, tracked, shipping free within the US.
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section-white" aria-labelledby="materials-heading">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="materials-heading">Which material for which job</h2>
+        <p>The material decides how long a sticker lasts and where it can go. The finish is cosmetic; the film is not.</p>
+      </div>
+      <div class="table-scroll">
+        <table class="data">
+          <thead>
+            <tr><th>Material</th><th>Lasts</th><th>Use it for</th><th>Avoid it for</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">White vinyl</th><td>3 to 5 years outdoors, laminated</td><td>Logos, laptops, bottles, equipment, vehicles</td><td>Nothing in particular; the default</td></tr>
+            <tr><th scope="row">Clear vinyl</th><td>2 to 4 years</td><td>Windows, clear bottles, no-label look</td><td>Dark surfaces without a white underlay</td></tr>
+            <tr><th scope="row">Paper and kraft</th><td>Indoor, product life</td><td>Dry packaging, box seals, giveaways</td><td>Anything wet, cold or outdoors</td></tr>
+            <tr><th scope="row">Holographic and metallic</th><td>2 to 3 years</td><td>Merch, launches, premium seals</td><td>Small text, photographic art</td></tr>
+            <tr><th scope="row">Reflective and glow</th><td>2 to 3 years</td><td>Trailers, helmets, safety and exit marks</td><td>Pastel or detailed designs</td></tr>
+            <tr><th scope="row">Recyclable paper, bio film</th><td>Indoor</td><td>Brands with a waste policy</td><td>Refrigerated or wet products</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="more-link">Full comparison with costs on the <a href="/product-category/by-material/">sticker materials guide</a>.</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="uses-heading">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="uses-heading">Start from where the sticker goes</h2>
+        <p>Most failed sticker orders were chosen from a product list instead of from the surface. These are the six jobs we quote most, with the spec that works.</p>
+      </div>
+      <ul class="uses" role="list">
+        {
+          USES.map((u) => (
+            <li class="card use">
+              <a href={`/product/${u.slug}/`}>{u.label}</a>
+              <p>{u.note}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section-paper" aria-labelledby="why-heading">
+    <div class="container why-grid">
+      <div>
+        <h2 id="why-heading">What you get on every order</h2>
+        <p>
+          We print stickers, decals and labels for small businesses, brands, fleets and event organizers from
+          Phoenix, Arizona. The parts of the job that usually go wrong, choosing the film for the surface and
+          setting a cut line that survives, are handled before the quote goes out, not after the box arrives.
+        </p>
+        <p>
+          If a cheaper material will do the same job we say so. If a design will not cut cleanly at the size
+          you asked for, the proof shows the fix. A print or cutting defect is reprinted at no charge.
+        </p>
+      </div>
+      <ul class="why-list">
+        <li><strong>{FACTS.proof}.</strong> Cut line drawn in, colors checked, nothing prints until you approve.</li>
+        <li><strong>{FACTS.design}.</strong> File clean-up, cut paths, simple layouts and type.</li>
+        <li><strong>{FACTS.shipping}.</strong> {FACTS.carrier}, tracked, on every order.</li>
+        <li><strong>Full-color CMYK with Pantone matching.</strong> Offset for long runs, digital for short ones.</li>
+        <li><strong>Any shape from 0.5 in to 24 by 36 in.</strong> Die cut, kiss cut sheets or rolls.</li>
+        <li><strong>Reorders without a new proof.</strong> Approved files stay on your account.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section-white" aria-labelledby="guides-heading">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="guides-heading">Guides worth reading before you order</h2>
+        <p>Written from the questions that come up in the quote form every week.</p>
+      </div>
+      <ul class="guides" role="list">
+        {
+          BLOG_POSTS.slice(0, 3).map((post) => (
+            <li class="card guide">
+              <a class="guide-img" href={post.url} tabindex="-1" aria-hidden="true">
+                <Image src={post.hero} alt="" widths={[360, 520]} sizes="(max-width: 700px) 90vw, 360px" loading="lazy" />
+              </a>
+              <div class="guide-body">
+                <h3><a href={post.url}>{post.title}</a></h3>
+                <p>{post.excerpt}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <FAQSection faqs={homeFaqs} heading="Custom die cut stickers: questions before you order" intro={`Answers from the team at ${SITE.name}. Anything not covered here is a phone call or a form away.`} />
+    </div>
+  </section>
+
+  <QuoteSection id="quote" heading="Get a price for your custom die cut stickers" />
 </BaseLayout>
 
 <style>
-  .usps {
-    padding: 34px 0 6px;
-  }
-  /*
-   * Measured from the published homepage capture (1349px viewport): the value
-   * proposition row ran ~1025px wide with 4 cards and a ~29px gap, and the
-   * product gallery ran ~895px with 3 cards and a ~23px gap. Both sat narrower
-   * than the 1200px theme container, so they are constrained here to keep the
-   * card size and grid density the same as the original.
-   */
-  .narrow-usps {
-    max-width: 1055px;
-  }
-  .narrow-grid {
-    max-width: 927px;
-  }
-  .usp-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 29px;
-  }
-  .usp {
+  .hero {
     background: var(--white);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-sm);
-    padding: 20px 16px 22px;
-    text-align: center;
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
   }
-  .usp-tint {
-    background: #f6ecd9;
+  .hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: 48px;
+    align-items: center;
+    padding-block: clamp(2.5rem, 2rem + 3vw, 5rem);
   }
-  .usp :global(img) {
-    width: 100%;
-    max-width: 130px;
-    height: auto;
-    margin-inline: auto;
+  .hero h1 {
+    font-size: clamp(2.2rem, 1.5rem + 2.8vw, 3.4rem);
+    margin-bottom: 18px;
   }
-  .usp-title {
-    margin: 12px 0 0;
-    font-weight: 700;
-    color: var(--ink);
-    font-size: 0.95rem;
-    line-height: 1.4;
+  .hero-lead {
+    font-size: 1.2rem;
+    color: var(--ink-soft);
+    max-width: 56ch;
+    margin-bottom: 26px;
   }
-
-  .products-cta {
+  .hero-actions {
     display: flex;
-    justify-content: center;
-    padding: 26px 16px 4px;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+  }
+  .hero-facts {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    gap: 14px 28px;
+    margin: 0;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+    font-size: 0.95rem;
+  }
+  .hero-facts dt {
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+  .hero-facts dd {
+    margin: 0;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .hero-media {
+    position: relative;
+    aspect-ratio: 1 / 0.92;
+  }
+  .hero-media :global(img) {
+    position: absolute;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--line);
+    background: var(--paper);
+  }
+  .hero-media :global(.m1) {
+    inset: 0 12% 12% 0;
+    width: 88%;
+    height: 88%;
+  }
+  .hero-media :global(.m2) {
+    right: 0;
+    bottom: 0;
+    width: 42%;
+    height: 42%;
+    box-shadow: var(--shadow);
+  }
+  .hero-media :global(.m3) {
+    right: 18%;
+    top: -4%;
+    width: 30%;
+    height: 30%;
+    box-shadow: var(--shadow);
   }
 
-  .home-copy .narrow {
-    max-width: 860px;
+  .tiles {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .tile {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+    overflow: hidden;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .tile:hover {
+    border-color: var(--line-strong);
+    box-shadow: var(--shadow);
+  }
+  .tile :global(img) {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-bottom: 1px solid var(--line);
+  }
+  .tile-body {
+    padding: 14px 16px 16px;
+    display: grid;
+    gap: 6px;
+  }
+  .tile-title {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--ink);
+  }
+  .tile:hover .tile-title {
+    color: var(--teal-dark);
+  }
+  .tile-names {
+    font-size: 0.86rem;
+    color: var(--muted);
+    line-height: 1.45;
   }
 
-  @media (max-width: 900px) {
-    .usp-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+  .more-link {
+    margin: 22px 0 0;
+    font-size: 1rem;
+  }
+
+  .how-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: 48px;
+    align-items: start;
+  }
+  .how-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+    display: grid;
+    gap: 0;
+    border-top: 1px solid var(--line);
+  }
+  .how-list li {
+    counter-increment: step;
+    padding: 18px 0 18px 56px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+    font-size: 1.05rem;
+  }
+  .how-list li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    color: var(--teal-dark);
+  }
+  .how-list strong {
+    color: var(--ink);
+  }
+
+  .uses {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .use {
+    padding: 18px 20px;
+  }
+  .use a {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .use a:hover {
+    color: var(--teal-dark);
+    text-decoration: underline;
+  }
+  .use p {
+    margin: 8px 0 0;
+    font-size: 0.95rem;
+    color: var(--muted);
+  }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 48px;
+    align-items: start;
+  }
+  .why-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+  }
+  .why-list li {
+    padding-left: 26px;
+    position: relative;
+  }
+  .why-list li::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 10px;
+    width: 11px;
+    height: 6px;
+    border-left: 2px solid var(--teal);
+    border-bottom: 2px solid var(--teal);
+    transform: rotate(-45deg);
+  }
+  .why-list strong {
+    color: var(--ink);
+  }
+
+  .guides {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .guide {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .guide-img :global(img) {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-bottom: 1px solid var(--line);
+  }
+  .guide-body {
+    padding: 16px 18px 18px;
+  }
+  .guide-body h3 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+  }
+  .guide-body h3 a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .guide-body h3 a:hover {
+    color: var(--teal-dark);
+  }
+  .guide-body p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--muted);
+  }
+
+  @media (max-width: 1000px) {
+    .tiles {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .tiles li:nth-child(4),
+    .tiles li:nth-child(5) {
+      grid-column: span 1;
     }
   }
-  @media (max-width: 420px) {
-    .usp-grid {
-      gap: 12px;
+  @media (max-width: 860px) {
+    .hero-inner {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 30px;
     }
-    .usp {
-      padding: 14px 10px 16px;
+    .hero-media {
+      max-width: 520px;
+    }
+    .hero-facts {
+      grid-template-columns: repeat(2, auto);
+    }
+    .how-grid,
+    .why-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 24px;
+    }
+    .uses,
+    .guides {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 600px) {
+    .tiles,
+    .uses,
+    .guides {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .hero-actions .btn {
+      flex: 1 1 100%;
     }
   }
 </style>

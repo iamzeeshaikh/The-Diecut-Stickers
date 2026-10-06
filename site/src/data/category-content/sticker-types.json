@@ -4,7 +4,7 @@
   "name": "Sticker Types",
   "h1": "Types of Die Cut Stickers, Decals and Labels",
   "seoTitle": "Sticker Types Explained: Die Cut Decals, Labels & Holographic",
-  "seoDescription": "Die cut decals, die cut labels and holographic die cut stickers compared: construction, where each belongs, and how to choose between a sticker, a decal and a label.",
+  "seoDescription": "Die cut decals, die cut labels and holographic die cut stickers compared: construction, where each belongs, and how to choose between the three.",
   "tagline": "Sticker, decal and label are not the same thing. This page sorts the types so the product you order matches the job.",
   "quickAnswer": "The main custom sticker types are printed stickers (ink on a face film with a backing), decals (a graphic transferred to a surface, often cut vinyl with no printed background), and labels (stickers made for product identification, usually on rolls or sheets). Each is available die cut to the artwork outline, in holographic, vinyl or paper, from $0.30 per piece.",
   "sections": [
@@ -34,15 +34,45 @@
     }
   ],
   "faqs": [
-    { "q": "What is the difference between a sticker and a decal?", "a": "A sticker is any printed piece with adhesive and a backing. A decal is a graphic meant to be transferred to a surface and read as part of it, such as a van door or shop window, so it is usually larger, laminated, often supplied with transfer tape and expected to last years." },
-    { "q": "Are die cut labels and die cut stickers the same product?", "a": "Same materials and cutting, different format and purpose. Labels identify a product and ship on rolls or sheets for a packing bench, usually in larger quantities. Stickers ship as individual pieces for hand application. Tell us which you need and we set the format." },
-    { "q": "What sticker type is best for laptops and water bottles?", "a": "A die cut vinyl sticker with a gloss or matte laminate. The laminate protects against scratches and dishwasher cycles, the die cut removes the white border, and 2.5 to 4 inches is the size range that fits a laptop lid or the side of a bottle." },
-    { "q": "Which sticker type should I use on a vehicle?", "a": "A die cut decal on cast vinyl with a laminate. Cast film conforms to curves and does not shrink, and the laminate takes car washes and sun. Calendered vinyl is fine for short-term promotions under a year or for flat trailer panels." },
-    { "q": "Can holographic die cut stickers be used as product seals?", "a": "Yes, and they work well as tamper-evident seals because the film shows any lifting. Keep the design simple, leave at least a quarter of the film unprinted so the shimmer shows, and choose a permanent adhesive so the seal cannot be reapplied cleanly." },
-    { "q": "What are kiss cut stickers?", "a": "Stickers where the blade cuts through the face film but not the backing sheet, so several shapes stay on one sheet and peel off individually. They are the standard format for sticker packs, planner stickers and event giveaways, and they are cheaper per piece than individual die cuts." },
-    { "q": "Do decals come with transfer tape?", "a": "Cut-vinyl decals with separate letters or elements do, so the whole layout transfers in one piece. Printed die cut decals that are a single piece do not need it. Ask on the quote if your decal has loose elements and we include the tape." },
-    { "q": "Can one artwork be ordered as several sticker types?", "a": "Yes, from a single proof. Roll labels for packaging, die cut stickers for giveaways and a couple of large decals for the shop window can be quoted together. Each type has its own 100-piece minimum except large decals, which can be ordered in small numbers." },
-    { "q": "Which sticker type is cheapest?", "a": "Kiss cut sheets, then standard-shape paper labels on rolls, then die cut vinyl stickers. Decals cost more because they are larger and on heavier film. Holographic die cut stickers cost the most per square inch because of the film." },
-    { "q": "How do I know if my design works as a die cut type?", "a": "If it has a clear outline, bold shapes and no fine points thinner than a tenth of an inch, it will cut cleanly. Designs with photographic backgrounds or very thin elements are better as circle or rectangle stickers. Send the file and we draw the cut line on the proof." }
+    {
+      "q": "What is the difference between a sticker and a decal?",
+      "a": "A sticker is any printed piece with adhesive and a backing. A decal is a graphic meant to be transferred to a surface and read as part of it, such as a van door or shop window, so it is usually larger, laminated, often supplied with transfer tape and expected to last years."
+    },
+    {
+      "q": "Are die cut labels and die cut stickers the same product?",
+      "a": "Same materials and cutting, different format and purpose. Labels identify a product and ship on rolls or sheets for a packing bench, usually in larger quantities. Stickers ship as individual pieces for hand application. Tell us which you need and we set the format."
+    },
+    {
+      "q": "What sticker type is best for laptops and water bottles?",
+      "a": "A die cut vinyl sticker with a gloss or matte laminate. The laminate protects against scratches and dishwasher cycles, the die cut removes the white border, and 2.5 to 4 inches is the size range that fits a laptop lid or the side of a bottle."
+    },
+    {
+      "q": "Which sticker type should I use on a vehicle?",
+      "a": "A die cut decal on cast vinyl with a laminate. Cast film conforms to curves and does not shrink, and the laminate takes car washes and sun. Calendered vinyl is fine for short-term promotions under a year or for flat trailer panels."
+    },
+    {
+      "q": "Can holographic die cut stickers be used as product seals?",
+      "a": "Yes, and they work well as tamper-evident seals because the film shows any lifting. Keep the design simple, leave at least a quarter of the film unprinted so the shimmer shows, and choose a permanent adhesive so the seal cannot be reapplied cleanly."
+    },
+    {
+      "q": "What are kiss cut stickers?",
+      "a": "Stickers where the blade cuts through the face film but not the backing sheet, so several shapes stay on one sheet and peel off individually. They are the standard format for sticker packs, planner stickers and event giveaways, and they are cheaper per piece than individual die cuts."
+    },
+    {
+      "q": "Do decals come with transfer tape?",
+      "a": "Cut-vinyl decals with separate letters or elements do, so the whole layout transfers in one piece. Printed die cut decals that are a single piece do not need it. Ask on the quote if your decal has loose elements and we include the tape."
+    },
+    {
+      "q": "Can one artwork be ordered as several sticker types?",
+      "a": "Yes, from a single proof. Roll labels for packaging, die cut stickers for giveaways and a couple of large decals for the shop window can be quoted together. Each type has its own 100-piece minimum except large decals, which can be ordered in small numbers."
+    },
+    {
+      "q": "Which sticker type is cheapest?",
+      "a": "Kiss cut sheets, then standard-shape paper labels on rolls, then die cut vinyl stickers. Decals cost more because they are larger and on heavier film. Holographic die cut stickers cost the most per square inch because of the film."
+    },
+    {
+      "q": "How do I know if my design works as a die cut type?",
+      "a": "If it has a clear outline, bold shapes and no fine points thinner than a tenth of an inch, it will cut cleanly. Designs with photographic backgrounds or very thin elements are better as circle or rectangle stickers. Send the file and we draw the cut line on the proof."
+    }
   ]
 }

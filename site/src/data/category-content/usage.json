@@ -4,7 +4,7 @@
   "name": "Stickers by Use",
   "h1": "Custom Stickers by Where They Are Used",
   "seoTitle": "Stickers by Use: Car, Window, Packaging, Outdoor & Promotional",
-  "seoDescription": "Pick custom stickers by where they go: cars, storefront windows, product packaging, indoor displays, outdoor equipment and promotional handouts. Material and size per use.",
+  "seoDescription": "Pick custom stickers by where they go: cars, storefront windows, product packaging, indoor displays, outdoor equipment and promotional handouts.",
   "tagline": "Where a sticker lives decides its material, adhesive and size. Start from the surface and the rest follows.",
   "quickAnswer": "Stickers by use groups our products by the surface they go on: vehicles, windows, product packaging, indoor spaces, outdoor equipment and promotional handouts. Each use has a proven material (cast vinyl for cars, clear film for glass, BOPP for wet packaging, paper for indoor and giveaways) and a size range, all cut to any shape from $0.30 per sticker.",
   "sections": [
@@ -34,15 +34,45 @@
     }
   ],
   "faqs": [
-    { "q": "What sticker material is best for a car door?", "a": "Cast vinyl with a gloss or matte laminate and permanent adhesive. Cast film conforms to curves and does not shrink back from the edges, and the laminate handles car washes and sun for three to five years. Calendered vinyl is fine for flat trailer panels or campaigns under a year." },
-    { "q": "Should window stickers go inside or outside the glass?", "a": "Inside if you want weather and vandal protection and can reverse-print on clear vinyl with a white underlay. Outside if the design needs solid white vinyl or the glass is tinted. Both last two to four years; outside-mounted stickers are easier for staff to replace." },
-    { "q": "Which labels survive a refrigerator or cooler?", "a": "BOPP or vinyl with a permanent adhesive, applied to dry containers at room temperature and left 24 hours before chilling. Condensation lifts paper labels within hours. Gloss or matte laminate both work; matte hides scuffs on bottles that get handled often." },
-    { "q": "Can I use the same sticker indoors and outdoors?", "a": "Laminated vinyl with permanent adhesive works in both places. The reverse is not true: paper, kraft and removable-adhesive stickers meant for indoor use will fail outside within weeks. If a design must go both places, order it on the outdoor spec." },
-    { "q": "How big should a storefront window sticker be?", "a": "Big enough to read from the sidewalk or the road, which usually means 6 to 18 inches for a logo and letters at least 2 inches tall for hours or a phone number. Tape a paper print at size on the glass and check it from across the street before ordering." },
-    { "q": "What is the best sticker for trade show giveaways?", "a": "A die cut vinyl sticker, 2.5 to 3.5 inches, gloss finish, with the design that people actually want on a laptop or bottle rather than a plain logo. Vinyl costs a little more than paper but the sticker gets kept and applied instead of binned." },
-    { "q": "Do outdoor equipment stickers need a laminate?", "a": "Yes. Unlaminated vinyl fades and scratches in a season on bins, poles, generators and signs. A gloss laminate roughly doubles outdoor life and makes the sticker wipeable. Keep artwork high-contrast so it stays legible as the colors age." },
-    { "q": "Can packaging labels be supplied on rolls?", "a": "Yes, on standard 3-inch cores with the unwind direction you specify for your dispenser or applicator. Rolls make sense above a few hundred labels a week. Below that, sheets are cheaper and easier to apply by hand." },
-    { "q": "How do removable stickers for indoor displays come off?", "a": "Peel slowly from one corner at a low angle. Removable acrylic adhesive leaves painted walls, glass and laminate clean for up to about two years; after that some residue is possible and a little isopropyl alcohol removes it. Do not use removable adhesive on textured or freshly painted walls." },
-    { "q": "What size should a promotional sticker be?", "a": "Two to four inches. Smaller than 2 inches reads as a label and gets lost; larger than 4 inches does not fit a laptop lid or water bottle, which is where promotional stickers end up. Three inches on the longest side is the safe default." }
+    {
+      "q": "What sticker material is best for a car door?",
+      "a": "Cast vinyl with a gloss or matte laminate and permanent adhesive. Cast film conforms to curves and does not shrink back from the edges, and the laminate handles car washes and sun for three to five years. Calendered vinyl is fine for flat trailer panels or campaigns under a year."
+    },
+    {
+      "q": "Should window stickers go inside or outside the glass?",
+      "a": "Inside if you want weather and vandal protection and can reverse-print on clear vinyl with a white underlay. Outside if the design needs solid white vinyl or the glass is tinted. Both last two to four years; outside-mounted stickers are easier for staff to replace."
+    },
+    {
+      "q": "Which labels survive a refrigerator or cooler?",
+      "a": "BOPP or vinyl with a permanent adhesive, applied to dry containers at room temperature and left 24 hours before chilling. Condensation lifts paper labels within hours. Gloss or matte laminate both work; matte hides scuffs on bottles that get handled often."
+    },
+    {
+      "q": "Can I use the same sticker indoors and outdoors?",
+      "a": "Laminated vinyl with permanent adhesive works in both places. The reverse is not true: paper, kraft and removable-adhesive stickers meant for indoor use will fail outside within weeks. If a design must go both places, order it on the outdoor spec."
+    },
+    {
+      "q": "How big should a storefront window sticker be?",
+      "a": "Big enough to read from the sidewalk or the road, which usually means 6 to 18 inches for a logo and letters at least 2 inches tall for hours or a phone number. Tape a paper print at size on the glass and check it from across the street before ordering."
+    },
+    {
+      "q": "What is the best sticker for trade show giveaways?",
+      "a": "A die cut vinyl sticker, 2.5 to 3.5 inches, gloss finish, with the design that people actually want on a laptop or bottle rather than a plain logo. Vinyl costs a little more than paper but the sticker gets kept and applied instead of binned."
+    },
+    {
+      "q": "Do outdoor equipment stickers need a laminate?",
+      "a": "Yes. Unlaminated vinyl fades and scratches in a season on bins, poles, generators and signs. A gloss laminate roughly doubles outdoor life and makes the sticker wipeable. Keep artwork high-contrast so it stays legible as the colors age."
+    },
+    {
+      "q": "Can packaging labels be supplied on rolls?",
+      "a": "Yes, on standard 3-inch cores with the unwind direction you specify for your dispenser or applicator. Rolls make sense above a few hundred labels a week. Below that, sheets are cheaper and easier to apply by hand."
+    },
+    {
+      "q": "How do removable stickers for indoor displays come off?",
+      "a": "Peel slowly from one corner at a low angle. Removable acrylic adhesive leaves painted walls, glass and laminate clean for up to about two years; after that some residue is possible and a little isopropyl alcohol removes it. Do not use removable adhesive on textured or freshly painted walls."
+    },
+    {
+      "q": "What size should a promotional sticker be?",
+      "a": "Two to four inches. Smaller than 2 inches reads as a label and gets lost; larger than 4 inches does not fit a laptop lid or water bottle, which is where promotional stickers end up. Three inches on the longest side is the safe default."
+    }
   ]
 }

@@ -29,8 +29,19 @@ const baseSchema = [
     '@id': absoluteUrl('/#organization'),
     name: SITE.name,
     url: absoluteUrl('/'),
+    logo: absoluteUrl('/favicon-512.png'),
     email: SITE.email,
     telephone: SITE.phone,
+    description:
+      'Custom die cut stickers, decals and labels printed in full color and cut to any shape, with a free proof and free US shipping.',
+    areaServed: 'US',
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: SITE.phone,
+      email: SITE.email,
+      contactType: 'sales',
+      availableLanguage: 'en',
+    },
     address: {
       '@type': 'PostalAddress',
       streetAddress: SITE.address.street,

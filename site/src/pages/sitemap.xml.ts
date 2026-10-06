@@ -1,13 +1,7 @@
 import type { APIRoute } from 'astro';
-import { products, categories, PRODUCTS_PER_PAGE } from '../lib/catalogue';
+import { products, categories } from '../lib/catalogue';
 import { BLOG_POSTS } from '../lib/blog';
 import { absoluteUrl } from '../lib/site';
-
-// Pages two and up of the product archive. Indexable, so they belong here.
-const archivePages = Array.from(
-  { length: Math.ceil(products.length / PRODUCTS_PER_PAGE) - 1 },
-  (_, i) => ({ loc: absoluteUrl(`/products/page/${i + 2}/`), priority: '0.5' }),
-);
 
 /**
  * Hand-built so the contents are explicit and auditable.
@@ -20,7 +14,7 @@ export const GET: APIRoute = () => {
   const urls: Array<{ loc: string; priority: string }> = [
     { loc: absoluteUrl('/'), priority: '1.0' },
     { loc: absoluteUrl('/products/'), priority: '0.9' },
-    ...archivePages,
+    { loc: absoluteUrl('/get-a-quote/'), priority: '0.9' },
     ...categories.map((c) => ({
       loc: absoluteUrl(`/product-category/${c.slug}/`),
       priority: '0.8',
@@ -30,6 +24,7 @@ export const GET: APIRoute = () => {
     ...BLOG_POSTS.map((p) => ({ loc: absoluteUrl(p.url), priority: '0.6' })),
     { loc: absoluteUrl('/about-us/'), priority: '0.5' },
     { loc: absoluteUrl('/contact-us/'), priority: '0.6' },
+    { loc: absoluteUrl('/sitemap/'), priority: '0.3' },
     { loc: absoluteUrl('/privacy-policy/'), priority: '0.3' },
     { loc: absoluteUrl('/terms-conditions/'), priority: '0.3' },
     { loc: absoluteUrl('/refund_returns/'), priority: '0.3' },

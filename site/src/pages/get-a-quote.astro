@@ -1,0 +1,591 @@
+---
+/**
+ * "Design Your Custom Stickers": a step-by-step order form. Plain HTML
+ * fieldsets with photo cards for the product choice; progressive enhancement
+ * only reveals one step at a time. Posts to the same /api/inquiry endpoint
+ * as every other form on the site.
+ */
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import FAQSection from '../components/FAQSection.astro';
+import { products } from '../lib/catalogue';
+import { displayName } from '../lib/product-content';
+import { resolveImage } from '../lib/images';
+import { absoluteUrl, SITE } from '../lib/site';
+import { FACTS } from '../lib/facts';
+import faqs from '../data/page-faqs/get-a-quote.json';
+
+const path = '/get-a-quote/';
+const title = 'Design Your Custom Stickers | Step-by-Step Quote';
+const description =
+  'Build your custom sticker order in five steps: sticker type, material, finish, size and quantity, then artwork. A price within a business day and a free proof.';
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Design your custom stickers' }];
+
+// The sticker types shown as photo cards in step one, in the order buyers ask for them.
+const TYPES = [
+  'die-cut-vinyl-stickers',
+  'waterproof-stickers',
+  'custom-clear-stickers',
+  'custom-holographic-stickers',
+  'custom-eco-friendly-stickers',
+  'die-cut-labels',
+  'custom-car-stickers',
+  'custom-window-stickers',
+  'outdoor-stickers',
+  'custom-metallic-stickers',
+  'matte-stickers',
+  'glossy-stickers',
+]
+  .map((s) => products.find((p) => p.slug === s))
+  .filter((p) => p !== undefined)
+  .map((p) => ({ name: displayName(p), img: resolveImage(p.images[0] ?? '') }));
+
+const allNames = products.map(displayName).sort((a, b) => a.localeCompare(b));
+
+const MATERIALS = [
+  ['White vinyl', 'The default. Outdoor-safe when laminated, dishwasher-safe, 3 to 5 years outside.'],
+  ['Clear vinyl', 'See-through film for glass and clear bottles. Add a white underlay for opaque colors.'],
+  ['Paper or kraft', 'Lowest cost, sharpest small type. Dry, indoor products only.'],
+  ['Holographic', 'Rainbow film for merch, launches and seals. Leave part of it unprinted.'],
+  ['Metallic foil', 'Silver or gold mirror base. Premium labels and badge effects.'],
+  ['Reflective', 'Returns headlights. Trailers, helmets, equipment.'],
+  ['Glow in the dark', 'Charges in light, glows 20 to 60 minutes. Safety and event use.'],
+  ['Eco-friendly', 'Recyclable paper or biodegradable film. Indoor, dry use.'],
+  ['No preference', 'We choose the stock for the surface you describe.'],
+];
+const FINISHES = [
+  ['Gloss', 'Deeper color, slight shine. Best for logos and photos.'],
+  ['Matte', 'No glare, hides fingerprints. Best for text and packaging.'],
+  ['Spot UV', 'Gloss over chosen areas of a matte sticker.'],
+  ['No preference', 'We pick by artwork and surface.'],
+];
+const QUANTITIES = ['100', '250', '500', '1,000', '2,500', '5,000+'];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  schema={[
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: crumbs.map((c, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: c.label,
+        ...(c.href ? { item: absoluteUrl(c.href) } : {}),
+      })),
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      '@id': absoluteUrl(path) + '#webpage',
+      url: absoluteUrl(path),
+      name: title,
+      description,
+      isPartOf: { '@id': absoluteUrl('/#website') },
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqs.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    },
+  ]}
+>
+  <Breadcrumbs items={crumbs} />
+
+  <section class="section-tight section-white quote-head">
+    <div class="container">
+      <p class="eyebrow-text">Build your order</p>
+      <h1>Design Your Custom Stickers</h1>
+      <p class="lead">
+        Five short steps. Choose the sticker type, the material and finish, the size and quantity, add artwork
+        if you have it, and tell us where to send the price. A quote comes back within one business day with a
+        free proof to follow. Nothing is charged on this page.
+      </p>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="container builder-grid">
+      <form class="builder inquiry" id="builder" method="post" action="/api/inquiry/" enctype="multipart/form-data" novalidate data-fallback-contact={`Please email ${SITE.email} or call ${SITE.phoneDisplay}.`}>
+        <div class="hp" aria-hidden="true">
+          <label for="builder-website">Leave this field empty</label>
+          <input type="text" id="builder-website" name="website" tabindex="-1" autocomplete="off" />
+        </div>
+        <input type="hidden" name="sourcePage" value={path} />
+
+        <fieldset class="step" data-step="1">
+          <legend><span class="num">1</span> Which sticker do you need?</legend>
+          <p class="step-help">Pick the closest match. Every option can be cut to any shape.</p>
+          <div class="type-grid">
+            {
+              TYPES.map((t, i) => (
+                <label class="type-card">
+                  <input type="radio" name="product" value={t.name} required={i === 0} />
+                  {t.img && <Image src={t.img} alt="" widths={[200, 320]} sizes="150px" loading={i < 6 ? 'eager' : 'lazy'} />}
+                  <span>{t.name}</span>
+                </label>
+              ))
+            }
+          </div>
+          <div class="field other-type">
+            <label for="builder-other">Something else from the range</label>
+            <select id="builder-other" name="product-other">
+              <option value="">Choose a product</option>
+              {allNames.map((n) => <option value={n}>{n}</option>)}
+            </select>
+          </div>
+        </fieldset>
+
+        <fieldset class="step" data-step="2">
+          <legend><span class="num">2</span> Material and finish</legend>
+          <p class="step-help">Not sure? Leave both on No preference and describe the surface in step 5.</p>
+          <div class="choice-grid">
+            {
+              MATERIALS.map(([name, note], i) => (
+                <label class="choice">
+                  <input type="radio" name="material" value={name} checked={i === MATERIALS.length - 1} />
+                  <span class="choice-name">{name}</span>
+                  <span class="choice-note">{note}</span>
+                </label>
+              ))
+            }
+          </div>
+          <div class="choice-grid finishes">
+            {
+              FINISHES.map(([name, note], i) => (
+                <label class="choice">
+                  <input type="radio" name="finish" value={name} checked={i === FINISHES.length - 1} />
+                  <span class="choice-name">{name}</span>
+                  <span class="choice-note">{note}</span>
+                </label>
+              ))
+            }
+          </div>
+        </fieldset>
+
+        <fieldset class="step" data-step="3">
+          <legend><span class="num">3</span> Size and quantity</legend>
+          <p class="step-help">Sizes run from {FACTS.minSize} to {FACTS.maxSize}. Price is by area, so give the width and height of the shape's bounding box.</p>
+          <div class="fields two">
+            <div class="field">
+              <label for="builder-size">Size in inches</label>
+              <input id="builder-size" name="size" type="text" maxlength="80" placeholder='e.g. 3" x 3"' />
+            </div>
+            <div class="field">
+              <label for="builder-shape">Shape</label>
+              <select id="builder-shape" name="shape">
+                <option>Die cut to my artwork</option>
+                <option>Circle</option>
+                <option>Square</option>
+                <option>Rectangle</option>
+                <option>Rounded rectangle</option>
+                <option>Oval</option>
+                <option>Kiss cut sheet</option>
+              </select>
+            </div>
+          </div>
+          <p class="choice-label">Quantity per design (minimum {FACTS.minOrderLabel})</p>
+          <div class="qty-row">
+            {
+              QUANTITIES.map((q, i) => (
+                <label class="qty">
+                  <input type="radio" name="quantity" value={q} checked={i === 1} />
+                  <span>{q}</span>
+                </label>
+              ))
+            }
+          </div>
+        </fieldset>
+
+        <fieldset class="step" data-step="4">
+          <legend><span class="num">4</span> Artwork</legend>
+          <p class="step-help">Optional now. PDF, AI, EPS or SVG cut cleanest; a 300 dpi PNG or JPG also works. Free design support covers fixes.</p>
+          <div class="field">
+            <label for="builder-artwork">Upload a file (max 10 MB)</label>
+            <input id="builder-artwork" name="artwork" type="file" accept=".pdf,.png,.jpg,.jpeg,.webp,.ai,.eps,.svg,.zip" />
+          </div>
+          <div class="field">
+            <label for="builder-printing">Colors or special requirements</label>
+            <input id="builder-printing" name="printing" type="text" maxlength="200" placeholder="e.g. Pantone 348 C, white underlay, removable adhesive" />
+          </div>
+        </fieldset>
+
+        <fieldset class="step" data-step="5">
+          <legend><span class="num">5</span> Where should the quote go?</legend>
+          <div class="fields two">
+            <div class="field">
+              <label for="builder-name">Name <span aria-hidden="true">*</span></label>
+              <input id="builder-name" name="name" type="text" required autocomplete="name" maxlength="120" />
+            </div>
+            <div class="field">
+              <label for="builder-company">Company</label>
+              <input id="builder-company" name="company" type="text" autocomplete="organization" maxlength="140" />
+            </div>
+            <div class="field">
+              <label for="builder-email">Email <span aria-hidden="true">*</span></label>
+              <input id="builder-email" name="email" type="email" required autocomplete="email" maxlength="180" />
+            </div>
+            <div class="field">
+              <label for="builder-phone">Phone <span aria-hidden="true">*</span></label>
+              <input id="builder-phone" name="phone" type="tel" required autocomplete="tel" maxlength="40" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="builder-message">Where will the stickers be used, and anything else we should know?</label>
+            <textarea id="builder-message" name="message" rows="4" maxlength="4000" placeholder="e.g. Labels for 12 oz cold-brew bottles kept in a cooler. Need them by the 20th."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg submit">Send my quote request</button>
+          <p class="privacy">One reply from a real person within a business day. No account, no spam.</p>
+          <p class="form-status" id="builder-status" role="status" aria-live="polite"></p>
+        </fieldset>
+      </form>
+
+      <aside class="builder-aside">
+        <div class="card aside-card">
+          <h2>What happens next</h2>
+          <ol>
+            <li>We check the surface, size and artwork and reply with a per-sticker price.</li>
+            <li>You approve a free proof with the cut line drawn in.</li>
+            <li>Production takes {FACTS.productionDays}; delivery within {FACTS.deliveryDays}.</li>
+          </ol>
+          <ul class="facts">
+            <li>From {FACTS.unitPriceFromLabel} per sticker</li>
+            <li>{FACTS.shipping}</li>
+            <li>{FACTS.design}</li>
+            <li>Rush production on request</li>
+          </ul>
+          <p class="aside-contact">
+            Questions first? Call <a href={`tel:${SITE.phoneHref}`}>{SITE.phoneDisplay}</a> or email
+            <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section-tight section-white">
+    <div class="container">
+      <FAQSection faqs={faqs} heading="Using the order form" />
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // Fold the "something else" select into the product field, so the API
+  // receives one product name whichever way it was chosen.
+  const form = document.getElementById('builder') as HTMLFormElement | null;
+  const other = document.getElementById('builder-other') as HTMLSelectElement | null;
+  if (form && other) {
+    other.addEventListener('change', () => {
+      if (!other.value) return;
+      form.querySelectorAll<HTMLInputElement>('input[name=product]').forEach((r) => (r.checked = false));
+      let hidden = form.querySelector<HTMLInputElement>('input[type=hidden][name=product]');
+      if (!hidden) {
+        hidden = document.createElement('input');
+        hidden.type = 'hidden';
+        hidden.name = 'product';
+        form.appendChild(hidden);
+      }
+      hidden.value = other.value;
+    });
+    form.querySelectorAll<HTMLInputElement>('input[type=radio][name=product]').forEach((r) =>
+      r.addEventListener('change', () => {
+        other.value = '';
+        form.querySelector('input[type=hidden][name=product]')?.remove();
+      }),
+    );
+  }
+</script>
+
+<style>
+  .quote-head {
+    border-bottom: 1px solid var(--line);
+  }
+  .eyebrow-text {
+    margin: 0 0 6px;
+    color: var(--teal-dark);
+    font-weight: 600;
+  }
+  .builder-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 40px;
+    align-items: start;
+  }
+  .builder {
+    display: grid;
+    gap: 22px;
+  }
+  .hp {
+    position: absolute !important;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .step {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--white);
+    padding: 22px 24px 26px;
+    margin: 0;
+    min-width: 0;
+  }
+  legend {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: var(--ink);
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .num {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid var(--line-strong);
+    display: grid;
+    place-items: center;
+    font-size: 0.95rem;
+    color: var(--teal-dark);
+    font-family: var(--font-serif);
+  }
+  .step-help {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin: 6px 0 16px;
+  }
+  .type-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .type-card {
+    position: relative;
+    display: block;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--page);
+  }
+  .type-card input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+  .type-card :global(img) {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+  }
+  .type-card span {
+    display: block;
+    padding: 8px 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--ink);
+    text-align: center;
+  }
+  .type-card:has(input:checked) {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 2px var(--teal);
+  }
+  .type-card:has(input:focus-visible) {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+  }
+  .other-type {
+    max-width: 420px;
+  }
+  .choice-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .finishes {
+    margin-top: 12px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .choice {
+    display: block;
+    position: relative;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 12px 14px 12px 38px;
+    cursor: pointer;
+    background: var(--page);
+  }
+  .choice input {
+    position: absolute;
+    left: 13px;
+    top: 15px;
+    margin: 0;
+    accent-color: var(--teal);
+  }
+  .choice-name {
+    display: block;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .choice-note {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+  .choice:has(input:checked) {
+    border-color: var(--teal);
+    background: var(--teal-soft);
+  }
+  .fields {
+    display: grid;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+  .fields.two {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .choice-label {
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--ink);
+    margin: 0 0 8px;
+  }
+  .qty-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .qty {
+    position: relative;
+    cursor: pointer;
+  }
+  .qty input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    margin: 0;
+  }
+  .qty span {
+    display: inline-block;
+    padding: 9px 18px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    font-weight: 600;
+    color: var(--ink);
+    min-width: 72px;
+    text-align: center;
+  }
+  .qty:has(input:checked) span {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: #fff;
+  }
+  .qty:has(input:focus-visible) span {
+    outline: 3px solid var(--focus);
+  }
+  .submit {
+    margin-top: 10px;
+    min-width: 260px;
+  }
+  .privacy {
+    margin: 10px 0 0;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .form-status {
+    margin: 8px 0 0;
+    min-height: 1.2em;
+  }
+  .form-status[data-state='error'] {
+    color: #b3261e;
+  }
+  .form-status[data-state='ok'] {
+    color: var(--teal-dark);
+    font-weight: 600;
+  }
+  .builder-aside {
+    position: sticky;
+    top: 100px;
+  }
+  .aside-card {
+    padding: 22px;
+  }
+  .aside-card h2 {
+    font-size: 1.2rem;
+  }
+  .aside-card ol {
+    padding-left: 1.2em;
+    font-size: 0.95rem;
+  }
+  .aside-card .facts {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 14px;
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+    font-size: 0.95rem;
+  }
+  .aside-card .facts li {
+    padding: 4px 0 4px 22px;
+    position: relative;
+  }
+  .aside-card .facts li::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 12px;
+    width: 10px;
+    height: 6px;
+    border-left: 2px solid var(--teal);
+    border-bottom: 2px solid var(--teal);
+    transform: rotate(-45deg);
+  }
+  .aside-contact {
+    font-size: 0.92rem;
+    margin: 0;
+  }
+  @media (max-width: 960px) {
+    .builder-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .builder-aside {
+      position: static;
+    }
+    .type-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .choice-grid,
+    .finishes {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 560px) {
+    .type-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+    .choice-grid,
+    .finishes,
+    .fields.two {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .step {
+      padding: 18px 16px 22px;
+    }
+  }
+</style>

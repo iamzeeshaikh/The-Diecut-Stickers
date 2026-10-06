@@ -23,6 +23,8 @@ export interface BlogFrontmatter {
   image: string;
   imageAlt: string;
   excerpt: string;
+  /** 10+ questions rendered under the article and emitted as FAQPage. */
+  faqs?: { q: string; a: string }[];
 }
 
 interface BlogPostModule {
@@ -57,6 +59,7 @@ export const BLOG_POSTS: BlogPost[] = Object.entries(files)
 
     const hero = resolveImage(fm.image);
     assert(hero, `post ${slug} references unscanned image: ${fm.image}`);
+    assert((fm.faqs?.length ?? 0) >= 10, `post ${slug} needs at least 10 faqs (has ${fm.faqs?.length ?? 0})`);
 
     return { slug, url: `/blog/${slug}/`, ...fm, hero, Content: mod.Content };
   })

@@ -2,10 +2,16 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import ProductGrid from '../../components/ProductGrid.astro';
-import CTASection from '../../components/CTASection.astro';
+import QuoteSection from '../../components/QuoteSection.astro';
+import QuickAnswer from '../../components/QuickAnswer.astro';
+import ContentSections from '../../components/ContentSections.astro';
+import FAQSection from '../../components/FAQSection.astro';
 import { categories, productsInCategory } from '../../lib/catalogue';
+import { categoryMeta } from '../../lib/category-content';
+import { displayName, productContent } from '../../lib/product-content';
 import { resolveImage } from '../../lib/images';
 import { absoluteUrl, SITE } from '../../lib/site';
+import { FACTS } from '../../lib/facts';
 import { legacyRating } from '../../lib/legacy-ratings';
 
 export function getStaticPaths() {
@@ -13,47 +19,15 @@ export function getStaticPaths() {
 }
 
 const { category } = Astro.props;
+const content = categoryMeta(category.slug);
 const items = productsInCategory(category.slug);
 const path = `/product-category/${category.slug}/`;
-
-// Each category gets a distinct title and description so no two pages collide.
-const TITLES: Record<string, { title: string; description: string }> = {
-  'by-material': {
-    title: 'Stickers By Material | The Die Cut Stickers',
-    description:
-      'Compare sticker materials including vinyl, clear film, paper, metallic and eco-friendly stock. Wholesale custom printing with free design support.',
-  },
-  features: {
-    title: 'Sticker Features | Waterproof, Reflective & Reusable | The Die Cut Stickers',
-    description:
-      'Choose stickers by feature: waterproof, reflective, reusable and glow in the dark options with strong adhesive and weather-safe printing.',
-  },
-  'shape-size': {
-    title: 'Sticker Shape & Size Options | The Die Cut Stickers',
-    description:
-      'Custom sticker shapes and sizes, from small product labels to large die cut decals. Any outline, cut to your artwork.',
-  },
-  'sticker-types': {
-    title: 'Sticker Types | Die-Cut Decals & Labels | The Die Cut Stickers',
-    description:
-      'Browse sticker types including die-cut decals, die-cut labels and holographic die cut stickers for branding and packaging.',
-  },
-  usage: {
-    title: 'Stickers By Usage | Car, Window & Packaging | The Die Cut Stickers',
-    description:
-      'Find stickers by where they are used: cars, windows, packaging labels, indoor, outdoor and promotional campaigns.',
-  },
-};
-
-const meta = TITLES[category.slug] ?? {
-  title: `${category.name} | The Die Cut Stickers`,
-  description: `Browse ${category.name.toLowerCase()} custom stickers from The Die Cut Stickers.`,
-};
+const others = categories.filter((c) => c.slug !== category.slug).map((c) => categoryMeta(c.slug));
 
 const crumbs = [
   { label: 'Home', href: '/' },
-  { label: 'Products', href: '/products/' },
-  { label: category.name },
+  { label: 'Stickers', href: '/products/' },
+  { label: content.navLabel },
 ];
 
 const first = items[0] ? resolveImage(items[0].images[0] ?? '') : undefined;
@@ -72,7 +46,8 @@ const schema = [
   {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: category.name,
+    name: content.name,
+    description: content.seoDescription,
     url: absoluteUrl(path),
     mainEntity: {
       '@type': 'ItemList',
@@ -82,24 +57,22 @@ const schema = [
       itemListElement: items.map((p, i) => {
         const rating = legacyRating(p.slug);
         const url = absoluteUrl(`/product/${p.slug}/`);
-        if (!rating.aggregateRating) {
-          return { '@type': 'ListItem', position: i + 1, name: p.name, url };
-        }
+        const name = displayName(p);
+        if (!rating.aggregateRating) return { '@type': 'ListItem', position: i + 1, name, url };
         return {
           '@type': 'ListItem',
           position: i + 1,
           item: {
             '@type': 'Product',
-            name: p.name,
+            name,
             url,
             sku: p.sku,
-            description: p.seoDescription,
+            description: productContent(p.slug)?.quickAnswer ?? p.seoDescription,
             brand: { '@type': 'Brand', name: SITE.name },
             offers: {
               '@type': 'Offer',
               url,
-              // Same figure as the product page's Offer.
-              price: (Number(p.price) || 0.3).toFixed(2),
+              price: (Number(p.price) || FACTS.unitPriceFrom).toFixed(2),
               priceCurrency: 'USD',
               availability: 'https://schema.org/InStock',
             },
@@ -109,45 +82,150 @@ const schema = [
       }),
     },
   },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: content.faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
 ];
 ---
 
-<BaseLayout
-  title={meta.title}
-  description={meta.description}
-  path={path}
-  ogImage={first?.src}
-  schema={schema}
->
+<BaseLayout title={content.seoTitle} description={content.seoDescription} path={path} ogImage={first?.src} schema={schema}>
   <Breadcrumbs items={crumbs} />
 
-  <section class="section-tight">
+  <section class="cat-head section-white">
     <div class="container">
-      <h1>{category.name}</h1>
-      {category.description && <div class="rich-text intro" set:html={category.description} />}
+      <h1>{content.h1}</h1>
+      <p class="tagline">{content.tagline}</p>
+      <QuickAnswer text={content.quickAnswer} />
+      <nav class="cat-switch" aria-label="Other ways to browse">
+        <span>Also browse by</span>
+        {others.map((o) => <a href={`/product-category/${o.slug}/`}>{o.navLabel}</a>)}
+      </nav>
     </div>
   </section>
 
-  <section class="section-tight section-white" aria-labelledby="cat-listing">
+  <section class="section-tight" aria-labelledby="cat-listing">
     <div class="container">
-      <h2 id="cat-listing" class="visually-hidden">{category.name} products</h2>
-      <p class="count">
-        {items.length} {items.length === 1 ? 'product' : 'products'} in {category.name}
-      </p>
+      <h2 id="cat-listing" class="listing-title">
+        {items.length} {content.navLabel.toLowerCase()} products
+      </h2>
       <ProductGrid products={items} eagerCount={3} />
     </div>
   </section>
 
-  <CTASection id="quote" />
+  <section class="section section-white">
+    <div class="container guide-grid">
+      <div class="guide-main">
+        <ContentSections sections={content.sections} />
+      </div>
+      <aside class="guide-aside">
+        <div class="card aside-card">
+          <h3>Every sticker here includes</h3>
+          <ul>
+            <li>{FACTS.proof}</li>
+            <li>{FACTS.design}</li>
+            <li>{FACTS.shipping}</li>
+            <li>Production {FACTS.productionDays}</li>
+            <li>Gloss, matte or spot UV finish</li>
+            <li>Minimum {FACTS.minOrderLabel}, from {FACTS.unitPriceFromLabel} each</li>
+          </ul>
+          <a class="btn btn-primary" href="/get-a-quote/">Design your custom stickers</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="container">
+      <FAQSection faqs={content.faqs} heading={`${content.name}: questions buyers ask`} />
+    </div>
+  </section>
+
+  <QuoteSection id="quote" heading={`Get a price on ${content.navLabel.toLowerCase()}`} />
 </BaseLayout>
 
 <style>
-  .intro {
-    max-width: 900px;
+  .cat-head {
+    padding: 36px 0 28px;
+    border-bottom: 1px solid var(--line);
   }
-  .count {
+  .cat-head h1 {
+    margin-bottom: 8px;
+  }
+  .tagline {
+    font-size: 1.15rem;
     color: var(--muted);
-    font-size: 0.9rem;
+    max-width: 64ch;
+    margin: 0 0 18px;
+  }
+  .cat-switch {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    font-size: 0.92rem;
+  }
+  .cat-switch span {
+    color: var(--muted);
+    margin-right: 4px;
+  }
+  .cat-switch a {
+    text-decoration: none;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    padding: 5px 11px;
+    color: var(--ink);
+  }
+  .cat-switch a:hover {
+    border-color: var(--teal);
+    color: var(--teal-dark);
+  }
+  .listing-title {
+    font-size: 1.25rem;
     margin-bottom: 20px;
+  }
+  .guide-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 48px;
+    align-items: start;
+  }
+  .guide-main {
+    max-width: 78ch;
+  }
+  .guide-aside {
+    position: sticky;
+    top: 100px;
+  }
+  .aside-card {
+    padding: 22px;
+  }
+  .aside-card h3 {
+    font-size: 1.1rem;
+  }
+  .aside-card ul {
+    padding-left: 1.2em;
+    font-size: 0.95rem;
+    margin-bottom: 18px;
+  }
+  .aside-card li {
+    margin-bottom: 6px;
+  }
+  .aside-card .btn {
+    width: 100%;
+  }
+  @media (max-width: 960px) {
+    .guide-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 28px;
+    }
+    .guide-aside {
+      position: static;
+    }
   }
 </style>

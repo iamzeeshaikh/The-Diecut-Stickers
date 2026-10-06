@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import { SITE } from '../lib/site';
 import { categories } from '../lib/catalogue';
+import { categoryMeta } from '../lib/category-content';
 
 /*
  * Post-submission confirmation. Reached only after the SMTP server has accepted
@@ -46,7 +47,7 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'Thank you' }];
         {
           categories.map((c) => (
             <li>
-              <a href={`/product-category/${c.slug}/`}>{c.name}</a>
+              <a href={`/product-category/${c.slug}/`}>{categoryMeta(c.slug).navLabel}</a>
             </li>
           ))
         }

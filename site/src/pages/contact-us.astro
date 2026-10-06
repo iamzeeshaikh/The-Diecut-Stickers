@@ -2,24 +2,29 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import InquiryForm from '../components/InquiryForm.astro';
-import pages from '../data/pages.json';
+import FAQSection from '../components/FAQSection.astro';
 import { absoluteUrl, SITE } from '../lib/site';
+import { FACTS } from '../lib/facts';
+import faqs from '../data/page-faqs/contact.json';
 
-const page = pages['contact-us'];
 const path = '/contact-us/';
-const crumbs = [{ label: 'Home', href: '/' }, { label: 'Contact Us' }];
+const title = 'Contact The Die Cut Stickers | Quotes, Artwork and Order Help';
+const description =
+  'Ask The Die Cut Stickers about a custom sticker order. Call (503) 461-4788, email info@thediecutstickers.com or send size, quantity and artwork for a quote.';
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'Contact' }];
 ---
 
 <BaseLayout
-  title="Contact Us | The Die Cut Stickers"
-  description="Talk to The Die Cut Stickers about a custom sticker order. Email info@thediecutstickers.com, call (503) 461-4788, or send your artwork for a quote."
+  title={title}
+  description={description}
   path={path}
   schema={[
     {
       '@context': 'https://schema.org',
       '@type': 'ContactPage',
       url: absoluteUrl(path),
-      name: 'Contact Us',
+      name: title,
+      description,
       mainEntity: { '@id': absoluteUrl('/#organization') },
     },
     {
@@ -32,26 +37,71 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'Contact Us' }];
         ...(c.href ? { item: absoluteUrl(c.href) } : {}),
       })),
     },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqs.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    },
   ]}
 >
   <Breadcrumbs items={crumbs} />
 
+  <section class="section-tight section-white">
+    <div class="container contact-grid">
+      <div class="contact-copy">
+        <h1>Contact The Die Cut Stickers</h1>
+        <p class="lead">
+          Quotes, artwork questions, reorders and anything about an order in progress. A real person replies
+          within one business day, usually sooner.
+        </p>
+        <dl class="contact-list">
+          <div>
+            <dt>Phone</dt>
+            <dd><a href={`tel:${SITE.phoneHref}`}>{SITE.phoneDisplay}</a></dd>
+          </div>
+          <div>
+            <dt>Email</dt>
+            <dd><a href={`mailto:${SITE.email}`}>{SITE.email}</a></dd>
+          </div>
+          <div>
+            <dt>WhatsApp</dt>
+            <dd><a href="https://api.whatsapp.com/send/?phone=15034614788" rel="noopener noreferrer" target="_blank">Message us on WhatsApp</a></dd>
+          </div>
+          <div>
+            <dt>Office</dt>
+            <dd>{SITE.addressLine}<br /><span class="muted">Office and mailing address, not a showroom. Samples are sent by post.</span></dd>
+          </div>
+          <div>
+            <dt>Hours</dt>
+            <dd>Weekdays, Arizona time. Production and shipping also run on business days.</dd>
+          </div>
+        </dl>
+        <h2>What to include for a fast quote</h2>
+        <ul class="include">
+          <li>The product, or the surface the sticker will be applied to</li>
+          <li>Size in inches (width and height, or the longest side)</li>
+          <li>Quantity, minimum {FACTS.minOrderLabel} per design</li>
+          <li>Finish, if you have a preference: gloss, matte or spot UV</li>
+          <li>Artwork as PDF, AI, EPS, SVG, PNG or JPG, or a description</li>
+        </ul>
+        <p>
+          If you would rather be walked through the choices, the
+          <a href="/get-a-quote/">step-by-step custom sticker order form</a> asks for each one in turn.
+        </p>
+      </div>
+      <div class="contact-form card">
+        <InquiryForm variant="full" id="contact-form" heading="Send your enquiry" />
+      </div>
+    </div>
+  </section>
+
   <section class="section-tight">
     <div class="container">
-      <h1>Contact Us</h1>
-      <div class="contact-grid">
-        <div>
-          <div class="rich-text" set:html={page.content} />
-          <address class="card">
-            <p><strong>Email</strong><br /><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
-            <p><strong>Phone</strong><br /><a href={`tel:${SITE.phoneHref}`}>{SITE.phone}</a></p>
-            <p><strong>Address</strong><br />{SITE.addressLine}</p>
-          </address>
-        </div>
-        <div>
-          <InquiryForm variant="full" id="contact-form" heading="Request a quote" />
-        </div>
-      </div>
+      <FAQSection faqs={faqs} heading="Getting in touch: questions customers ask" />
     </div>
   </section>
 </BaseLayout>
@@ -59,28 +109,57 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'Contact Us' }];
 <style>
   .contact-grid {
     display: grid;
-    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-    gap: 34px;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 48px;
     align-items: start;
   }
-  .card {
-    font-style: normal;
-    background: var(--white);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-sm);
-    padding: 18px 20px;
-    margin-top: 20px;
+  .contact-list {
+    margin: 0 0 28px;
+    display: grid;
+    gap: 12px;
+    border-top: 1px solid var(--line);
   }
-  .card p {
-    margin: 0 0 14px;
+  .contact-list div {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
   }
-  .card p:last-child {
-    margin-bottom: 0;
+  .contact-list dt {
+    color: var(--muted);
+    font-size: 0.92rem;
+    padding-top: 2px;
   }
-
-  @media (max-width: 860px) {
+  .contact-list dd {
+    margin: 0;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .contact-list a {
+    text-decoration: none;
+  }
+  .contact-list a:hover {
+    text-decoration: underline;
+  }
+  .muted {
+    font-weight: 400;
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+  .contact-copy h2 {
+    font-size: 1.3rem;
+  }
+  .include {
+    padding-left: 1.2em;
+  }
+  .contact-form {
+    padding: 26px;
+  }
+  @media (max-width: 900px) {
     .contact-grid {
       grid-template-columns: minmax(0, 1fr);
+      gap: 28px;
     }
   }
 </style>

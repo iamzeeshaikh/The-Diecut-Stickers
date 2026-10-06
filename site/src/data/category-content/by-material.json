@@ -4,7 +4,7 @@
   "name": "Sticker Materials",
   "h1": "Custom Stickers by Material",
   "seoTitle": "Sticker Materials: Vinyl, Clear, Paper, Holographic & More",
-  "seoDescription": "Compare custom sticker materials side by side: white vinyl, clear film, paper, holographic, metallic and eco-friendly stock. Which lasts outdoors, which prints cheapest.",
+  "seoDescription": "Compare custom sticker materials: white vinyl, clear film, paper, holographic, metallic and eco-friendly stock. Which lasts outdoors and which costs least.",
   "tagline": "The material decides how long a sticker lasts and where it can go. Start here if you know the job but not the stock.",
   "quickAnswer": "Sticker material is the face film the design is printed on. Vinyl handles weather and washing for years; paper is the lowest-cost choice for dry indoor labels; clear film shows the surface underneath; holographic and metallic films add shine; recyclable paper and biodegradable films suit brands with a waste policy. Every material here is cut to any shape, from $0.30 per sticker.",
   "sections": [
@@ -34,16 +34,49 @@
     }
   ],
   "faqs": [
-    { "q": "Which sticker material lasts the longest outdoors?", "a": "Laminated white vinyl. Expect three to five years on a vertical surface such as a window or vehicle panel, and about half that on a horizontal surface that collects standing water and direct sun. Clear vinyl, holographic and metallic films sit a year or so behind because their effect layers age faster." },
-    { "q": "Is vinyl or paper better for product labels?", "a": "Paper for dry products on shelves, vinyl for anything refrigerated, used in a bathroom or kitchen, or handled daily. Paper prints finer type and costs less; vinyl survives water and peels off cleanly. Many brands use paper for shipping cartons and vinyl for the product itself." },
-    { "q": "Can clear stickers be printed with white?", "a": "Yes. We print a white ink underlay beneath any area that must stay opaque, then CMYK on top. Without it, colors tint toward whatever surface sits behind the film. You can also leave areas fully clear so the bottle or glass shows through." },
-    { "q": "Do holographic and metallic stickers work outdoors?", "a": "They do, with a laminate, for roughly two to three years. The diffraction and mirror layers fade a little sooner than plain vinyl under direct sun, so they are best on laptops, packaging, merch and shaded signage rather than a south-facing storefront." },
-    { "q": "What material should I use for cold-brew or beer bottles?", "a": "Waterproof vinyl or BOPP with a permanent adhesive and a gloss or matte laminate. Condensation and ice buckets destroy paper within hours. Apply the labels to dry bottles at room temperature and let the adhesive set for 24 hours before chilling." },
-    { "q": "Are eco-friendly sticker materials waterproof?", "a": "Not in the way vinyl is. Recyclable paper tolerates light moisture at best, and biodegradable films handle splashes but not immersion or outdoor exposure. If a product is both wet and needs an eco claim, use the biodegradable film indoors and keep it out of refrigerators." },
-    { "q": "Can I mix materials in one order?", "a": "Yes. Many customers order vinyl for the product label and paper for the shipping-box seal in a single quote. Each material is priced on its own run, so mixing does not cost extra beyond the per-material minimum of 100 pieces." },
-    { "q": "What thickness are your sticker materials?", "a": "Vinyl runs about 3 mil (0.003 inch) before laminate and roughly 5 mil after. Paper stocks are 60 to 80 lb text weight. Holographic and metallic films are similar to vinyl. Thickness matters mostly for application on tight curves, where thinner stock conforms better." },
-    { "q": "Which material is cheapest per sticker?", "a": "Coated paper, followed by kraft paper, then white vinyl. Holographic and metallic films cost the most because the base film is pricier. At 500 pieces or more the gap narrows, since setup is a larger share of the cost than the material at small quantities." },
-    { "q": "Does the material change which finish I can choose?", "a": "Gloss, matte and spot UV are available on every stock. Kraft paper is usually left unlaminated to keep its texture; clear vinyl takes gloss by default so the film stays invisible; holographic film takes gloss or matte, where matte softens the shimmer." },
-    { "q": "How do I get a sample of a material before ordering?", "a": "Ask for material swatches on the quote form and tell us the surface you will apply to. We send printed swatches of the stocks you are deciding between so you can test adhesion and look on the real product before the 100-piece run." }
+    {
+      "q": "Which sticker material lasts the longest outdoors?",
+      "a": "Laminated white vinyl. Expect three to five years on a vertical surface such as a window or vehicle panel, and about half that on a horizontal surface that collects standing water and direct sun. Clear vinyl, holographic and metallic films sit a year or so behind because their effect layers age faster."
+    },
+    {
+      "q": "Is vinyl or paper better for product labels?",
+      "a": "Paper for dry products on shelves, vinyl for anything refrigerated, used in a bathroom or kitchen, or handled daily. Paper prints finer type and costs less; vinyl survives water and peels off cleanly. Many brands use paper for shipping cartons and vinyl for the product itself."
+    },
+    {
+      "q": "Can clear stickers be printed with white?",
+      "a": "Yes. We print a white ink underlay beneath any area that must stay opaque, then CMYK on top. Without it, colors tint toward whatever surface sits behind the film. You can also leave areas fully clear so the bottle or glass shows through."
+    },
+    {
+      "q": "Do holographic and metallic stickers work outdoors?",
+      "a": "They do, with a laminate, for roughly two to three years. The diffraction and mirror layers fade a little sooner than plain vinyl under direct sun, so they are best on laptops, packaging, merch and shaded signage rather than a south-facing storefront."
+    },
+    {
+      "q": "What material should I use for cold-brew or beer bottles?",
+      "a": "Waterproof vinyl or BOPP with a permanent adhesive and a gloss or matte laminate. Condensation and ice buckets destroy paper within hours. Apply the labels to dry bottles at room temperature and let the adhesive set for 24 hours before chilling."
+    },
+    {
+      "q": "Are eco-friendly sticker materials waterproof?",
+      "a": "Not in the way vinyl is. Recyclable paper tolerates light moisture at best, and biodegradable films handle splashes but not immersion or outdoor exposure. If a product is both wet and needs an eco claim, use the biodegradable film indoors and keep it out of refrigerators."
+    },
+    {
+      "q": "Can I mix materials in one order?",
+      "a": "Yes. Many customers order vinyl for the product label and paper for the shipping-box seal in a single quote. Each material is priced on its own run, so mixing does not cost extra beyond the per-material minimum of 100 pieces."
+    },
+    {
+      "q": "What thickness are your sticker materials?",
+      "a": "Vinyl runs about 3 mil (0.003 inch) before laminate and roughly 5 mil after. Paper stocks are 60 to 80 lb text weight. Holographic and metallic films are similar to vinyl. Thickness matters mostly for application on tight curves, where thinner stock conforms better."
+    },
+    {
+      "q": "Which material is cheapest per sticker?",
+      "a": "Coated paper, followed by kraft paper, then white vinyl. Holographic and metallic films cost the most because the base film is pricier. At 500 pieces or more the gap narrows, since setup is a larger share of the cost than the material at small quantities."
+    },
+    {
+      "q": "Does the material change which finish I can choose?",
+      "a": "Gloss, matte and spot UV are available on every stock. Kraft paper is usually left unlaminated to keep its texture; clear vinyl takes gloss by default so the film stays invisible; holographic film takes gloss or matte, where matte softens the shimmer."
+    },
+    {
+      "q": "How do I get a sample of a material before ordering?",
+      "a": "Ask for material swatches on the quote form and tell us the surface you will apply to. We send printed swatches of the stocks you are deciding between so you can test adhesion and look on the real product before the 100-piece run."
+    }
   ]
 }

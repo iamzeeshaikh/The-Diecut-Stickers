@@ -127,10 +127,10 @@ const fullSize = await Promise.all(
 
 <style>
   .main-image {
-    background: var(--white);
+    background: var(--paper);
+    border: 1px solid var(--line);
     border-radius: var(--radius-lg);
     overflow: hidden;
-    box-shadow: var(--shadow-sm);
     aspect-ratio: 1 / 1;
   }
   .main-image :global(img) {
@@ -149,7 +149,7 @@ const fullSize = await Promise.all(
   .thumb {
     padding: 0;
     border: 2px solid transparent;
-    border-radius: 8px;
+    border-radius: var(--radius);
     overflow: hidden;
     background: var(--white);
     cursor: pointer;
@@ -164,6 +164,6 @@ const fullSize = await Promise.all(
   }
   .thumb.active,
   .thumb[aria-pressed='true'] {
-    border-color: var(--purple-accent);
+    border-color: var(--teal);
   }
 </style>

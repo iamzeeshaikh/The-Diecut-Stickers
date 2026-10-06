@@ -1,50 +1,34 @@
 ---
+/**
+ * /products/ — every product on one page, grouped by category, with the
+ * category guides one click away. The old 16-per-page split sent half the
+ * range to /products/page/2/, which now 301s here.
+ */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumbs from './Breadcrumbs.astro';
 import ProductGrid from './ProductGrid.astro';
-import CTASection from './CTASection.astro';
-import { productsByName, categories, PRODUCTS_PER_PAGE } from '../lib/catalogue';
+import QuoteSection from './QuoteSection.astro';
+import FAQSection from './FAQSection.astro';
+import { products, categories, productsInCategory } from '../lib/catalogue';
+import { categoryMeta } from '../lib/category-content';
+import { displayName } from '../lib/product-content';
 import { absoluteUrl } from '../lib/site';
+import { FACTS } from '../lib/facts';
+import faqs from '../data/page-faqs/products.json';
 
-interface Props {
-  currentPage: number;
-}
-const { currentPage } = Astro.props;
+const path = '/products/';
+const crumbs = [{ label: 'Home', href: '/' }, { label: 'All stickers' }];
+const title = 'All Custom Sticker Products: 29 Types Compared';
+const description =
+  'Every custom sticker we print on one page: vinyl, clear, holographic, metallic, paper, waterproof, reflective, glow, reusable, decals and labels. Any shape.';
 
-/*
- * The published archive listed every product alphabetically, 16 per page, with
- * page two at /products/page/2/ — a live URL that carried rel="next". That
- * pagination shape is reproduced exactly so the URL is preserved.
- *
- * What is NOT reproduced is the Elementor block that opened the page with 29
- * burger-box products from an earlier site on this WordPress install, every one
- * of them linking to a URL that 404s. See reports/MIGRATION_CONFLICTS.md.
- */
-const total = productsByName.length;
-const lastPage = Math.ceil(total / PRODUCTS_PER_PAGE);
-const start = (currentPage - 1) * PRODUCTS_PER_PAGE;
-const items = productsByName.slice(start, start + PRODUCTS_PER_PAGE);
-
-const pageUrl = (n: number) => (n === 1 ? '/products/' : `/products/page/${n}/`);
-const path = pageUrl(currentPage);
-const isFirst = currentPage === 1;
-
-const crumbs = [{ label: 'Home', href: '/' }, { label: 'Products' }];
-
-const title = isFirst
-  ? 'All Sticker Products | The Die Cut Stickers'
-  : `All Sticker Products — Page ${currentPage} | The Die Cut Stickers`;
-const description = isFirst
-  ? 'Browse every custom sticker we print: vinyl, clear, holographic, metallic, reflective, waterproof and eco-friendly options in any shape or size.'
-  : `Page ${currentPage} of the full custom sticker range from The Die Cut Stickers, including vinyl, clear, holographic and waterproof options.`;
+const groups = categories.map((c) => ({ meta: categoryMeta(c.slug), items: productsInCategory(c.slug), href: `/product-category/${c.slug}/` }));
 ---
 
 <BaseLayout
   title={title}
   description={description}
   path={path}
-  prev={currentPage > 1 ? pageUrl(currentPage - 1) : undefined}
-  next={currentPage < lastPage ? pageUrl(currentPage + 1) : undefined}
   schema={[
     {
       '@context': 'https://schema.org',
@@ -59,152 +43,124 @@ const description = isFirst
     {
       '@context': 'https://schema.org',
       '@type': 'CollectionPage',
-      name: 'All Products',
+      name: 'All custom sticker products',
+      description,
       url: absoluteUrl(path),
       mainEntity: {
         '@type': 'ItemList',
-        numberOfItems: total,
-        itemListElement: items.map((p, i) => ({
+        numberOfItems: products.length,
+        itemListElement: products.map((p, i) => ({
           '@type': 'ListItem',
-          position: start + i + 1,
-          name: p.name,
+          position: i + 1,
+          name: displayName(p),
           url: absoluteUrl(`/product/${p.slug}/`),
         })),
       },
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqs.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
     },
   ]}
 >
   <Breadcrumbs items={crumbs} />
 
-  <section class="section-tight">
+  <section class="section-tight section-white arch-head">
     <div class="container">
-      <h1>All Products</h1>
-      {
-        isFirst && (
-          <p class="lede">
-            Every sticker below is printed to your own artwork and cut to shape. Browse the
-            full range, or jump to a category to compare materials, finishes and sizes.
-          </p>
-        )
-      }
-      <ul class="cat-links" role="list">
-        {
-          categories.map((c) => (
-            <li>
-              <a href={`/product-category/${c.slug}/`}>{c.name}</a>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-  </section>
-
-  <section class="section-tight section-white" aria-labelledby="listing-heading">
-    <div class="container">
-      <h2 id="listing-heading" class="visually-hidden">Product listing</h2>
-      <p class="count">
-        Showing {start + 1}–{start + items.length} of {total} results
+      <h1>All Custom Sticker Products</h1>
+      <p class="lead">
+        Twenty-nine sticker, decal and label products, each printed to your artwork and cut to shape. They are
+        grouped below by material, feature, size, type and use; the same product can appear in more than one
+        way of browsing but has one page.
       </p>
-      <ProductGrid products={items} eagerCount={3} showCategory />
-
-      {
-        lastPage > 1 && (
-          <nav class="pagination" aria-label="Products pagination">
-            <ul role="list">
-              {Array.from({ length: lastPage }, (_, i) => i + 1).map((n) => (
-                <li>
-                  {n === currentPage ? (
-                    <span aria-current="page">{n}</span>
-                  ) : (
-                    <a href={pageUrl(n)}>{n}</a>
-                  )}
-                </li>
-              ))}
-              {currentPage < lastPage && (
-                <li>
-                  <a class="next" href={pageUrl(currentPage + 1)}>
-                    Next
-                  </a>
-                </li>
-              )}
-            </ul>
-          </nav>
-        )
-      }
+      <p class="arch-facts">
+        From {FACTS.unitPriceFromLabel} per sticker · Minimum {FACTS.minOrderLabel} · {FACTS.proof} ·
+        {FACTS.shipping}
+      </p>
+      <nav class="jump-list" aria-label="Jump to a group">
+        {groups.map((g) => <a href={`#${g.meta.slug}`}>{g.meta.navLabel}</a>)}
+      </nav>
     </div>
   </section>
 
-  <CTASection id="quote" />
+  {
+    groups.map((g, i) => (
+      <section class:list={['section-tight', i % 2 === 1 && 'section-white']} id={g.meta.slug} aria-labelledby={`${g.meta.slug}-h`}>
+        <div class="container">
+          <div class="group-head">
+            <h2 id={`${g.meta.slug}-h`}>{g.meta.name}</h2>
+            <p>
+              {g.meta.tagline} <a href={g.href}>Read the {g.meta.navLabel.toLowerCase()} guide</a>.
+            </p>
+          </div>
+          <ProductGrid products={g.items} eagerCount={i === 0 ? 3 : 0} />
+        </div>
+      </section>
+    ))
+  }
+
+  <section class="section-tight section-white">
+    <div class="container">
+      <FAQSection faqs={faqs} heading="Choosing between the products" />
+    </div>
+  </section>
+
+  <QuoteSection id="quote" />
 </BaseLayout>
 
 <style>
-  .lede {
-    max-width: 760px;
-    font-size: 1.02rem;
+  .arch-head {
+    border-bottom: 1px solid var(--line);
   }
-  .cat-links {
+  .arch-facts {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin: 0 0 16px;
+  }
+  .jump-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    list-style: none;
-    margin: 18px 0 0;
-    padding: 0;
+    gap: 8px;
   }
-  .cat-links a {
-    display: inline-block;
-    padding: 8px 16px;
-    border-radius: 999px;
-    background: var(--tint);
-    color: var(--blue);
+  .jump-list a {
     text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 600;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+    padding: 6px 12px;
+    color: var(--ink);
+    font-size: 0.92rem;
   }
-  .cat-links a:hover {
-    background: var(--purple);
-    color: #fff;
+  .jump-list a:hover {
+    border-color: var(--teal);
+    color: var(--teal-dark);
   }
-  .count {
-    color: var(--muted);
-    font-size: 0.9rem;
+  .group-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 24px;
     margin-bottom: 20px;
   }
-  .pagination {
-    margin-top: 32px;
-  }
-  .pagination ul {
-    display: flex;
-    gap: 8px;
-    list-style: none;
+  .group-head h2 {
     margin: 0;
-    padding: 0;
-    justify-content: center;
-    flex-wrap: wrap;
+    font-size: 1.5rem;
   }
-  .pagination a,
-  .pagination span {
-    display: grid;
-    place-items: center;
-    min-width: 44px;
-    min-height: 44px;
-    padding: 0 14px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
+  .group-head p {
+    margin: 0;
+    max-width: 56ch;
+    color: var(--muted);
     font-size: 0.95rem;
   }
-  .pagination a {
-    background: var(--white);
-    border: 1px solid var(--line);
-    color: var(--ink);
-  }
-  .pagination a:hover {
-    background: var(--purple);
-    border-color: var(--purple);
-    color: #fff;
-  }
-  .pagination [aria-current='page'] {
-    background: var(--purple);
-    color: #fff;
+  @media (max-width: 760px) {
+    .group-head {
+      flex-direction: column;
+      align-items: start;
+      gap: 6px;
+    }
   }
 </style>

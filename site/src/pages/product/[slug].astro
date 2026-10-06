@@ -7,16 +7,18 @@ import ProductSpecifications from '../../components/ProductSpecifications.astro'
 import FAQSection from '../../components/FAQSection.astro';
 import RelatedProducts from '../../components/RelatedProducts.astro';
 import InquiryForm from '../../components/InquiryForm.astro';
-import CTASection from '../../components/CTASection.astro';
+import QuoteSection from '../../components/QuoteSection.astro';
+import QuickAnswer from '../../components/QuickAnswer.astro';
+import ContentSections from '../../components/ContentSections.astro';
 import { products, getCategory, relatedProducts } from '../../lib/catalogue';
 import { resolveImage } from '../../lib/images';
 import { absoluteUrl, SITE } from '../../lib/site';
+import { FACTS } from '../../lib/facts';
 import { legacyRating } from '../../lib/legacy-ratings';
+import { productContent } from '../../lib/product-content';
+import { categoryMeta } from '../../lib/category-content';
 
-import secure from '../../assets/img/secure-icons.png';
 import payments from '../../assets/img/payments.png';
-import paymentImage from '../../assets/img/payment-image.jpeg';
-import dmca from '../../assets/img/dmca-badge-w250-2x1-01.png';
 import guarantee from '../../assets/img/guarantee_image.webp';
 import fedex from '../../assets/img/fedex-logo.png';
 
@@ -26,48 +28,51 @@ export function getStaticPaths() {
 
 const { product } = Astro.props;
 const category = getCategory(product.categorySlug);
+const catMeta = category ? categoryMeta(category.slug) : undefined;
 const related = relatedProducts(product, 4);
 const path = `/product/${product.slug}/`;
 
+/*
+ * Rewritten copy (src/data/product-content) when present; the migrated
+ * WordPress record otherwise, so a product never ships blank.
+ */
+const rewrite = productContent(product.slug);
+const name = rewrite?.name ?? product.name;
+const title = rewrite?.seoTitle ?? product.seoTitle;
+const description = rewrite?.seoDescription ?? product.seoDescription;
+const faqs = rewrite?.faqs ?? product.faqs;
+
 const heroImage = resolveImage(product.images[0] ?? '');
 const ogImage = heroImage ? heroImage.src : undefined;
+const price = Number(product.price) || FACTS.unitPriceFrom;
 
 const crumbs = [
   { label: 'Home', href: '/' },
-  { label: 'Products', href: '/products/' },
-  ...(category ? [{ label: category.name, href: `/product-category/${category.slug}/` }] : []),
-  { label: product.name },
+  { label: 'Stickers', href: '/products/' },
+  ...(category && catMeta ? [{ label: catMeta.navLabel, href: `/product-category/${category.slug}/` }] : []),
+  { label: name },
 ];
 
-// Wide specification tables scroll inside their own container.
-const descriptionHtml = product.description
+const legacyDescription = product.description
   .replace(/<table/gi, '<div class="table-scroll"><table')
   .replace(/<\/table>/gi, '</table></div>');
 
 /*
- * Product schema is built from the source records. The aggregateRating and
- * review are the old WordPress page's own, restored verbatim from
- * src/data/legacy-ratings.json (see src/lib/legacy-ratings.ts).
- *
- * Offer details mirror the site's own commitments: the "From $X per sticker"
- * price shown on the page, free shipping (advertised across product copy) and
- * the 10-day free-return-by-mail policy documented at /refund_returns/.
+ * Product schema. The aggregateRating and review are the old WordPress page's
+ * own, restored verbatim from src/data/legacy-ratings.json. Offer details
+ * mirror the site's commitments in src/lib/facts.ts and /refund_returns/.
  */
-
-/** Site-wide per-sticker entry price, used if a record ever carries none. */
-const UNIT_PRICE = 0.3;
-
 const schema: Record<string, unknown>[] = [
   {
     '@context': 'https://schema.org',
     '@type': 'Product',
     '@id': absoluteUrl(path) + '#product',
-    name: product.name,
+    name,
     sku: product.sku,
-    description: product.seoDescription,
+    description: rewrite?.quickAnswer ?? description,
     url: absoluteUrl(path),
     brand: { '@type': 'Brand', name: SITE.name },
-    category: category?.name,
+    category: catMeta?.name ?? category?.name,
     image: product.images
       .map((i) => resolveImage(i))
       .filter((i) => i !== undefined)
@@ -75,9 +80,7 @@ const schema: Record<string, unknown>[] = [
     offers: {
       '@type': 'Offer',
       url: absoluteUrl(path),
-      // Every product must reach Google with a concrete price, so this falls
-      // back to the site-wide entry price rather than dropping the offer.
-      price: (Number(product.price) || UNIT_PRICE).toFixed(2),
+      price: price.toFixed(2),
       priceCurrency: 'USD',
       priceValidUntil: '2027-08-04',
       availability: 'https://schema.org/InStock',
@@ -85,38 +88,19 @@ const schema: Record<string, unknown>[] = [
       seller: { '@id': absoluteUrl('/#organization') },
       shippingDetails: {
         '@type': 'OfferShippingDetails',
-        shippingRate: {
-          '@type': 'MonetaryAmount',
-          value: '0.00',
-          currency: 'USD',
-        },
-        shippingDestination: {
-          '@type': 'DefinedRegion',
-          addressCountry: 'US',
-        },
+        shippingRate: { '@type': 'MonetaryAmount', value: '0.00', currency: 'USD' },
+        shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'US' },
         deliveryTime: {
           '@type': 'ShippingDeliveryTime',
-          // Production turnaround stated on-site ranges 3-10 business
-          // days depending on the product; FedEx ground transit after.
-          handlingTime: {
-            '@type': 'QuantitativeValue',
-            minValue: 3,
-            maxValue: 10,
-            unitCode: 'DAY',
-          },
-          transitTime: {
-            '@type': 'QuantitativeValue',
-            minValue: 2,
-            maxValue: 5,
-            unitCode: 'DAY',
-          },
+          handlingTime: { '@type': 'QuantitativeValue', minValue: 5, maxValue: 7, unitCode: 'DAY' },
+          transitTime: { '@type': 'QuantitativeValue', minValue: 2, maxValue: 5, unitCode: 'DAY' },
         },
       },
       hasMerchantReturnPolicy: {
         '@type': 'MerchantReturnPolicy',
         applicableCountry: 'US',
         returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
-        merchantReturnDays: 10,
+        merchantReturnDays: FACTS.returnsDays,
         returnMethod: 'https://schema.org/ReturnByMail',
         returnFees: 'https://schema.org/FreeReturn',
       },
@@ -135,11 +119,11 @@ const schema: Record<string, unknown>[] = [
   },
 ];
 
-if (product.faqs.length) {
+if (faqs.length) {
   schema.push({
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: product.faqs.map((f) => ({
+    mainEntity: faqs.map((f) => ({
       '@type': 'Question',
       name: f.q,
       acceptedAnswer: { '@type': 'Answer', text: f.a },
@@ -148,176 +132,302 @@ if (product.faqs.length) {
 }
 ---
 
-<BaseLayout
-  title={product.seoTitle}
-  description={product.seoDescription}
-  path={path}
-  ogImage={ogImage}
-  ogType="product"
-  schema={schema}
->
+<BaseLayout title={title} description={description} path={path} ogImage={ogImage} ogType="product" schema={schema}>
   <Breadcrumbs items={crumbs} />
 
-  <div class="container container-wide product-head">
-    <h1>{product.name}</h1>
-  </div>
-
-  <div class="container container-wide product-top">
-    <div class="col-gallery">
-      <ProductGallery name={product.name} images={product.images} />
-      <a class="btn btn-primary quote-cta" href="#quote">Request a quote</a>
-    </div>
-
-    <div class="col-summary">
-      <div class="rich-text short" set:html={product.shortDescription} />
-      {product.price && (
-        <p class="price">
-          From <strong>${Number(product.price).toFixed(2)}</strong> per sticker
-        </p>
-      )}
-      <div class="trust">
-        <Image src={secure} alt="Secure and DMCA protected ordering" height={54} loading="lazy" />
-        <Image src={payments} alt="PayPal and secure card payments accepted" height={54} loading="lazy" />
-        <Image src={paymentImage} alt="Visa, Mastercard, JCB, Apple Pay and Google Pay accepted" height={54} loading="lazy" />
-        <Image src={dmca} alt="DMCA protected" height={54} loading="lazy" />
-        <Image src={guarantee} alt="100% satisfaction guarantee" height={54} loading="lazy" />
-        <Image src={fedex} alt="FedEx delivery" height={54} loading="lazy" />
+  <section class="product-top">
+    <div class="container container-wide top-grid">
+      <div class="col-gallery">
+        <ProductGallery name={name} images={product.images} />
       </div>
-    </div>
 
-    <div class="col-form">
-      <InquiryForm
-        variant="compact"
-        id="product-quote"
-        selectedProduct={product.name}
-        heading="Get an instant quote"
-      />
-    </div>
-  </div>
+      <div class="col-summary">
+        <h1>{rewrite?.h1 ?? name}</h1>
+        {rewrite?.tagline && <p class="tagline">{rewrite.tagline}</p>}
+        {
+          rewrite ? (
+            <QuickAnswer text={rewrite.quickAnswer} highlights={rewrite.highlights} />
+          ) : (
+            <div class="rich-text short" set:html={product.shortDescription} />
+          )
+        }
+        <div class="buy-row">
+          <p class="price">
+            From <strong>${price.toFixed(2)}</strong> per sticker
+            <span>Minimum {FACTS.minOrderLabel}. Price falls with quantity and size.</span>
+          </p>
+          <div class="buy-actions">
+            <a class="btn btn-primary btn-lg" href="#product-quote">Get a price</a>
+            <a class="btn btn-outline btn-lg" href="/get-a-quote/">Design your custom stickers</a>
+          </div>
+        </div>
+        <ul class="promises">
+          <li>{FACTS.proof}</li>
+          <li>{FACTS.shipping}</li>
+          <li>Production {FACTS.productionDays}, delivered in {FACTS.deliveryDays}</li>
+          <li>Gloss, matte or spot UV finish</li>
+        </ul>
+        <div class="trust">
+          <Image src={payments} alt="PayPal, Visa, Mastercard, Apple Pay and Google Pay accepted" height={30} loading="lazy" />
+          <Image src={guarantee} alt="100% satisfaction guarantee" height={38} loading="lazy" />
+          <Image src={fedex} alt="FedEx delivery" height={26} loading="lazy" />
+        </div>
+      </div>
 
-  <div class="container container-wide tabs-wrap">
-    <div class="tabs" role="tablist" aria-label="Product information">
-      <a class="tab" href="#description" role="tab">Description</a>
-      <a class="tab" href="#specifications" role="tab">Specifications</a>
-      <a class="tab" href="#faqs" role="tab">Faqs</a>
-    </div>
-  </div>
-
-  <section class="section-tight" id="description" aria-labelledby="description-heading">
-    <div class="container container-wide">
-      <h2 id="description-heading" class="visually-hidden">Description</h2>
-      <div class="rich-text" set:html={descriptionHtml} />
+      <aside class="col-form card" id="product-quote">
+        <InquiryForm variant="compact" id="product-quote-form" selectedProduct={name} heading="Get a quote for these stickers" />
+      </aside>
     </div>
   </section>
 
-  {
-    product.specifications && (
-      <section class="section-tight section-white" id="specifications" aria-labelledby="specs-heading">
-        <div class="container container-wide">
-          <h2 id="specs-heading">Specifications</h2>
-          <ProductSpecifications html={product.specifications} />
+  <nav class="jump" aria-label="On this page">
+    <div class="container container-wide jump-inner">
+      <a href="#description">Details</a>
+      <a href="#specifications">Specifications</a>
+      <a href="#faqs">Questions</a>
+      <a href="#related">Related stickers</a>
+    </div>
+  </nav>
+
+  <section class="section-tight" id="description" aria-labelledby="description-heading">
+    <div class="container container-wide body-grid">
+      <div class="body-main">
+        <h2 id="description-heading" class="visually-hidden">About {name}</h2>
+        {rewrite ? <ContentSections sections={rewrite.sections} /> : <div class="rich-text" set:html={legacyDescription} />}
+      </div>
+      <aside class="body-aside">
+        <div class="card aside-card">
+          <h3>Specifications</h3>
+          {
+            rewrite ? (
+              <table class="data specs" id="specifications">
+                <tbody>
+                  {rewrite.specs.map(([k, v]) => (
+                    <tr>
+                      <th scope="row">{k}</th>
+                      <td>{v}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <div id="specifications">
+                <ProductSpecifications html={product.specifications} />
+              </div>
+            )
+          }
         </div>
-      </section>
-    )
-  }
-
-  {
-    product.faqs.length > 0 && (
-      <section class="section-tight" id="faqs" aria-labelledby="faqs-heading">
-        <div class="container container-wide">
-          <h2 id="faqs-heading">Frequently asked questions</h2>
-          <FAQSection faqs={product.faqs} />
+        <div class="card aside-card aside-help">
+          <h3>Not sure this is the right sticker?</h3>
+          <p>Tell us the surface, the size and where it lives. We will confirm the material or point you to a better fit before you spend anything.</p>
+          <a class="btn btn-outline" href="/contact-us/">Ask a question</a>
         </div>
-      </section>
-    )
-  }
+      </aside>
+    </div>
+  </section>
 
-  <RelatedProducts products={related} />
+  <section class="section-tight section-white">
+    <div class="container container-wide">
+      <FAQSection faqs={faqs} heading={`${name}: questions buyers ask`} id="faqs" />
+    </div>
+  </section>
 
-  <CTASection selectedProduct={product.name} id="quote" />
+  <div id="related">
+    <RelatedProducts products={related} heading={`Other ${catMeta ? catMeta.navLabel.toLowerCase() : 'stickers'} to compare`} />
+  </div>
+
+  <QuoteSection selectedProduct={name} id="quote" heading={`Order ${name.toLowerCase()}`} />
 </BaseLayout>
 
 <style>
-  .product-head {
-    padding-top: 32px;
-  }
-  .product-head h1 {
-    margin-bottom: 20px;
-  }
-  /*
-   * Column widths measured from the published product page at a 1348px
-   * viewport: gallery 424px, summary 483px, quote form 279px, ~55px gaps.
-   */
   .product-top {
-    display: grid;
-    grid-template-columns: minmax(0, 424fr) minmax(0, 483fr) minmax(0, 279fr);
-    gap: 55px;
-    align-items: start;
-    padding-bottom: 36px;
+    background: var(--white);
+    border-bottom: 1px solid var(--line);
+    padding: 28px 0 36px;
   }
-  .quote-cta {
-    display: inline-block;
-    margin-top: 18px;
+  .top-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.25fr) minmax(0, 0.8fr);
+    gap: 40px;
+    align-items: start;
+  }
+  .col-summary h1 {
+    margin-bottom: 8px;
+  }
+  .tagline {
+    font-size: 1.15rem;
+    color: var(--muted);
+    margin: 0 0 18px;
   }
   .short {
-    font-size: 0.98rem;
+    font-size: 1rem;
+  }
+  .buy-row {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 16px 0;
+    margin: 6px 0 16px;
   }
   .price {
-    font-size: 1.05rem;
+    margin: 0 0 14px;
+    font-size: 1.15rem;
     color: var(--ink);
   }
-  .trust {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 14px;
-    align-items: center;
-    margin-top: 22px;
+  .price strong {
+    font-size: 1.6rem;
+    font-family: var(--font-serif);
   }
-  .trust :global(img) {
-    width: 100%;
-    height: auto;
-    max-height: 54px;
-    object-fit: contain;
+  .price span {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--muted);
   }
-
-  .tabs-wrap {
-    border-bottom: 1px solid var(--line);
-  }
-  .tabs {
+  .buy-actions {
     display: flex;
-    gap: 28px;
-    justify-content: center;
+    gap: 12px;
     flex-wrap: wrap;
   }
-  .tab {
-    padding: 12px 4px;
-    color: var(--muted);
+  .promises {
+    list-style: none;
+    margin: 0 0 16px;
+    padding: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 6px 18px;
+    font-size: 0.95rem;
+  }
+  .promises li {
+    padding-left: 22px;
+    position: relative;
+  }
+  .promises li::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 8px;
+    width: 10px;
+    height: 6px;
+    border-left: 2px solid var(--teal);
+    border-bottom: 2px solid var(--teal);
+    transform: rotate(-45deg);
+  }
+  .trust {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+  .trust :global(img) {
+    width: auto;
+    height: auto;
+    max-height: 38px;
+  }
+  .col-form {
+    padding: 22px;
+    position: sticky;
+    top: 92px;
+  }
+
+  .jump {
+    background: var(--page);
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 76px;
+    z-index: 5;
+  }
+  .jump-inner {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+  }
+  .jump a {
+    padding: 12px 14px;
     text-decoration: none;
     font-weight: 600;
     font-size: 0.95rem;
+    color: var(--muted);
+    white-space: nowrap;
     border-bottom: 2px solid transparent;
-    min-height: 44px;
   }
-  .tab:hover {
-    color: var(--purple-dark);
-    border-bottom-color: var(--purple);
+  .jump a:hover {
+    color: var(--teal-dark);
+    border-bottom-color: var(--teal);
   }
 
-  @media (max-width: 1040px) {
-    .product-top {
+  .body-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 48px;
+    align-items: start;
+  }
+  .body-main {
+    max-width: 78ch;
+  }
+  .body-aside {
+    position: sticky;
+    top: 130px;
+    display: grid;
+    gap: 20px;
+  }
+  .aside-card {
+    padding: 20px;
+  }
+  .aside-card h3 {
+    font-size: 1.15rem;
+    margin-bottom: 12px;
+  }
+  .specs {
+    font-size: 0.92rem;
+  }
+  .specs th {
+    width: 38%;
+    color: var(--ink);
+    font-weight: 600;
+    padding-left: 0;
+  }
+  .specs td {
+    padding-right: 0;
+  }
+  .aside-help p {
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 1100px) {
+    .top-grid {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     }
     .col-form {
       grid-column: 1 / -1;
-      max-width: 520px;
+      position: static;
+      max-width: 560px;
+    }
+    .body-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .body-aside {
+      position: static;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+    .jump {
+      top: 64px;
     }
   }
-  @media (max-width: 700px) {
-    .product-top {
+  @media (max-width: 720px) {
+    .top-grid {
       grid-template-columns: minmax(0, 1fr);
+      gap: 24px;
     }
     .col-form {
       max-width: none;
+    }
+    .promises {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .body-aside {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .buy-actions .btn {
+      flex: 1 1 100%;
     }
   }
 </style>

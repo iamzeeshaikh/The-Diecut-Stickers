@@ -34,6 +34,10 @@ const text = (h) =>
     .replace(/<script[\s\S]*?<\/script>/gi, ' ')
     .replace(/<style[\s\S]*?<\/style>/gi, ' ')
     .replace(/<[^>]+>/g, ' ')
+    .replace(/&#39;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, '&')
+    .replace(/&nbsp;/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
 
@@ -56,6 +60,9 @@ async function main() {
     const rel = f.replace(OUT, '').replace(/\/index\.html$/, '/').replace(/\\/g, '/');
     pages.set(rel === '/404.html' ? '/404.html' : rel, await readFile(f, 'utf8'));
   }
+
+  const SKIP = new Set(['/google70275a70604fffc8.html']);
+  for (const k of [...pages.keys()]) if (SKIP.has(k)) pages.delete(k);
 
   const isNoindex = (html) => /<meta name="robots" content="[^"]*noindex/i.test(html);
   const indexable = [...pages.entries()].filter(
@@ -284,6 +291,15 @@ async function main() {
   const products = JSON.parse(
     await readFile(path.join(ROOT, 'site/src/data/products.json'), 'utf8'),
   );
+  // Rewritten copy (2026-10) owns the visible FAQs and names where present.
+  for (const p of products) {
+    const f = path.join(ROOT, 'site/src/data/product-content', `${p.slug}.json`);
+    if (existsSync(f)) {
+      const c = JSON.parse(await readFile(f, 'utf8'));
+      p.faqs = c.faqs;
+      p.name = c.name;
+    }
+  }
   const legacyRatings = JSON.parse(
     await readFile(path.join(ROOT, 'site/src/data/legacy-ratings.json'), 'utf8'),
   );
@@ -349,8 +365,9 @@ async function main() {
   const robots = await readFile(path.join(OUT, 'robots.txt'), 'utf8');
   const robotsOk =
     robots.includes(`Sitemap: ${ORIGIN}/sitemap.xml`) &&
-    robots.includes('Disallow: /category/') &&
-    robots.includes('Disallow: /tag/') &&
+    // /category/ and /tag/ are deliberately NOT disallowed: they return 410 and
+    // a blocked crawler never sees the 410 (see project memory, 2026-08-10).
+    !robots.includes('Disallow: /category/') &&
     !/vercel\.app/.test(robots);
   robotsOk ? pass('robots.txt is correct') : fail('robots.txt is correct', robots.slice(0, 200));
 
@@ -433,7 +450,14 @@ async function main() {
   // --------------------------------------------------------- duplicate copy
   const paraCount = new Map();
   for (const [u, h] of pages) {
-    for (const m of h.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)) {
+    // Page body only: header, footer and the shared quote block are chrome.
+    const body = (h.match(/<main[\s\S]*?<\/main>/) || [h])[0]
+      .replace(/<section class="quote[\s\S]*?<\/section>/g, ' ')
+      .replace(/<aside[\s\S]*?<\/aside>/g, ' ')
+      // Guide cards on / and /blog/ repeat each post's excerpt by design.
+      .replace(/<ul class="guides[\s\S]*?<\/ul>/g, ' ')
+      .replace(/<article class="post-card[\s\S]*?<\/article>/g, ' ');
+    for (const m of body.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)) {
       const t = text(m[1]);
       if (t.length < 160) continue;
       if (!paraCount.has(t)) paraCount.set(t, new Set());

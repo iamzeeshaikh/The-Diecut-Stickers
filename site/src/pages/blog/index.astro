@@ -2,7 +2,9 @@
 import { Image } from 'astro:assets';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import CTASection from '../../components/CTASection.astro';
+import QuoteSection from '../../components/QuoteSection.astro';
+import FAQSection from '../../components/FAQSection.astro';
+import blogFaqs from '../../data/page-faqs/blog.json';
 import { BLOG_POSTS, formatPostDate } from '../../lib/blog';
 import { absoluteUrl, SITE } from '../../lib/site';
 
@@ -11,7 +13,7 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'Blog' }];
 ---
 
 <BaseLayout
-  title="Sticker Printing Blog | The Die Cut Stickers"
+  title="Sticker Printing Guides: Materials, Finishes, Sizes and Lifespan"
   description="Guides on sticker materials, outdoor durability, matte and gloss finishes, die cut shapes and sizing, written for brands ordering custom stickers."
   path={path}
   schema={[
@@ -39,6 +41,15 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'Blog' }];
         datePublished: p.date,
       })),
     },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: blogFaqs.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a },
+      })),
+    },
   ]}
 >
   <Breadcrumbs items={crumbs} />
@@ -49,7 +60,7 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'Blog' }];
       <p class="lead">
         Straight answers on the questions that come up before an order goes to
         press: which material survives a winter outdoors, what matte really
-        costs you in colour depth, where a decal stops being a label, and how
+        costs you in color depth, where a decal stops being a label, and how
         big a sticker has to be before people actually read it.
       </p>
 
@@ -84,7 +95,13 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'Blog' }];
     </div>
   </section>
 
-  <CTASection id="quote" />
+  <section class="section-tight section-white">
+    <div class="container">
+      <FAQSection faqs={blogFaqs} heading="About these guides" />
+    </div>
+  </section>
+
+  <QuoteSection id="quote" />
 </BaseLayout>
 
 <style>
@@ -110,8 +127,7 @@ const crumbs = [{ label: 'Home', href: '/' }, { label: 'Blog' }];
     border: 1px solid var(--line);
     border-radius: var(--radius);
     overflow: hidden;
-    box-shadow: var(--shadow-sm);
-  }
+    }
   .post-card:hover {
     box-shadow: var(--shadow);
   }
