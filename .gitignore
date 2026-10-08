@@ -14,3 +14,4 @@ reports/_*.json
 # injected malware markup, and this repository is public. The derived, sanitised
 # data the site builds from is committed at site/src/data/.
 *.WordPress.*.xml
+.vercel
