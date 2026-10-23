@@ -7,6 +7,7 @@
  */
 import type { APIRoute } from 'astro';
 import { PRODUCTION_ORIGIN, SITE } from '../../lib/site';
+import { spamReasons } from '../../lib/spam.js';
 
 const LEAD_RECIPIENTS = ['shanimazhar82@gmail.com', 'dev@zeecustomboxes.com'] as const;
 
@@ -176,11 +177,11 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     return fail(request, 400, 'Could not read the submitted form.');
   }
 
-  // --- honeypot ------------------------------------------------------------
-  if (clean(form.get('website'))) {
-    // Silently accept so bots get no signal, but nothing is sent.
-    return succeed(request, 'Thank you. Your enquiry has been sent.');
-  }
+  // --- spam signals ----------------------------------------------------------
+  // Owner's rule: never drop a lead. A suspect enquiry is still mailed, with
+  // "[Possible spam]" in the subject and the reasons on the first line.
+  const spam: string[] = [];
+  if (clean(form.get('website'))) spam.push('hidden field filled');
 
   // --- field validation ----------------------------------------------------
   const name = clean(form.get('name'), 120);
@@ -196,6 +197,15 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   const printing = clean(form.get('printing'), 200);
   const message = clean(form.get('message'), MAX_FIELD);
   const sourcePage = clean(form.get('sourcePage'), 300);
+
+  spam.push(
+    ...spamReasons({
+      names: [name], email, phone, message,
+      fields: { Company: company, Product: product, Quantity: quantity, Size: size, Printing: printing },
+      timing: false, // the form sends no load timestamp
+    }),
+  );
+  const spamLine = spam.length ? `Spam check: ${spam.join('; ')}` : '';
 
   const errors: string[] = [];
   if (name.length < 2) errors.push('a name');
@@ -271,6 +281,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   ] as Array<[string, string]>).filter(([, v]) => v.length > 0);
 
   const text =
+    (spamLine ? `${spamLine}\n\n` : '') +
     rows.map(([k, v]) => `${k}: ${v}`).join('\n') +
     (message ? `\n\nMessage:\n${message}` : '') +
     (attachment ? `\n\nArtwork attached: ${attachment.filename}` : '');
@@ -326,7 +337,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       to: [...LEAD_RECIPIENTS],
       replyTo: `${headerSafe(name)} <${headerSafe(email)}>`,
       subject: headerSafe(
-        product ? `Quote request: ${product}` : 'Website enquiry',
+        (spam.length ? '[Possible spam] ' : '') + (product ? `Quote request: ${product}` : 'Website enquiry'),
       ),
       text,
       attachments: attachment
